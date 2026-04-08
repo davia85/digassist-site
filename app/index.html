@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#6c5ce7">
+  <title>DigAssist Video Studio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/icon-192.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Splash / Loading -->
+  <div id="splash" class="splash">
+    <div class="splash-icon">🎬</div>
+    <h1>Video Studio</h1>
+    <p>by DigAssist</p>
+  </div>
+
+  <!-- App Shell -->
+  <div id="app" class="app hidden">
+
+    <!-- Header -->
+    <header class="header">
+      <h1 id="page-title">Video Studio</h1>
+      <button id="btn-settings" class="icon-btn" aria-label="Settings">⚙️</button>
+    </header>
+
+    <!-- Pages -->
+    <!-- HOME -->
+    <main id="page-home" class="page active">
+      <section class="hero-card">
+        <h2>Crée ta vidéo IA</h2>
+        <p>Entre ton sujet, on s'occupe du reste.</p>
+      </section>
+
+      <form id="form-create" class="create-form">
+        <label for="input-topic">Sujet de ta vidéo</label>
+        <textarea id="input-topic" placeholder="Ex: Les 5 erreurs en dropshipping qui te coûtent cher..." rows="3"></textarea>
+
+        <label for="select-style">Style</label>
+        <select id="select-style">
+          <option value="ugc">UGC (face caméra)</option>
+          <option value="info">Infopreneure (éducatif)</option>
+          <option value="hook">Hook viral (accroche courte)</option>
+          <option value="storytelling">Storytelling</option>
+        </select>
+
+        <label for="select-duration">Durée</label>
+        <select id="select-duration">
+          <option value="15">15 secondes (Reel/TikTok)</option>
+          <option value="30">30 secondes</option>
+          <option value="60">60 secondes</option>
+          <option value="90">90 secondes</option>
+        </select>
+
+        <label for="select-tone">Ton</label>
+        <select id="select-tone">
+          <option value="pro">Professionnel</option>
+          <option value="casual">Casual / Friendly</option>
+          <option value="energetic">Énergique / Motivant</option>
+          <option value="luxury">Luxe / Premium</option>
+        </select>
+
+        <button type="submit" class="btn-primary" id="btn-generate">Générer le script</button>
+      </form>
+
+      <!-- Result: Script -->
+      <section id="result-script" class="result-card hidden">
+        <div class="result-header">
+          <h3>Script généré</h3>
+          <button class="btn-small" id="btn-copy-script">Copier</button>
+        </div>
+        <div id="script-output" class="output-box"></div>
+        <button class="btn-secondary" id="btn-gen-prompts">Générer les prompts vidéo</button>
+      </section>
+
+      <!-- Result: Prompts -->
+      <section id="result-prompts" class="result-card hidden">
+        <div class="result-header">
+          <h3>Prompts générés</h3>
+        </div>
+
+        <div class="prompt-group">
+          <h4>🎭 HeyGen (Avatar)</h4>
+          <div id="prompt-heygen" class="output-box"></div>
+          <button class="btn-small btn-copy" data-target="prompt-heygen">Copier</button>
+          <button class="btn-small btn-send" data-api="heygen">Envoyer à HeyGen</button>
+        </div>
+
+        <div class="prompt-group">
+          <h4>🎥 Kling (Visuels)</h4>
+          <div id="prompt-kling" class="output-box"></div>
+          <button class="btn-small btn-copy" data-target="prompt-kling">Copier</button>
+          <button class="btn-small btn-send" data-api="kling">Envoyer à Kling</button>
+        </div>
+
+        <div class="prompt-group">
+          <h4>🎙️ ElevenLabs (Voix)</h4>
+          <div id="prompt-elevenlabs" class="output-box"></div>
+          <button class="btn-small btn-copy" data-target="prompt-elevenlabs">Copier</button>
+          <button class="btn-small btn-send" data-api="elevenlabs">Envoyer à ElevenLabs</button>
+        </div>
+      </section>
+
+      <!-- Status -->
+      <section id="api-status" class="status-card hidden">
+        <h3>Statut</h3>
+        <div id="status-list"></div>
+      </section>
+    </main>
+
+    <!-- HISTORY -->
+    <main id="page-history" class="page">
+      <h2>Historique</h2>
+      <div id="history-list" class="history-list">
+        <p class="empty-state">Aucune vidéo créée pour l'instant.</p>
+      </div>
+    </main>
+
+    <!-- SETTINGS -->
+    <main id="page-settings" class="page">
+      <h2>Paramètres</h2>
+
+      <form id="form-settings" class="settings-form">
+        <div class="setting-group">
+          <h3>🤖 IA Script (Claude / OpenAI)</h3>
+          <label for="api-llm-provider">Fournisseur</label>
+          <select id="api-llm-provider">
+            <option value="claude">Claude (Anthropic)</option>
+            <option value="openai">OpenAI (GPT)</option>
+          </select>
+          <label for="api-llm-key">Clé API</label>
+          <input type="password" id="api-llm-key" placeholder="sk-...">
+        </div>
+
+        <div class="setting-group">
+          <h3>🎭 HeyGen</h3>
+          <label for="api-heygen-key">Clé API</label>
+          <input type="password" id="api-heygen-key" placeholder="Clé API HeyGen">
+          <label for="api-heygen-avatar">Avatar ID</label>
+          <input type="text" id="api-heygen-avatar" placeholder="ID de ton avatar">
+        </div>
+
+        <div class="setting-group">
+          <h3>🎥 Kling</h3>
+          <label for="api-kling-key">Clé API</label>
+          <input type="password" id="api-kling-key" placeholder="Clé API Kling">
+        </div>
+
+        <div class="setting-group">
+          <h3>🎙️ ElevenLabs</h3>
+          <label for="api-elevenlabs-key">Clé API</label>
+          <input type="password" id="api-elevenlabs-key" placeholder="Clé API ElevenLabs">
+          <label for="api-elevenlabs-voice">Voice ID</label>
+          <input type="text" id="api-elevenlabs-voice" placeholder="ID de la voix">
+        </div>
+
+        <button type="submit" class="btn-primary">Sauvegarder</button>
+        <p id="settings-status" class="status-msg hidden"></p>
+      </form>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-page="home">
+        <span class="nav-icon">🎬</span>
+        <span class="nav-label">Créer</span>
+      </button>
+      <button class="nav-btn" data-page="history">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Historique</span>
+      </button>
+      <button class="nav-btn" data-page="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Réglages</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
