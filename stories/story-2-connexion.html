@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>Story 2 - Connexion BFF</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Caveat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .story {
+    width: 1080px;
+    height: 1920px;
+    position: relative;
+    background: #f5f0eb;
+    overflow: hidden;
+  }
+
+  /* Fond uni texture grain doux */
+  .story::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    z-index: 0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 70px;
+  }
+
+  /* Handle */
+  .handle {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 50px;
+  }
+
+  /* Handwritten intro */
+  .handwritten-intro {
+    font-family: 'Caveat', cursive;
+    font-size: 48px;
+    color: #E91E8C;
+    margin-bottom: 30px;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  /* Titre principal */
+  .main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 68px;
+    font-weight: 900;
+    color: #1a1a1a;
+    line-height: 1.15;
+    margin-bottom: 50px;
+  }
+  .main-title em {
+    font-style: italic;
+    color: #E91E8C;
+  }
+
+  /* Bloc sondage style IG */
+  .poll-container {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 24px;
+    padding: 45px 50px;
+    margin-bottom: 50px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+
+  .poll-question {
+    font-family: 'Inter', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 35px;
+    text-align: center;
+  }
+
+  .poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .poll-option {
+    border: 3px solid #e0d5ca;
+    border-radius: 16px;
+    padding: 28px 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .poll-option:first-child {
+    border-color: #E91E8C;
+    color: #E91E8C;
+    font-weight: 700;
+  }
+
+  .poll-option .emoji {
+    margin-right: 10px;
+  }
+
+  /* Trombone */
+  .paperclip-deco {
+    position: absolute;
+    top: -20px;
+    right: 50px;
+    font-size: 55px;
+    color: #c4a882;
+    transform: rotate(20deg);
+  }
+
+  /* Bloc note bas */
+  .bottom-note {
+    background: linear-gradient(135deg, #faf6f0, #f2ece4);
+    border-left: 5px solid #E91E8C;
+    border-radius: 0 12px 12px 0;
+    padding: 35px 40px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .bottom-note p {
+    font-family: 'Caveat', cursive;
+    font-size: 44px;
+    color: #444;
+    line-height: 1.4;
+  }
+
+  .bottom-note .bold-rose {
+    color: #E91E8C;
+    font-weight: 700;
+  }
+
+  /* Doodles flèches */
+  .doodle-arrow-down {
+    position: absolute;
+    top: -35px;
+    left: 40px;
+  }
+
+  /* Zone deco aesthetic en bas */
+  .deco-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: auto;
+    margin-bottom: 30px;
+    opacity: 0.35;
+  }
+
+  /* Mini elements deco */
+  .mini-leaf {
+    width: 40px;
+    height: 80px;
+    border: 3px solid #c4a882;
+    border-radius: 50% 0;
+    transform: rotate(-30deg);
+  }
+  .mini-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #E91E8C;
+  }
+  .mini-line {
+    width: 80px;
+    height: 3px;
+    background: #c4a882;
+  }
+  .mini-star {
+    font-family: 'Caveat', cursive;
+    font-size: 50px;
+    color: #c4a882;
+  }
+
+  /* Doodles scatter */
+  .doodle-circle {
+    position: absolute;
+    top: 280px;
+    right: 60px;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #E91E8C;
+    border-radius: 50%;
+    opacity: 0.25;
+  }
+
+  .doodle-dots {
+    position: absolute;
+    bottom: 250px;
+    left: 80px;
+    font-family: 'Caveat', cursive;
+    font-size: 40px;
+    color: #c4a882;
+    opacity: 0.4;
+    letter-spacing: 15px;
+  }
+
+  .doodle-squiggle {
+    position: absolute;
+    top: 500px;
+    left: 60px;
+    opacity: 0.2;
+  }
+
+  /* Bandeau magenta bas */
+  .magenta-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #E91E8C;
+    padding: 22px 40px;
+    text-align: center;
+  }
+  .magenta-bar p {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Epingle haut */
+  .pin-top {
+    position: absolute;
+    top: 55px;
+    right: 70px;
+  }
+  .pin-top svg { width: 50px; height: 50px; }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="content">
+
+    <!-- Handle -->
+    <div class="handle">@davia.aide.les.biz.en.pls</div>
+
+    <!-- Epingle -->
+    <div class="pin-top">
+      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="13" r="11" stroke="#c4a882" stroke-width="2.5" fill="none"/>
+        <line x1="25" y1="24" x2="25" y2="48" stroke="#c4a882" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Intro manuscrite -->
+    <p class="handwritten-intro">Entre nous...</p>
+
+    <!-- Titre -->
+    <h1 class="main-title">Tu publies. Tu croises les doigts. Et tu te demandes pourquoi <em>personne</em> n'achete.</h1>
+
+    <!-- Sondage IG -->
+    <div class="poll-container">
+      <div class="paperclip-deco">&#128206;</div>
+      <p class="poll-question">Ca te parle ?</p>
+      <div class="poll-options">
+        <div class="poll-option"><span class="emoji">&#128557;</span> Carrément, c'est MOI</div>
+        <div class="poll-option"><span class="emoji">&#128064;</span> Je veux la suite</div>
+      </div>
+    </div>
+
+    <!-- Note manuscrite en bas -->
+    <div class="bottom-note">
+      <p>Spoiler : le probleme c'est pas toi.<br>C'est que ton feed <span class="bold-rose">parle a tout le monde</span>... donc a personne.</p>
+    </div>
+
+    <!-- Doodles -->
+    <div class="doodle-circle"></div>
+    <div class="doodle-dots">. . . .</div>
+    <svg class="doodle-squiggle" width="40" height="120" viewBox="0 0 40 120">
+      <path d="M20 0 Q0 30 20 60 Q40 90 20 120" stroke="#c4a882" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Deco minimaliste bas -->
+    <div class="deco-bottom">
+      <div class="mini-leaf"></div>
+      <div class="mini-dot"></div>
+      <div class="mini-line"></div>
+      <div class="mini-dot"></div>
+      <div class="mini-star">*</div>
+    </div>
+
+  </div>
+
+  <!-- Bandeau magenta -->
+  <div class="magenta-bar">
+    <p>La suite va te parler. Promis.</p>
+  </div>
+</div>
+</body>
+</html>
