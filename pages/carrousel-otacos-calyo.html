@@ -42,7 +42,6 @@
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       border-radius: 0;
     }
 
@@ -100,7 +99,6 @@
     /* ===== SLIDE 1 : COVER ===== */
     .slide-1 {
       background: var(--bleu);
-      justify-content: flex-start;
     }
     .slide-1 .top-bar {
       position: absolute;
@@ -117,8 +115,9 @@
     .slide-1 .bg-circle-1 { width: 55%; height: 55%; top: -15%; right: -10%; }
     .slide-1 .bg-circle-2 { width: 40%; height: 40%; bottom: 8%; left: -10%; }
 
-    .slide-1 .content {
-      padding: 5% 7% 0;
+    .slide-1 .tag-top {
+      position: absolute;
+      top: 7%; left: 7%;
       z-index: 2;
     }
     .slide-1 .badge {
@@ -132,7 +131,15 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 5%;
+    }
+
+    .slide-1 .center-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 7%;
+      z-index: 2;
     }
     .slide-1 h1 {
       font-size: 9vw;
@@ -160,7 +167,7 @@
     .slide-1 .kpi .number {
       font-size: 10vw;
       font-weight: 900;
-      color: var(--bleu-nuit);
+      color: var(--violet-clair);
       line-height: 1;
     }
     .slide-1 .kpi .label {
@@ -176,11 +183,27 @@
       letter-spacing: 1px;
     }
 
+    /* ===== SLIDES 2-6 : TAG EN HAUT + CONTENU CENTRE ===== */
+    .slide-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .slide-inner .tag-area {
+      padding: 8% 7% 0;
+    }
+    .slide-inner .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 7%;
+    }
+
     /* ===== SLIDE 2 : OBJECTIF ===== */
     .slide-2 { background: var(--creme); }
-    .slide-2 .content { padding: 0 7%; z-index: 2; }
     .slide-2 h2 {
-      font-size: 5.2vw;
+      font-size: 5vw;
       font-weight: 900;
       color: #1a1a3e;
       line-height: 1.25;
@@ -195,9 +218,8 @@
 
     /* ===== SLIDE 3 : MÉTHODE ===== */
     .slide-3 { background: var(--bleu); }
-    .slide-3 .content { padding: 0 7%; z-index: 2; }
     .slide-3 h2 {
-      font-size: 6vw;
+      font-size: 5.5vw;
       font-weight: 900;
       color: white;
       line-height: 1.25;
@@ -212,7 +234,6 @@
 
     /* ===== SLIDE 4 : COMPÉTENCES ===== */
     .slide-4 { background: var(--creme); }
-    .slide-4 .content { padding: 0 7%; z-index: 2; }
     .slide-4 h2 {
       font-size: 6vw;
       font-weight: 900;
@@ -251,7 +272,6 @@
 
     /* ===== SLIDE 5 : DÉROULÉ ===== */
     .slide-5 { background: var(--bleu); }
-    .slide-5 .content { padding: 0 7%; z-index: 2; margin-top: -3%; }
     .slide-5 h2 {
       font-size: 6vw;
       font-weight: 900;
@@ -282,7 +302,6 @@
 
     /* ===== SLIDE 6 : BÉNÉFICES ===== */
     .slide-6 { background: var(--creme); }
-    .slide-6 .content { padding: 0 7%; z-index: 2; }
     .slide-6 h2 {
       font-size: 6vw;
       font-weight: 900;
@@ -313,7 +332,11 @@
     }
 
     /* ===== SLIDE 7 : CTA ===== */
-    .slide-7 { background: var(--bleu); text-align: center; }
+    .slide-7 {
+      background: var(--bleu);
+      text-align: center;
+      justify-content: center;
+    }
     .slide-7 .content { padding: 0 7%; z-index: 2; }
     .slide-7 .logo-text {
       font-size: 10vw;
@@ -379,8 +402,10 @@
     <div class="top-bar"></div>
     <div class="bg-circle bg-circle-1"></div>
     <div class="bg-circle bg-circle-2"></div>
-    <div class="content">
+    <div class="tag-top">
       <div class="badge">Retour d'expérience</div>
+    </div>
+    <div class="center-content">
       <h1>Une promotion<br>Calyo+ intègre<br><em>O'Tacos</em><br>Marseille</h1>
       <p class="lieu">O'Tacos Saint-Loup : Avril 2025</p>
     </div>
@@ -403,10 +428,14 @@
   <p class="slide-label">Slide 2 / 7</p>
   <div class="slide slide-2">
     <div class="accent-bar"></div>
-    <div class="content">
-      <div class="tag-violet">L'objectif</div>
-      <h2>Permettre à chaque apprenant de <em>prendre son poste</em> dans des conditions réelles d'exploitation.</h2>
-      <p class="text">Il y a un an, une promotion Calyo+ se préparait à intégrer O'Tacos Marseille Saint-Loup.<br><br><strong>20 jours. 140 heures.</strong><br>Une formation conçue pour préparer une intégration immédiate en restauration rapide, en s'appuyant sur des standards opérationnels Calyo+, adaptés aux exigences de l'enseigne et au rythme du terrain.</p>
+    <div class="slide-inner">
+      <div class="tag-area">
+        <div class="tag-violet">L'objectif</div>
+      </div>
+      <div class="main-area">
+        <h2>Permettre à chaque apprenant de <em>prendre son poste</em> dans des conditions réelles d'exploitation.</h2>
+        <p class="text">Il y a un an, une promotion Calyo+ se préparait à intégrer O'Tacos Marseille Saint-Loup.<br><br><strong>20 jours. 140 heures.</strong><br>Une formation conçue pour préparer une intégration immédiate en restauration rapide, en s'appuyant sur des standards opérationnels Calyo+, adaptés aux exigences de l'enseigne et au rythme du terrain.</p>
+      </div>
     </div>
     <div class="page-num-dark">2 / 7</div>
   </div>
@@ -414,10 +443,14 @@
   <!-- SLIDE 3 : MÉTHODE -->
   <p class="slide-label">Slide 3 / 7</p>
   <div class="slide slide-3">
-    <div class="content">
-      <div class="tag-white">La méthode Calyo+</div>
-      <h2>Des standards opérationnels<br><em>adaptés au terrain</em></h2>
-      <p class="text">Cette formation a été conçue pour préparer une intégration immédiate en restauration rapide.<br>Elle s'appuie sur des <strong>standards opérationnels Calyo+</strong>, adaptés aux exigences de l'enseigne et au rythme du terrain.<br>Chaque module est pensé pour que l'apprenant soit <strong>opérationnel dès le premier jour</strong> en restaurant.</p>
+    <div class="slide-inner">
+      <div class="tag-area">
+        <div class="tag-white">La méthode Calyo+</div>
+      </div>
+      <div class="main-area">
+        <h2>Des standards opérationnels <em>adaptés au terrain</em></h2>
+        <p class="text">Cette formation a été conçue pour préparer<br>une intégration immédiate en restauration rapide.<br>Elle s'appuie sur des <strong>standards opérationnels<br>Calyo+</strong>, adaptés aux exigences de l'enseigne<br>et au rythme du terrain.<br>Chaque module est pensé pour que l'apprenant<br>soit <strong>opérationnel dès le premier jour</strong><br>en restaurant.</p>
+      </div>
     </div>
     <div class="page-num-light">3 / 7</div>
   </div>
@@ -426,31 +459,35 @@
   <p class="slide-label">Slide 4 / 7</p>
   <div class="slide slide-4">
     <div class="accent-bar"></div>
-    <div class="content">
-      <div class="tag-violet">Ce qui a été travaillé</div>
-      <h2>Les compétences acquises</h2>
-      <ul class="checklist">
-        <li>
-          <div class="check-icon">&#10003;</div>
-          <div>Structurer son poste de travail</div>
-        </li>
-        <li>
-          <div class="check-icon">&#10003;</div>
-          <div>Appliquer les règles de sécurité alimentaire en situation réelle</div>
-        </li>
-        <li>
-          <div class="check-icon">&#10003;</div>
-          <div>Comprendre l'organisation cuisine et comptoir</div>
-        </li>
-        <li>
-          <div class="check-icon">&#10003;</div>
-          <div>S'adapter au flux et au rythme du service</div>
-        </li>
-        <li>
-          <div class="check-icon">&#10003;</div>
-          <div>Adopter une posture professionnelle en environnement exigeant</div>
-        </li>
-      </ul>
+    <div class="slide-inner">
+      <div class="tag-area">
+        <div class="tag-violet">Ce qui a été travaillé</div>
+      </div>
+      <div class="main-area">
+        <h2>Les compétences acquises</h2>
+        <ul class="checklist">
+          <li>
+            <div class="check-icon">&#10003;</div>
+            <div>Structurer son poste de travail</div>
+          </li>
+          <li>
+            <div class="check-icon">&#10003;</div>
+            <div>Appliquer les règles de sécurité alimentaire en situation réelle</div>
+          </li>
+          <li>
+            <div class="check-icon">&#10003;</div>
+            <div>Comprendre l'organisation cuisine et comptoir</div>
+          </li>
+          <li>
+            <div class="check-icon">&#10003;</div>
+            <div>S'adapter au flux et au rythme du service</div>
+          </li>
+          <li>
+            <div class="check-icon">&#10003;</div>
+            <div>Adopter une posture professionnelle en environnement exigeant</div>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="page-num-dark">4 / 7</div>
   </div>
@@ -458,12 +495,16 @@
   <!-- SLIDE 5 : DÉROULÉ -->
   <p class="slide-label">Slide 5 / 7</p>
   <div class="slide slide-5">
-    <div class="content">
-      <div class="tag-white">Le déroulé</div>
-      <h2>Un accompagnement<br>étape par étape</h2>
-      <p class="dates">Du 7 avril au 4 mai 2025</p>
-      <p class="text">Chaque participant a été suivi individuellement, avec une logique simple et exigeante :</p>
-      <div class="quote">Être capable d'intégrer une équipe et de contribuer dès les premières semaines.</div>
+    <div class="slide-inner">
+      <div class="tag-area">
+        <div class="tag-white">Le déroulé</div>
+      </div>
+      <div class="main-area">
+        <h2>Un accompagnement<br>étape par étape</h2>
+        <p class="dates">Du 7 avril au 4 mai 2025</p>
+        <p class="text">Chaque participant a été suivi individuellement, avec une logique simple et exigeante :</p>
+        <div class="quote">Être capable d'intégrer une équipe et de contribuer dès les premières semaines.</div>
+      </div>
     </div>
     <div class="page-num-light">5 / 7</div>
   </div>
@@ -472,20 +513,24 @@
   <p class="slide-label">Slide 6 / 7</p>
   <div class="slide slide-6">
     <div class="accent-bar"></div>
-    <div class="content">
-      <div class="tag-violet">Les bénéfices concrets</div>
-      <h2>Un impact à trois niveaux</h2>
-      <div class="benefit-card">
-        <div class="who">Pour le franchisé</div>
-        <div class="what">Sécuriser l'ouverture avec des équipes préparées et immédiatement opérationnelles.</div>
+    <div class="slide-inner">
+      <div class="tag-area">
+        <div class="tag-violet">Les bénéfices concrets</div>
       </div>
-      <div class="benefit-card">
-        <div class="who">Pour l'exploitation</div>
-        <div class="what">Un gain de temps et de stabilité dès les premières semaines d'activité.</div>
-      </div>
-      <div class="benefit-card">
-        <div class="who">Pour les apprenants</div>
-        <div class="what">Une entrée concrète dans le métier, avec les compétences pour réussir.</div>
+      <div class="main-area">
+        <h2>Un impact à trois niveaux</h2>
+        <div class="benefit-card">
+          <div class="who">Pour le franchisé</div>
+          <div class="what">Sécuriser l'ouverture avec des équipes préparées et immédiatement opérationnelles.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="who">Pour l'exploitation</div>
+          <div class="what">Un gain de temps et de stabilité dès les premières semaines d'activité.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="who">Pour les apprenants</div>
+          <div class="what">Une entrée concrète dans le métier, avec les compétences pour réussir.</div>
+        </div>
       </div>
     </div>
     <div class="page-num-dark">6 / 7</div>
