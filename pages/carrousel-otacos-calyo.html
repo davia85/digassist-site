@@ -10,6 +10,7 @@
 
     :root {
       --bleu: #0033cc;
+      --bleu-nuit: #0e0e2c;
       --violet: #a855f7;
       --violet-clair: #c084fc;
       --creme: #f5f3ee;
@@ -21,7 +22,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px 8px;
+      padding: 16px 0;
       gap: 30px;
     }
 
@@ -33,9 +34,8 @@
       letter-spacing: 2px;
     }
 
-    /* ===== SLIDE BASE (mobile first : ratio 4:5 = 100vw x 125vw) ===== */
     .slide {
-      width: calc(100vw - 16px);
+      width: 100vw;
       aspect-ratio: 4 / 5;
       position: relative;
       overflow: hidden;
@@ -43,150 +43,36 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      border-radius: 8px;
+      border-radius: 0;
     }
 
-    /* ===== SLIDE 1 : COVER ===== */
-    .slide-1 {
-      background: var(--bleu);
-    }
-
-    .slide-1 .top-bar {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--violet), var(--violet-clair));
-    }
-
-    .slide-1 .bg-circle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.1;
-      background: white;
-    }
-    .slide-1 .bg-circle-1 { width: 55%; height: 55%; top: -15%; right: -10%; }
-    .slide-1 .bg-circle-2 { width: 40%; height: 40%; bottom: 8%; left: -10%; }
-
-    .slide-1 .logo-area {
-      position: absolute;
-      top: 5%; left: 7%;
-      z-index: 2;
-    }
-    .slide-1 .logo-text {
-      font-size: 5.5vw;
-      font-weight: 900;
-      color: white;
-      letter-spacing: 1px;
-    }
-    .slide-1 .logo-text span { color: var(--violet-clair); }
-    .slide-1 .logo-sub {
-      font-size: 2.5vw;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .slide-1 .content {
-      padding: 0 7%;
-      z-index: 2;
-      margin-top: 8%;
-    }
-    .slide-1 .badge {
+    /* ===== TAGS ===== */
+    .tag-violet {
       display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
+      background: var(--violet);
       color: white;
-      padding: 2% 5%;
-      border-radius: 30px;
-      font-size: 3vw;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 5%;
-    }
-    .slide-1 h1 {
-      font-size: 9vw;
-      font-weight: 900;
-      color: white;
-      line-height: 1.15;
-      margin-bottom: 4%;
-    }
-    .slide-1 h1 em { font-style: normal; color: var(--violet-clair); }
-    .slide-1 .lieu {
-      font-size: 4vw;
-      color: rgba(255,255,255,0.7);
-      font-weight: 500;
-    }
-
-    .slide-1 .bottom-line {
-      position: absolute;
-      bottom: 6%; left: 7%; right: 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .slide-1 .kpi-row { display: flex; gap: 8%; }
-    .slide-1 .kpi { text-align: center; }
-    .slide-1 .kpi .number { font-size: 8vw; font-weight: 900; color: white; }
-    .slide-1 .kpi .label {
-      font-size: 2.5vw;
-      color: rgba(255,255,255,0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .slide-1 .swipe {
-      font-size: 2.8vw;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 1px;
-    }
-
-    /* ===== SLIDE 2 : OBJECTIF ===== */
-    .slide-2 { background: var(--creme); }
-    .slide-2 .accent-bar {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      background: var(--bleu);
-    }
-    .slide-2 .content { padding: 0 7%; z-index: 2; }
-    .tag-blue {
-      display: inline-block;
-      background: var(--bleu);
-      color: white;
-      padding: 2% 5%;
+      padding: 1.8% 5%;
       border-radius: 30px;
       font-size: 2.8vw;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 5%;
+      margin-bottom: 4%;
     }
     .tag-white {
       display: inline-block;
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
       color: white;
-      padding: 2% 5%;
+      padding: 1.8% 5%;
       border-radius: 30px;
       font-size: 2.8vw;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 5%;
+      margin-bottom: 4%;
     }
-    .slide-2 h2 {
-      font-size: 6.5vw;
-      font-weight: 900;
-      color: #1a1a3e;
-      line-height: 1.2;
-      margin-bottom: 5%;
-    }
-    .slide-2 h2 em { font-style: normal; color: var(--bleu); }
-    .slide-2 .text {
-      font-size: 3.8vw;
-      color: #444;
-      line-height: 1.6;
-    }
+
     .page-num-dark {
       position: absolute;
       bottom: 4%; right: 7%;
@@ -204,34 +90,131 @@
       opacity: 0.3;
     }
 
+    .accent-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--bleu);
+    }
+
+    /* ===== SLIDE 1 : COVER ===== */
+    .slide-1 {
+      background: var(--bleu);
+      justify-content: flex-start;
+    }
+    .slide-1 .top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--violet), var(--violet-clair));
+    }
+    .slide-1 .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+      background: white;
+    }
+    .slide-1 .bg-circle-1 { width: 55%; height: 55%; top: -15%; right: -10%; }
+    .slide-1 .bg-circle-2 { width: 40%; height: 40%; bottom: 8%; left: -10%; }
+
+    .slide-1 .content {
+      padding: 5% 7% 0;
+      z-index: 2;
+    }
+    .slide-1 .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 1.8% 5%;
+      border-radius: 30px;
+      font-size: 2.8vw;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 5%;
+    }
+    .slide-1 h1 {
+      font-size: 9vw;
+      font-weight: 900;
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 3%;
+    }
+    .slide-1 h1 em { font-style: normal; color: var(--violet-clair); }
+    .slide-1 .lieu {
+      font-size: 3.8vw;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
+
+    .slide-1 .bottom-line {
+      position: absolute;
+      bottom: 6%; left: 7%; right: 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .slide-1 .kpi-row { display: flex; gap: 12vw; }
+    .slide-1 .kpi { text-align: center; }
+    .slide-1 .kpi .number {
+      font-size: 10vw;
+      font-weight: 900;
+      color: var(--bleu-nuit);
+      line-height: 1;
+    }
+    .slide-1 .kpi .label {
+      font-size: 2.8vw;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 2%;
+    }
+    .slide-1 .swipe {
+      font-size: 2.8vw;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+
+    /* ===== SLIDE 2 : OBJECTIF ===== */
+    .slide-2 { background: var(--creme); }
+    .slide-2 .content { padding: 0 7%; z-index: 2; }
+    .slide-2 h2 {
+      font-size: 5.2vw;
+      font-weight: 900;
+      color: #1a1a3e;
+      line-height: 1.25;
+      margin-bottom: 5%;
+    }
+    .slide-2 h2 em { font-style: normal; color: var(--bleu); }
+    .slide-2 .text {
+      font-size: 3.5vw;
+      color: #444;
+      line-height: 1.6;
+    }
+
     /* ===== SLIDE 3 : MÉTHODE ===== */
     .slide-3 { background: var(--bleu); }
     .slide-3 .content { padding: 0 7%; z-index: 2; }
     .slide-3 h2 {
-      font-size: 6.5vw;
+      font-size: 6vw;
       font-weight: 900;
       color: white;
-      line-height: 1.2;
+      line-height: 1.25;
       margin-bottom: 5%;
     }
     .slide-3 h2 em { font-style: normal; color: var(--violet-clair); }
     .slide-3 .text {
-      font-size: 3.8vw;
+      font-size: 3.5vw;
       color: rgba(255,255,255,0.85);
       line-height: 1.6;
     }
 
     /* ===== SLIDE 4 : COMPÉTENCES ===== */
     .slide-4 { background: var(--creme); }
-    .slide-4 .accent-bar {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      background: var(--bleu);
-    }
     .slide-4 .content { padding: 0 7%; z-index: 2; }
     .slide-4 h2 {
-      font-size: 6.5vw;
+      font-size: 6vw;
       font-weight: 900;
       color: #1a1a3e;
       line-height: 1.2;
@@ -241,55 +224,55 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 4vw;
+      gap: 3.5vw;
     }
     .checklist li {
       display: flex;
       align-items: flex-start;
       gap: 3vw;
-      font-size: 3.6vw;
+      font-size: 3.5vw;
       color: #333;
       line-height: 1.45;
     }
     .check-icon {
       flex-shrink: 0;
-      width: 7vw;
-      height: 7vw;
+      width: 6.5vw;
+      height: 6.5vw;
       background: var(--bleu);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 3.5vw;
+      font-size: 3.2vw;
       font-weight: 700;
-      margin-top: 0.5vw;
+      margin-top: 0.3vw;
     }
 
     /* ===== SLIDE 5 : DÉROULÉ ===== */
     .slide-5 { background: var(--bleu); }
-    .slide-5 .content { padding: 0 7%; z-index: 2; }
+    .slide-5 .content { padding: 0 7%; z-index: 2; margin-top: -3%; }
     .slide-5 h2 {
-      font-size: 6.5vw;
+      font-size: 6vw;
       font-weight: 900;
       color: white;
-      line-height: 1.2;
-      margin-bottom: 5%;
+      line-height: 1.25;
+      margin-bottom: 6%;
     }
     .slide-5 .dates {
-      font-size: 5vw;
+      font-size: 4.5vw;
       font-weight: 800;
       color: var(--violet-clair);
       margin-bottom: 4%;
     }
     .slide-5 .text {
-      font-size: 3.8vw;
+      font-size: 3.5vw;
       color: rgba(255,255,255,0.85);
       line-height: 1.6;
       margin-bottom: 5%;
     }
     .quote {
-      font-size: 4.5vw;
+      font-size: 4.2vw;
       font-weight: 700;
       color: white;
       border-left: 4px solid var(--violet-clair);
@@ -299,15 +282,9 @@
 
     /* ===== SLIDE 6 : BÉNÉFICES ===== */
     .slide-6 { background: var(--creme); }
-    .slide-6 .accent-bar {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      background: var(--bleu);
-    }
     .slide-6 .content { padding: 0 7%; z-index: 2; }
     .slide-6 h2 {
-      font-size: 6.5vw;
+      font-size: 6vw;
       font-weight: 900;
       color: #1a1a3e;
       line-height: 1.2;
@@ -324,13 +301,13 @@
     .benefit-card .who {
       font-size: 2.8vw;
       font-weight: 800;
-      color: var(--bleu);
+      color: var(--violet);
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 1.5%;
     }
     .benefit-card .what {
-      font-size: 3.6vw;
+      font-size: 3.5vw;
       color: #333;
       line-height: 1.45;
     }
@@ -361,15 +338,15 @@
       border-radius: 2px;
     }
     .slide-7 h2 {
-      font-size: 6vw;
+      font-size: 5vw;
       font-weight: 800;
       color: white;
-      line-height: 1.3;
+      line-height: 1.35;
       margin-bottom: 5%;
     }
     .slide-7 h2 em { font-style: normal; color: var(--violet-clair); }
     .slide-7 .text {
-      font-size: 3.6vw;
+      font-size: 3.5vw;
       color: rgba(255,255,255,0.7);
       line-height: 1.6;
       margin-bottom: 6%;
@@ -402,10 +379,6 @@
     <div class="top-bar"></div>
     <div class="bg-circle bg-circle-1"></div>
     <div class="bg-circle bg-circle-2"></div>
-    <div class="logo-area">
-      <div class="logo-text">CALYO<span>+</span></div>
-      <div class="logo-sub">Formation</div>
-    </div>
     <div class="content">
       <div class="badge">Retour d'expérience</div>
       <h1>Une promotion<br>Calyo+ intègre<br><em>O'Tacos</em><br>Marseille</h1>
@@ -431,9 +404,9 @@
   <div class="slide slide-2">
     <div class="accent-bar"></div>
     <div class="content">
-      <div class="tag-blue">L'objectif</div>
+      <div class="tag-violet">L'objectif</div>
       <h2>Permettre à chaque apprenant de <em>prendre son poste</em> dans des conditions réelles d'exploitation.</h2>
-      <p class="text">Il y a un an, une promotion Calyo+ se préparait à intégrer O'Tacos Marseille Saint-Loup.<br><br><strong>20 jours. 140 heures.</strong><br><br>Une formation conçue pour préparer une intégration immédiate en restauration rapide, en s'appuyant sur des standards opérationnels Calyo+, adaptés aux exigences de l'enseigne et au rythme du terrain.</p>
+      <p class="text">Il y a un an, une promotion Calyo+ se préparait à intégrer O'Tacos Marseille Saint-Loup.<br><br><strong>20 jours. 140 heures.</strong><br>Une formation conçue pour préparer une intégration immédiate en restauration rapide, en s'appuyant sur des standards opérationnels Calyo+, adaptés aux exigences de l'enseigne et au rythme du terrain.</p>
     </div>
     <div class="page-num-dark">2 / 7</div>
   </div>
@@ -443,8 +416,8 @@
   <div class="slide slide-3">
     <div class="content">
       <div class="tag-white">La méthode Calyo+</div>
-      <h2>Des standards opérationnels <em>adaptés au terrain</em></h2>
-      <p class="text">Cette formation a été conçue pour préparer une intégration immédiate en restauration rapide.<br><br>Elle s'appuie sur des <strong>standards opérationnels Calyo+</strong>, adaptés aux exigences de l'enseigne et au rythme du terrain.<br><br>Chaque module est pensé pour que l'apprenant soit <strong>opérationnel dès le premier jour</strong> en restaurant.</p>
+      <h2>Des standards opérationnels<br><em>adaptés au terrain</em></h2>
+      <p class="text">Cette formation a été conçue pour préparer une intégration immédiate en restauration rapide.<br>Elle s'appuie sur des <strong>standards opérationnels Calyo+</strong>, adaptés aux exigences de l'enseigne et au rythme du terrain.<br>Chaque module est pensé pour que l'apprenant soit <strong>opérationnel dès le premier jour</strong> en restaurant.</p>
     </div>
     <div class="page-num-light">3 / 7</div>
   </div>
@@ -454,7 +427,7 @@
   <div class="slide slide-4">
     <div class="accent-bar"></div>
     <div class="content">
-      <div class="tag-blue">Ce qui a été travaillé</div>
+      <div class="tag-violet">Ce qui a été travaillé</div>
       <h2>Les compétences acquises</h2>
       <ul class="checklist">
         <li>
@@ -487,7 +460,7 @@
   <div class="slide slide-5">
     <div class="content">
       <div class="tag-white">Le déroulé</div>
-      <h2>Un accompagnement étape par étape</h2>
+      <h2>Un accompagnement<br>étape par étape</h2>
       <p class="dates">Du 7 avril au 4 mai 2025</p>
       <p class="text">Chaque participant a été suivi individuellement, avec une logique simple et exigeante :</p>
       <div class="quote">Être capable d'intégrer une équipe et de contribuer dès les premières semaines.</div>
@@ -500,7 +473,7 @@
   <div class="slide slide-6">
     <div class="accent-bar"></div>
     <div class="content">
-      <div class="tag-blue">Les bénéfices concrets</div>
+      <div class="tag-violet">Les bénéfices concrets</div>
       <h2>Un impact à trois niveaux</h2>
       <div class="benefit-card">
         <div class="who">Pour le franchisé</div>
