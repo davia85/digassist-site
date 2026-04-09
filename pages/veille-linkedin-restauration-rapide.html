@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veille Concurrentielle LinkedIn - Formation Restauration Rapide x France Travail</title>
+  <style>
+    :root {
+      --primary: #0a66c2;
+      --dark: #1a1a2e;
+      --light: #f5f7fa;
+      --accent: #e74c3c;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --text: #2c3e50;
+      --border: #dfe6e9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      font-weight: 300;
+    }
+
+    .header .date {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .section h3 {
+      color: var(--dark);
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    /* Tableau comparatif */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead th {
+      background: var(--dark);
+      color: white;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tbody tr:hover {
+      background: #edf2f7;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+      margin: 2px 0;
+    }
+
+    .badge-high { background: var(--success); }
+    .badge-medium { background: var(--warning); }
+    .badge-low { background: var(--accent); }
+    .badge-blue { background: var(--primary); }
+
+    /* Cards opportunites */
+    .opp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .opp-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary);
+    }
+
+    .opp-card.green { border-left-color: var(--success); }
+    .opp-card.orange { border-left-color: var(--warning); }
+    .opp-card.red { border-left-color: var(--accent); }
+
+    .opp-card h4 {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .opp-card p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* Recommandations */
+    .reco-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .reco-list li {
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border-radius: 8px;
+      background: #f0f7ff;
+      border-left: 4px solid var(--primary);
+    }
+
+    .reco-list li strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--dark);
+    }
+
+    .tag-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag-list li {
+      background: #edf2f7;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .kpi-box {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+    }
+
+    .kpi-box .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .kpi-box .label {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+
+    .sources {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 1rem;
+    }
+
+    .sources a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .sources a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.4rem; }
+      .container { padding: 1rem; }
+      .section { padding: 1.25rem; }
+      table { font-size: 0.8rem; }
+      thead th, tbody td { padding: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Veille Concurrentielle LinkedIn</h1>
+    <p class="subtitle">Secteur : Formation Restauration Rapide x France Travail</p>
+    <p class="date">Rapport - Avril 2026</p>
+  </div>
+
+  <div class="container">
+
+    <!-- Chiffres clés du secteur -->
+    <div class="section">
+      <h2>1. Chiffres Cles du Secteur</h2>
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <div class="number">322 200</div>
+          <div class="label">Salaries en restauration rapide en France</div>
+        </div>
+        <div class="kpi-box">
+          <div class="number">~50 000</div>
+          <div class="label">Etablissements sur le territoire</div>
+        </div>
+        <div class="kpi-box">
+          <div class="number">27%</div>
+          <div class="label">Objectif de recours a France Travail (SNARR, horizon 2028)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="number">10</div>
+          <div class="label">Acteurs cles identifies dans cette veille</div>
+        </div>
+      </div>
+      <p>La restauration rapide est un secteur majeur de l'economie francaise, moteur d'insertion professionnelle, avec des besoins permanents en recrutement et en formation. Le partenariat SNARR-France Travail signe en 2025 confirme l'enjeu strategique du secteur.</p>
+    </div>
+
+    <!-- Identification des acteurs -->
+    <div class="section">
+      <h2>2. Acteurs Identifies</h2>
+      <p>Trois categories d'acteurs operent dans la formation restauration rapide en lien avec France Travail :</p>
+
+      <h3>A. Enseignes de restauration rapide (formation interne)</h3>
+      <ul class="tag-list">
+        <li>McDonald's France</li>
+        <li>Burger King France</li>
+        <li>KFC France</li>
+      </ul>
+
+      <h3>B. Organismes de formation et OPCO</h3>
+      <ul class="tag-list">
+        <li>AKTO (OPCO)</li>
+        <li>Afpa</li>
+        <li>UMIH Formation</li>
+        <li>CFA Mederic</li>
+        <li>E2C France</li>
+      </ul>
+
+      <h3>C. Acteurs institutionnels et syndicaux</h3>
+      <ul class="tag-list">
+        <li>SNARR</li>
+        <li>Sodexo (restauration collective, partenariat France Travail)</li>
+      </ul>
+    </div>
+
+    <!-- Tableau comparatif -->
+    <div class="section">
+      <h2>3. Tableau Comparatif - Analyse LinkedIn</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Acteur</th>
+              <th>Followers LinkedIn</th>
+              <th>Frequence de publication</th>
+              <th>Types de contenus</th>
+              <th>Ton editorial</th>
+              <th>Sujets recurrents</th>
+              <th>Engagement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>McDonald's France</strong></td>
+              <td>~12 600 (showcase)</td>
+              <td><span class="badge badge-high">Elevee</span><br>Plusieurs posts/semaine</td>
+              <td>Marque employeur, temoignages collaborateurs, chiffres cles, engagements RSE, innovation recrutement (candidature sans CV, video, jeu cognitif)</td>
+              <td>Institutionnel et humain. Valorisation des parcours internes. Ton corporate maitrise.</td>
+              <td>Employabilite, formation interne, diversite, parcours de carriere, innovation RH</td>
+              <td><span class="badge badge-high">Eleve</span></td>
+            </tr>
+            <tr>
+              <td><strong>Burger King France</strong></td>
+              <td>~80 000+</td>
+              <td><span class="badge badge-high">Elevee</span><br>Plusieurs posts/semaine</td>
+              <td>Humour decale, marque employeur, temoignages video, campagnes inclusives (SEEPH, Kingclusif Awards), resultats parite</td>
+              <td>Humoristique, provoquant, engageant. Ton "anti-corporate" distinctif.</td>
+              <td>Inclusion/handicap, parite (index 89-99), humour de marque, coulisses equipes</td>
+              <td><span class="badge badge-high">Eleve</span></td>
+            </tr>
+            <tr>
+              <td><strong>KFC France</strong></td>
+              <td>~25 000+</td>
+              <td><span class="badge badge-medium">Moderee</span><br>1-3 posts/semaine</td>
+              <td>Partenariats (E2C), ouvertures restaurants, offres emploi, parite (index 99/100), developpement reseau franchise</td>
+              <td>Institutionnel dynamique, oriente croissance et impact social.</td>
+              <td>Expansion reseau, insertion jeunes eloignes emploi, partenariat E2C, franchise</td>
+              <td><span class="badge badge-medium">Moyen</span></td>
+            </tr>
+            <tr>
+              <td><strong>AKTO (OPCO)</strong></td>
+              <td>~30 000+</td>
+              <td><span class="badge badge-high">Elevee</span><br>Quotidienne a quasi-quotidienne</td>
+              <td>Programme HOPE (refugies), webinaires, chiffres alternance, breves sectorielles, evenements formation, fiches metiers, videos temoignages</td>
+              <td>Institutionnel expert. Pedagogique et data-driven.</td>
+              <td>Alternance (+10% en 2024), insertion refugies, CQP, financements formation, observatoire metiers</td>
+              <td><span class="badge badge-medium">Moyen</span></td>
+            </tr>
+            <tr>
+              <td><strong>Afpa</strong></td>
+              <td>~176 000</td>
+              <td><span class="badge badge-high">Elevee</span><br>Quotidienne</td>
+              <td>Temoignages stagiaires, portraits reconversion, resultats chiffres (86% emploi a 6 mois), offres formation, initiatives RSE (antigaspillage)</td>
+              <td>Humain et inspirant. Storytelling de reconversion. Ton proche et accessible.</td>
+              <td>Reconversion pro, insertion, portraits femmes, resultats emploi, 25 formations hotellerie-restauration</td>
+              <td><span class="badge badge-high">Eleve</span></td>
+            </tr>
+            <tr>
+              <td><strong>UMIH Formation</strong></td>
+              <td>~2 000</td>
+              <td><span class="badge badge-low">Faible</span><br>Quelques posts/mois</td>
+              <td>Catalogue formations, hygiene alimentaire, permis exploitation, partenariats institutionnels</td>
+              <td>Tres institutionnel, informatif. Peu de storytelling.</td>
+              <td>Formations reglementaires, HACCP, permis exploitation</td>
+              <td><span class="badge badge-low">Faible</span></td>
+            </tr>
+            <tr>
+              <td><strong>CFA Mederic</strong></td>
+              <td>~3 500</td>
+              <td><span class="badge badge-low">Faible</span><br>Quelques posts/mois</td>
+              <td>Vie de l'ecole, resultats apprentis, evenements, partenariats restaurants</td>
+              <td>Scolaire et convivial. Axe communaute apprentis.</td>
+              <td>Apprentissage, CAP/BTS hotellerie, vie ecole</td>
+              <td><span class="badge badge-low">Faible</span></td>
+            </tr>
+            <tr>
+              <td><strong>E2C France</strong></td>
+              <td>~8 000</td>
+              <td><span class="badge badge-medium">Moderee</span><br>2-4 posts/semaine</td>
+              <td>Partenariats (KFC), resultats insertion (621 actions, 50 contrats), temoignages jeunes, evenements</td>
+              <td>Engage et social. Axe impact mesurable. Ton militant positif.</td>
+              <td>Jeunes eloignes emploi, parcours specialises, chiffres impact, partenariats enseignes</td>
+              <td><span class="badge badge-medium">Moyen</span></td>
+            </tr>
+            <tr>
+              <td><strong>SNARR</strong></td>
+              <td>~1 500</td>
+              <td><span class="badge badge-low">Faible</span><br>1-2 posts/mois</td>
+              <td>Conventions partenariats, actualites branche, recrutement interne, assemblee generale</td>
+              <td>Tres institutionnel et formel. Communication syndicale classique.</td>
+              <td>Convention collective, partenariat France Travail, attractivite metiers</td>
+              <td><span class="badge badge-low">Faible</span></td>
+            </tr>
+            <tr>
+              <td><strong>Sodexo France</strong></td>
+              <td>~50 000+ (groupe)</td>
+              <td><span class="badge badge-high">Elevee</span><br>Quasi-quotidienne</td>
+              <td>Marque employeur, partenariat France Travail, recrutement inclusif, RSE, temoignages collaborateurs</td>
+              <td>Corporate premium. Equilibre entre institutionnel et humain.</td>
+              <td>Inclusion (handicap, refugies, QPV), 4 000 CDI/an, immersions professionnelles, JO 2024</td>
+              <td><span class="badge badge-medium">Moyen-Eleve</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Synthese strategique -->
+    <div class="section">
+      <h2>4. Synthese Strategique</h2>
+
+      <h3>A. Angles de contenu qui reviennent le plus</h3>
+      <ul>
+        <li><strong>Marque employeur / Temoignages :</strong> Tous les acteurs majeurs misent sur le storytelling de collaborateurs (parcours internes, reconversions, temoignages video). C'est le format dominant.</li>
+        <li><strong>Chiffres d'impact :</strong> Taux d'emploi post-formation (86% chez Afpa), nombre de contrats signes (E2C/KFC), index parite -- les donnees chiffrees sont systematiques.</li>
+        <li><strong>Partenariats institutionnels :</strong> Les annonces de conventions (SNARR x France Travail, Sodexo x Pole Emploi, E2C x KFC) constituent un pilier editorial recurrent.</li>
+        <li><strong>Inclusion / Diversite :</strong> Handicap (Burger King SEEPH), refugies (AKTO HOPE), jeunes eloignes de l'emploi (E2C), seniors -- l'angle RSE/inclusion est omnipresent.</li>
+      </ul>
+
+      <h3>B. Ce qui semble performer</h3>
+      <ul>
+        <li><strong>L'humour et le ton decale :</strong> Burger King se demarque nettement avec son ton provocateur et humoristique qui genere un engagement superieur.</li>
+        <li><strong>Les temoignages video authentiques :</strong> Les portraits de reconversion (Afpa) et les histoires de parcours (McDonald's) captent l'attention.</li>
+        <li><strong>Les resultats chiffres :</strong> Les posts avec des KPI concrets (taux d'insertion, nombre de contrats) generent credibilite et partages.</li>
+        <li><strong>L'innovation RH :</strong> La candidature sans CV de McDonald's (video, jeu cognitif) a genere un fort interet mediatique et LinkedIn.</li>
+      </ul>
+
+      <h3>C. Angles peu exploites (Opportunites)</h3>
+      <div class="opp-grid">
+        <div class="opp-card green">
+          <h4>Coulisses de formation en temps reel</h4>
+          <p>Aucun acteur ne publie de "behind the scenes" des sessions de formation : journee type d'un stagiaire, exercices pratiques, interactions formateurs/apprenants. Fort potentiel d'engagement.</p>
+        </div>
+        <div class="opp-card green">
+          <h4>Micro-temoignages "avant/apres"</h4>
+          <p>Les parcours de transformation personnelle (demandeur d'emploi vers salarie) sont evoques mais rarement documentes sous forme de series narratives avec suivi dans le temps.</p>
+        </div>
+        <div class="opp-card orange">
+          <h4>Contenu educatif / pedagogique</h4>
+          <p>Quasi-absence de contenus "tips metier" : astuces hygiene, gestion du rush, service client rapide. Ce format genere de l'engagement organique fort sur LinkedIn.</p>
+        </div>
+        <div class="opp-card orange">
+          <h4>Voix des formateurs</h4>
+          <p>Les formateurs sont invisibles sur LinkedIn. Donner la parole aux experts pedagogiques via du personal branding ou de l'employee advocacy est un angle vierge.</p>
+        </div>
+        <div class="opp-card red">
+          <h4>Donnees sectorielles et infographies</h4>
+          <p>Les carrousels PDF et infographies (format star sur LinkedIn en 2026) sont sous-utilises. Transformer les donnees AKTO/SNARR en visuels partageables est une opportunite forte.</p>
+        </div>
+        <div class="opp-card red">
+          <h4>Parole aux entreprises partenaires</h4>
+          <p>Les temoignages de gerants de restaurant accueillant des stagiaires sont quasi inexistants. Cet angle "employeur satisfait" apporterait une preuve sociale puissante.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommandations -->
+    <div class="section">
+      <h2>5. Recommandations pour se Differencier</h2>
+      <ol class="reco-list">
+        <li>
+          <strong>1. Creer une serie "Parcours" documentaire</strong>
+          Suivre 3-5 apprenants de leur inscription a leur prise de poste. Format : 1 post/semaine par apprenant pendant 8-12 semaines. Ce format de serie fidele genere du suivi et des abonnements. Aucun concurrent ne le fait actuellement.
+        </li>
+        <li>
+          <strong>2. Miser sur le format carrousel PDF / infographie</strong>
+          Transformer les donnees du secteur (322 200 salaries, taux d'insertion, metiers en tension) en carrousels visuels. C'est le format n&deg;1 d'engagement LinkedIn en 2026 et le secteur ne l'exploite pas.
+        </li>
+        <li>
+          <strong>3. Developper l'employee advocacy des formateurs</strong>
+          Accompagner les formateurs pour publier sur leurs propres profils LinkedIn. Les posts personnels generent 8x plus de portee qu'une page entreprise. Angle completement inexploite dans le secteur.
+        </li>
+        <li>
+          <strong>4. Publier du contenu educatif "micro-learning"</strong>
+          Courts tips metier (hygiene, gestion rush, accueil client) en format natif LinkedIn. Positionne l'organisme comme expert et genere de l'engagement organique gratuit. Aucun concurrent ne le fait.
+        </li>
+        <li>
+          <strong>5. Adopter un ton humain et authentique (pas institutionnel)</strong>
+          Le succes de Burger King et Afpa montre que les tons humains, decales ou inspirants surperforment le corporate classique. Se differencier du SNARR/UMIH par un ton proche et engageant.
+        </li>
+        <li>
+          <strong>6. Mettre en avant le partenariat France Travail comme preuve de credibilite</strong>
+          Transformer la convention institutionnelle en contenus concrets : resultats chiffres, temoignages conseillers France Travail, infographies co-brandees. Peu d'acteurs exploitent ce levier editorial.
+        </li>
+        <li>
+          <strong>7. Frequence optimale : 3-4 posts/semaine</strong>
+          Les acteurs performants (McDonald's, Burger King, Afpa) publient plusieurs fois par semaine. Viser 3-4 posts/semaine avec un mix : 40% temoignages/parcours, 25% educatif, 20% resultats chiffres, 15% coulisses/partenariats.
+        </li>
+      </ol>
+    </div>
+
+    <!-- Matrice positionnement -->
+    <div class="section">
+      <h2>6. Matrice de Positionnement Editorial</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Axe</th>
+              <th>Institutionnel / Formel</th>
+              <th>Humain / Engage</th>
+              <th>Decale / Innovant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Forte audience</strong></td>
+              <td>Sodexo</td>
+              <td>Afpa (176K), McDonald's</td>
+              <td>Burger King (80K+)</td>
+            </tr>
+            <tr>
+              <td><strong>Audience moyenne</strong></td>
+              <td>AKTO</td>
+              <td>KFC, E2C</td>
+              <td>--</td>
+            </tr>
+            <tr>
+              <td><strong>Faible audience</strong></td>
+              <td>SNARR, UMIH Formation</td>
+              <td>CFA Mederic</td>
+              <td><em>Zone d'opportunite libre</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top: 1rem;"><strong>Conclusion :</strong> La zone "faible audience + ton decale/innovant" est completement vide. Un organisme de formation qui adopterait un ton authentique, des formats innovants (carrousels, series, micro-learning) et une frequence soutenue se positionnerait sans concurrent direct dans cet espace editorial.</p>
+    </div>
+
+    <!-- Sources -->
+    <div class="section">
+      <h2>Sources</h2>
+      <div class="sources">
+        <ul>
+          <li><a href="https://www.francetravail.org/accueil/communiques/2025/le-snarr-et-france-travail-s-allient-pour-renforcer-l-attractivite-et-les-competences-du-secteur-de-la-restauration-rapide.html">SNARR et France Travail - Plan d'actions partage 2025</a></li>
+          <li><a href="https://www.akto.fr/hope/">AKTO - Programme HOPE</a></li>
+          <li><a href="https://www.akto.fr/regles-de-prise-en-charge-restauration-rapide/">AKTO - Regles de prise en charge restauration rapide 2026</a></li>
+          <li><a href="https://observatoire.akto.fr/branches/restauration-rapide/">AKTO - Observatoire Metiers Restauration Rapide</a></li>
+          <li><a href="https://www.francetravail.org/accueil/communiques/pole-emploi-et-sodexo-france-se-mobilisent-pour-faciliter-les-recrutements-dans-le-secteur-de-la-restauration.html">France Travail x Sodexo - Partenariat</a></li>
+          <li><a href="https://www.mcdonalds.fr/nos-engagements/rapport-d-impact-2023/la-formation-au-service-de-l-employabilite">McDonald's France - La formation au service de l'employabilite</a></li>
+          <li><a href="https://emploi.burgerking.fr/article/burger-king-celebre-la-seeph-2025-un-engagement-toujours-plus-kingclusif/">Burger King - SEEPH 2025 Kingclusif</a></li>
+          <li><a href="https://www.carenews.com/reseau-des-ecoles-de-la-2e-chance/news/faire-carriere-dans-la-restauration-rapide-le-reseau-e2c">E2C France x KFC - Parcours specialise restauration rapide</a></li>
+          <li><a href="https://www.monparcourshandicap.gouv.fr/agenda/2025/04/recrutementformation-dequipiers-polyvalents-avec-burger-king-et-handiwork-1">Burger King x Handiwork x France Travail</a></li>
+          <li><a href="https://www.snarr.fr/la-branche-de-la-restauration-rapide/">SNARR - La branche de la restauration rapide</a></li>
+          <li><a href="https://www.afpa.fr/formation-qualifiante/agent-de-restauration">Afpa - Formation Agent de restauration</a></li>
+          <li><a href="https://www.umih.fr/les-services/formation.html">UMIH - Formation</a></li>
+          <li>Pages LinkedIn : McDonald's France, Burger King France, KFC France, AKTO, Afpa, E2C France, SNARR, UMIH Formation, CFA Mederic</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
