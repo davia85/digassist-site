@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrousel LinkedIn - Calyo+ x O'Tacos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 60px;
+    }
+
+    .slide-label {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: -50px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1350px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* ===== SLIDE 1 - COVER ===== */
+    .slide-1 {
+      background: #0e0e2c;
+    }
+
+    .slide-1 .bg-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+    }
+
+    .slide-1 .bg-glow-2 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+      bottom: 100px;
+      left: -100px;
+    }
+
+    .slide-1 .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-1 .logo-area {
+      position: absolute;
+      top: 60px;
+      left: 80px;
+      z-index: 2;
+    }
+
+    .slide-1 .logo-text {
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: 2px;
+    }
+
+    .slide-1 .logo-text span {
+      color: #a855f7;
+    }
+
+    .slide-1 .logo-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .slide-1 .main-content {
+      position: absolute;
+      top: 220px;
+      left: 80px;
+      right: 80px;
+      z-index: 2;
+    }
+
+    .slide-1 .tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 30px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .slide-1 h1 {
+      font-size: 64px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 30px;
+    }
+
+    .slide-1 h1 .highlight {
+      color: #a855f7;
+    }
+
+    .slide-1 .subtitle {
+      font-size: 26px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .slide-1 .bottom-block {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 50px 80px;
+      background: linear-gradient(0deg, rgba(14,14,44,1) 0%, transparent 100%);
+      z-index: 2;
+    }
+
+    .slide-1 .kpi-row {
+      display: flex;
+      gap: 60px;
+      margin-bottom: 40px;
+    }
+
+    .slide-1 .kpi {
+      text-align: center;
+    }
+
+    .slide-1 .kpi .number {
+      font-size: 52px;
+      font-weight: 900;
+      color: #a855f7;
+    }
+
+    .slide-1 .kpi .label {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+
+    .slide-1 .partner-line {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .slide-1 .partner-badge {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 14px 28px;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .slide-1 .partner-badge.otacos {
+      color: #e87040;
+    }
+
+    .slide-1 .separator {
+      color: rgba(255,255,255,0.3);
+      font-size: 20px;
+    }
+
+    .slide-1 .swipe {
+      position: absolute;
+      bottom: 30px;
+      right: 80px;
+      color: rgba(255,255,255,0.4);
+      font-size: 15px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-1 .swipe .arrow {
+      font-size: 22px;
+    }
+
+    /* ===== SLIDE 2 - CONTEXTE ===== */
+    .slide-2 {
+      background: #f5f3ee;
+    }
+
+    .slide-2 .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-2 .header {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-2 .logo-sm {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0e0e2c;
+    }
+
+    .slide-2 .logo-sm span { color: #7c3aed; }
+
+    .slide-2 .slide-num {
+      font-size: 16px;
+      color: #7c3aed;
+      font-weight: 700;
+      background: rgba(124,58,237,0.1);
+      padding: 8px 20px;
+      border-radius: 20px;
+    }
+
+    .slide-2 .content {
+      position: absolute;
+      top: 160px;
+      left: 80px;
+      right: 80px;
+    }
+
+    .slide-2 .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .slide-2 h2 {
+      font-size: 50px;
+      font-weight: 800;
+      color: #0e0e2c;
+      line-height: 1.2;
+      margin-bottom: 50px;
+    }
+
+    .slide-2 h2 .hl { color: #7c3aed; }
+
+    .slide-2 .text-block {
+      font-size: 26px;
+      color: #3a3a5c;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .slide-2 .quote-box {
+      background: #0e0e2c;
+      border-radius: 20px;
+      padding: 50px;
+      margin-top: 40px;
+    }
+
+    .slide-2 .quote-box p {
+      font-size: 28px;
+      color: white;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .slide-2 .quote-box .em {
+      color: #a855f7;
+      font-weight: 700;
+    }
+
+    /* ===== SLIDE 3 - CHIFFRES ===== */
+    .slide-3 {
+      background: #0e0e2c;
+    }
+
+    .slide-3 .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-3 .header {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-3 .logo-sm {
+      font-size: 22px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .slide-3 .logo-sm span { color: #a855f7; }
+
+    .slide-3 .slide-num {
+      font-size: 16px;
+      color: #a855f7;
+      font-weight: 700;
+      background: rgba(168,85,247,0.15);
+      padding: 8px 20px;
+      border-radius: 20px;
+    }
+
+    .slide-3 .content {
+      position: absolute;
+      top: 160px;
+      left: 80px;
+      right: 80px;
+    }
+
+    .slide-3 .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #a855f7;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .slide-3 h2 {
+      font-size: 48px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.2;
+      margin-bottom: 60px;
+    }
+
+    .slide-3 h2 .hl { color: #a855f7; }
+
+    .slide-3 .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .slide-3 .kpi-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 20px;
+      padding: 45px 40px;
+      text-align: center;
+    }
+
+    .slide-3 .kpi-card .number {
+      font-size: 72px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .slide-3 .kpi-card .unit {
+      font-size: 28px;
+      font-weight: 700;
+      color: #a855f7;
+      margin-top: -5px;
+    }
+
+    .slide-3 .kpi-card .desc {
+      font-size: 22px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    .slide-3 .kpi-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    /* ===== SLIDE 4 - OBJECTIFS ===== */
+    .slide-4 {
+      background: #f5f3ee;
+    }
+
+    .slide-4 .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-4 .header {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-4 .logo-sm {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0e0e2c;
+    }
+
+    .slide-4 .logo-sm span { color: #7c3aed; }
+
+    .slide-4 .slide-num {
+      font-size: 16px;
+      color: #7c3aed;
+      font-weight: 700;
+      background: rgba(124,58,237,0.1);
+      padding: 8px 20px;
+      border-radius: 20px;
+    }
+
+    .slide-4 .content {
+      position: absolute;
+      top: 160px;
+      left: 80px;
+      right: 80px;
+    }
+
+    .slide-4 .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .slide-4 h2 {
+      font-size: 48px;
+      font-weight: 800;
+      color: #0e0e2c;
+      line-height: 1.2;
+      margin-bottom: 50px;
+    }
+
+    .slide-4 h2 .hl { color: #7c3aed; }
+
+    .slide-4 .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .slide-4 .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      font-size: 24px;
+      color: #2a2a4a;
+      line-height: 1.5;
+    }
+
+    .slide-4 .check-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* ===== SLIDE 5 - TIMELINE ===== */
+    .slide-5 {
+      background: #0e0e2c;
+    }
+
+    .slide-5 .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-5 .header {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-5 .logo-sm {
+      font-size: 22px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .slide-5 .logo-sm span { color: #a855f7; }
+
+    .slide-5 .slide-num {
+      font-size: 16px;
+      color: #a855f7;
+      font-weight: 700;
+      background: rgba(168,85,247,0.15);
+      padding: 8px 20px;
+      border-radius: 20px;
+    }
+
+    .slide-5 .content {
+      position: absolute;
+      top: 160px;
+      left: 80px;
+      right: 80px;
+    }
+
+    .slide-5 .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #a855f7;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .slide-5 h2 {
+      font-size: 48px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.2;
+      margin-bottom: 50px;
+    }
+
+    .slide-5 h2 .hl { color: #a855f7; }
+
+    .slide-5 .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .slide-5 .timeline::before {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #7c3aed, #a855f7, rgba(168,85,247,0.2));
+    }
+
+    .slide-5 .tl-item {
+      position: relative;
+      padding: 25px 0 25px 30px;
+    }
+
+    .slide-5 .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 32px;
+      width: 14px;
+      height: 14px;
+      background: #a855f7;
+      border-radius: 50%;
+      border: 3px solid #0e0e2c;
+      box-shadow: 0 0 0 3px #a855f7;
+    }
+
+    .slide-5 .tl-date {
+      font-size: 17px;
+      font-weight: 700;
+      color: #a855f7;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .slide-5 .tl-text {
+      font-size: 24px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+    .slide-5 .tl-text strong {
+      color: white;
+    }
+
+    /* ===== SLIDE 6 - IMPACT ===== */
+    .slide-6 {
+      background: #f5f3ee;
+    }
+
+    .slide-6 .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-6 .header {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-6 .logo-sm {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0e0e2c;
+    }
+
+    .slide-6 .logo-sm span { color: #7c3aed; }
+
+    .slide-6 .slide-num {
+      font-size: 16px;
+      color: #7c3aed;
+      font-weight: 700;
+      background: rgba(124,58,237,0.1);
+      padding: 8px 20px;
+      border-radius: 20px;
+    }
+
+    .slide-6 .content {
+      position: absolute;
+      top: 160px;
+      left: 80px;
+      right: 80px;
+    }
+
+    .slide-6 .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .slide-6 h2 {
+      font-size: 48px;
+      font-weight: 800;
+      color: #0e0e2c;
+      line-height: 1.2;
+      margin-bottom: 50px;
+    }
+
+    .slide-6 h2 .hl { color: #7c3aed; }
+
+    .slide-6 .impact-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .slide-6 .impact-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      border-left: 5px solid #7c3aed;
+    }
+
+    .slide-6 .impact-card .persona {
+      font-size: 16px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .slide-6 .impact-card .benefit {
+      font-size: 26px;
+      color: #0e0e2c;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    /* ===== SLIDE 7 - CTA ===== */
+    .slide-7 {
+      background: #0e0e2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-7 .bg-glow {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .slide-7 .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+    }
+
+    .slide-7 .center-content {
+      text-align: center;
+      z-index: 2;
+      padding: 80px;
+    }
+
+    .slide-7 .logo-big {
+      font-size: 42px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: 3px;
+      margin-bottom: 60px;
+    }
+
+    .slide-7 .logo-big span { color: #a855f7; }
+
+    .slide-7 .logo-big .sub {
+      display: block;
+      font-size: 18px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 6px;
+      margin-top: 5px;
+      font-weight: 500;
+    }
+
+    .slide-7 h2 {
+      font-size: 52px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.3;
+      margin-bottom: 50px;
+    }
+
+    .slide-7 h2 .hl { color: #a855f7; }
+
+    .slide-7 .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      padding: 22px 60px;
+      border-radius: 50px;
+      margin-bottom: 40px;
+      letter-spacing: 0.5px;
+    }
+
+    .slide-7 .website {
+      font-size: 20px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .slide-7 .bottom-line {
+      position: absolute;
+      bottom: 60px;
+      left: 80px;
+      right: 80px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      z-index: 2;
+    }
+
+    .slide-7 .badge {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 14px 28px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* Page number indicators */
+    .page-dots {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .page-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(168,85,247,0.3);
+    }
+
+    .page-dots .dot.active {
+      background: #a855f7;
+      width: 24px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== SLIDE 1 - COVER ==================== -->
+  <p class="slide-label">Slide 1 / 7 - Couverture</p>
+  <div class="slide slide-1">
+    <div class="top-bar"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="logo-area">
+      <div class="logo-text">CALYO<span>+</span></div>
+      <div class="logo-sub">Formation</div>
+    </div>
+
+    <div class="main-content">
+      <div class="tag">Retour d'experience</div>
+      <h1>Former une equipe<br>pour <span class="highlight">O'Tacos</span><br>Marseille Saint-Loup</h1>
+      <p class="subtitle">Comment Calyo+ a prepare une promotion<br>a integrer un restaurant en conditions reelles.</p>
+    </div>
+
+    <div class="bottom-block">
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="number">20</div>
+          <div class="label">jours de formation</div>
+        </div>
+        <div class="kpi">
+          <div class="number">140</div>
+          <div class="label">heures d'accompagnement</div>
+        </div>
+      </div>
+      <div class="partner-line">
+        <div class="partner-badge">CALYO<span style="color:#a855f7">+</span></div>
+        <span class="separator">x</span>
+        <div class="partner-badge otacos">O'TACOS</div>
+        <span class="separator">|</span>
+        <div class="partner-badge" style="font-size:14px;color:rgba(255,255,255,0.6);">Avril - Mai 2025</div>
+      </div>
+    </div>
+
+    <div class="swipe">Glissez <span class="arrow">&rarr;</span></div>
+
+    <div class="page-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 2 - CONTEXTE ==================== -->
+  <p class="slide-label">Slide 2 / 7 - Contexte</p>
+  <div class="slide slide-2">
+    <div class="accent-bar"></div>
+    <div class="header">
+      <div class="logo-sm">CALYO<span>+</span></div>
+      <div class="slide-num">02 / 07</div>
+    </div>
+
+    <div class="content">
+      <div class="section-label">Le contexte</div>
+      <h2>Il y a un an, une promotion Calyo+ se preparait a integrer <span class="hl">O'Tacos Marseille Saint-Loup</span>.</h2>
+
+      <p class="text-block">
+        Cette formation a ete concue pour preparer une integration immediate en restauration rapide, en s'appuyant sur des <strong>standards operationnels Calyo+</strong>, adaptes aux exigences de l'enseigne et au rythme du terrain.
+      </p>
+
+      <div class="quote-box">
+        <p>Un objectif : permettre a chaque apprenant de <span class="em">prendre son poste dans des conditions reelles d'exploitation</span>.</p>
+      </div>
+    </div>
+
+    <div class="page-dots">
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 3 - CHIFFRES ==================== -->
+  <p class="slide-label">Slide 3 / 7 - Chiffres cles</p>
+  <div class="slide slide-3">
+    <div class="accent-bar"></div>
+    <div class="header">
+      <div class="logo-sm">CALYO<span>+</span></div>
+      <div class="slide-num">03 / 07</div>
+    </div>
+
+    <div class="content">
+      <div class="section-label">Les chiffres</div>
+      <h2>Un programme <span class="hl">intensif et structure</span></h2>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="number">20</div>
+          <div class="unit">jours</div>
+          <div class="desc">de formation intensive</div>
+        </div>
+        <div class="kpi-card">
+          <div class="number">140</div>
+          <div class="unit">heures</div>
+          <div class="desc">d'accompagnement terrain</div>
+        </div>
+        <div class="kpi-card wide">
+          <div class="number" style="font-size:48px;">7 avril &rarr; 4 mai 2025</div>
+          <div class="desc" style="margin-top:15px;">Suivi etape par etape, chaque participant accompagne individuellement</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 4 - COMPETENCES ==================== -->
+  <p class="slide-label">Slide 4 / 7 - Competences travaillees</p>
+  <div class="slide slide-4">
+    <div class="accent-bar"></div>
+    <div class="header">
+      <div class="logo-sm">CALYO<span>+</span></div>
+      <div class="slide-num">04 / 07</div>
+    </div>
+
+    <div class="content">
+      <div class="section-label">Le programme</div>
+      <h2>Les apprenants ont ete <span class="hl">accompagnes</span> pour :</h2>
+
+      <ul class="checklist">
+        <li>
+          <div class="check-icon">&check;</div>
+          <span><strong>Structurer</strong> leur poste de travail</span>
+        </li>
+        <li>
+          <div class="check-icon">&check;</div>
+          <span><strong>Appliquer</strong> les regles de securite alimentaire en situation reelle</span>
+        </li>
+        <li>
+          <div class="check-icon">&check;</div>
+          <span><strong>Comprendre</strong> l'organisation cuisine et comptoir</span>
+        </li>
+        <li>
+          <div class="check-icon">&check;</div>
+          <span><strong>S'adapter</strong> au flux et au rythme du service</span>
+        </li>
+        <li>
+          <div class="check-icon">&check;</div>
+          <span><strong>Adopter</strong> une posture professionnelle en environnement exigeant</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="page-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 5 - METHODOLOGIE ==================== -->
+  <p class="slide-label">Slide 5 / 7 - Methodologie</p>
+  <div class="slide slide-5">
+    <div class="accent-bar"></div>
+    <div class="header">
+      <div class="logo-sm">CALYO<span>+</span></div>
+      <div class="slide-num">05 / 07</div>
+    </div>
+
+    <div class="content">
+      <div class="section-label">La methode Calyo+</div>
+      <h2>Un suivi <span class="hl">etape par etape</span></h2>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">Semaine 1</div>
+          <div class="tl-text"><strong>Les fondamentaux</strong> -- Decouverte du poste, regles d'hygiene et securite alimentaire, organisation de l'espace de travail</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Semaine 2</div>
+          <div class="tl-text"><strong>Mise en situation</strong> -- Organisation cuisine et comptoir, gestion des preparations, premiers reflexes en flux</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Semaine 3</div>
+          <div class="tl-text"><strong>Montee en cadence</strong> -- Adaptation au rythme de service, gestion du rush, posture professionnelle sous pression</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Semaine 4</div>
+          <div class="tl-text"><strong>Autonomie</strong> -- Conditions reelles d'exploitation, capacite a integrer une equipe et contribuer des les premieres semaines</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 6 - IMPACT ==================== -->
+  <p class="slide-label">Slide 6 / 7 - Impact</p>
+  <div class="slide slide-6">
+    <div class="accent-bar"></div>
+    <div class="header">
+      <div class="logo-sm">CALYO<span>+</span></div>
+      <div class="slide-num">06 / 07</div>
+    </div>
+
+    <div class="content">
+      <div class="section-label">L'impact concret</div>
+      <h2>Une logique simple :<br><span class="hl">tout le monde y gagne</span></h2>
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="persona">Pour le franchise</div>
+          <div class="benefit">Securiser l'ouverture avec des equipes preparees, operationnelles des le jour 1.</div>
+        </div>
+        <div class="impact-card">
+          <div class="persona">Pour l'exploitation</div>
+          <div class="benefit">Un gain de temps et de stabilite au quotidien. Moins de turnover, plus de fluidite.</div>
+        </div>
+        <div class="impact-card">
+          <div class="persona">Pour les apprenants</div>
+          <div class="benefit">Une entree concrete dans le metier. Etre capable d'integrer une equipe et de contribuer des les premieres semaines.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 7 - CTA ==================== -->
+  <p class="slide-label">Slide 7 / 7 - Appel a l'action</p>
+  <div class="slide slide-7">
+    <div class="accent-bar"></div>
+    <div class="bg-glow"></div>
+
+    <div class="center-content">
+      <div class="logo-big">
+        CALYO<span>+</span>
+        <span class="sub">Formation</span>
+      </div>
+
+      <h2>Vous ouvrez un restaurant ?<br>Vous recrutez une <span class="hl">equipe</span> ?</h2>
+
+      <div class="cta-btn">Parlons-en &rarr;</div>
+
+      <p class="website">calyoplus-formation.fr</p>
+    </div>
+
+    <div class="bottom-line">
+      <div class="badge">Certifie Qualiopi</div>
+      <div class="badge">Standards operationnels</div>
+      <div class="badge">+50 clients satisfaits</div>
+    </div>
+
+    <div class="page-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot active"></div>
+    </div>
+  </div>
+
+</body>
+</html>
