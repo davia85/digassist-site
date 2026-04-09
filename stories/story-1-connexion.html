@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=1080, initial-scale=1">
 <title>Story 1 - Connexion</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Caveat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Gloria+Hallelujah&family=Inter:wght@400;500;600;700&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -13,389 +13,286 @@
     width: 1080px;
     height: 1920px;
     overflow: hidden;
-    font-family: 'Playfair Display', serif;
   }
 
   .story {
     width: 1080px;
     height: 1920px;
     position: relative;
-    background: #f5f0eb;
     overflow: hidden;
   }
 
-  /* Fond motif vichy beige/rose */
-  .story::before {
-    content: '';
+  /* Photo de fond plein ecran */
+  .bg-photo {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image:
-      linear-gradient(45deg, rgba(233, 30, 140, 0.06) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(233, 30, 140, 0.06) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(233, 30, 140, 0.06) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(233, 30, 140, 0.06) 75%);
-    background-size: 80px 80px;
-    background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/lifestyle-rose.png') center center / cover no-repeat;
     z-index: 0;
   }
 
-  /* Texture grain */
-  .story::after {
-    content: '';
+  /* Overlay pour lisibilite */
+  .bg-overlay {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-    z-index: 0;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(245, 240, 235, 0.55) 0%,
+      rgba(245, 240, 235, 0.40) 30%,
+      rgba(245, 240, 235, 0.30) 50%,
+      rgba(245, 240, 235, 0.60) 75%,
+      rgba(245, 240, 235, 0.85) 100%
+    );
+    z-index: 1;
   }
 
   .content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 80px 70px;
+    padding: 100px 65px 60px;
   }
 
-  /* Handle en haut */
+  /* Handle en haut style IG */
   .handle {
     font-family: 'Inter', sans-serif;
-    font-size: 28px;
-    color: #999;
-    letter-spacing: 0.5px;
-    margin-bottom: 60px;
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(30, 30, 30, 0.6);
+    letter-spacing: 0.3px;
+    margin-bottom: 80px;
   }
 
-  /* Doodle epingle */
-  .pin {
-    position: absolute;
-    top: 45px;
-    right: 80px;
-    width: 60px;
-    height: 60px;
-  }
-  .pin svg { width: 100%; height: 100%; }
-
-  /* Zone image deco */
-  .deco-zone {
-    width: 100%;
-    height: 500px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #f0e6dc 0%, #e8ddd4 50%, #f2ece6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-bottom: 50px;
-    border: 1px solid rgba(200, 180, 160, 0.3);
+  /* Annotation manuscrite haut */
+  .handwritten-top {
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 38px;
+    color: #E91E8C;
+    transform: rotate(-3deg);
+    margin-bottom: 20px;
+    margin-left: 10px;
   }
 
-  /* Elements deco minimalistes dans la zone */
-  .deco-items {
-    display: flex;
-    gap: 40px;
-    align-items: flex-end;
-  }
-
-  .deco-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Bougie */
-  .candle {
-    width: 50px;
-    height: 140px;
-    background: linear-gradient(to bottom, #faf5f0, #f0e6dc);
-    border-radius: 8px 8px 4px 4px;
-    position: relative;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  .candle::before {
-    content: '';
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 20px;
-    background: linear-gradient(to top, #E91E8C, #FFB366, #FFE066);
-    border-radius: 50% 50% 20% 20%;
-    animation: flicker 2s ease-in-out infinite;
-  }
-  .candle::after {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 15px;
-    background: #333;
-  }
-  @keyframes flicker {
-    0%, 100% { transform: translateX(-50%) scaleY(1); }
-    50% { transform: translateX(-50%) scaleY(0.85); }
-  }
-
-  /* Vase pampa */
-  .vase {
-    width: 60px;
-    height: 100px;
-    background: linear-gradient(to bottom, #d4b896, #c4a882);
-    border-radius: 15px 15px 20px 20px;
-    position: relative;
-  }
-  .pampa {
-    position: absolute;
-    top: -120px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
-  }
-  .pampa-stem {
-    width: 3px;
-    height: 120px;
-    background: #c4a882;
-    border-radius: 2px;
-    position: relative;
-  }
-  .pampa-stem::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -10px;
-    width: 24px;
-    height: 50px;
-    background: radial-gradient(ellipse, rgba(240, 230, 220, 0.9), rgba(220, 200, 180, 0.6));
-    border-radius: 50%;
-  }
-  .pampa-stem:nth-child(1) { transform: rotate(-8deg); }
-  .pampa-stem:nth-child(2) { transform: rotate(0deg); height: 130px; }
-  .pampa-stem:nth-child(3) { transform: rotate(8deg); }
-
-  /* Livre */
-  .book {
-    width: 90px;
-    height: 30px;
-    background: #E91E8C;
-    border-radius: 3px;
-    opacity: 0.7;
-    position: relative;
-  }
-  .book::after {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    width: 85px;
-    height: 25px;
-    background: #f5f0eb;
-    border-radius: 3px;
-    border: 1px solid rgba(200,180,160,0.3);
-  }
-
-  /* Trombone decoratif */
-  .paperclip {
-    position: absolute;
-    top: -15px;
-    right: 40px;
-    font-size: 60px;
-    color: #c4a882;
-    transform: rotate(15deg);
-  }
-
-  /* Texte principal */
-  .main-text {
-    margin-bottom: 40px;
-  }
-
-  .main-text h1 {
+  /* Titre principal */
+  .main-title {
     font-family: 'Playfair Display', serif;
-    font-size: 72px;
+    font-size: 76px;
     font-weight: 900;
     color: #1a1a1a;
-    line-height: 1.15;
-    margin-bottom: 20px;
+    line-height: 1.12;
+    margin-bottom: 40px;
   }
-
-  .main-text h1 .highlight {
+  .main-title .rose {
     color: #E91E8C;
     font-style: italic;
   }
 
-  .main-text h1 .underline {
-    text-decoration: underline;
-    text-decoration-color: #E91E8C;
-    text-underline-offset: 8px;
-    text-decoration-thickness: 4px;
-  }
-
+  /* Sous-titre */
   .subtitle {
     font-family: 'Inter', sans-serif;
-    font-size: 36px;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 40px;
-  }
-
-  /* Note manuscrite */
-  .handwritten-note {
-    background: rgba(255, 253, 248, 0.8);
-    border: 1px solid rgba(200, 180, 160, 0.3);
-    border-radius: 4px;
-    padding: 30px 40px;
-    position: relative;
-    transform: rotate(-1deg);
-    box-shadow: 2px 3px 10px rgba(0,0,0,0.04);
-  }
-
-  .handwritten-note p {
-    font-family: 'Caveat', cursive;
-    font-size: 44px;
+    font-size: 34px;
     color: #444;
-    line-height: 1.4;
+    line-height: 1.5;
+    margin-bottom: 50px;
+  }
+  .subtitle strong {
+    color: #1a1a1a;
   }
 
-  .handwritten-note .rose {
+  /* Note scotchee scrapbook */
+  .scrapbook-note {
+    background: rgba(255, 253, 245, 0.92);
+    padding: 35px 40px;
+    position: relative;
+    transform: rotate(-1.5deg);
+    margin-top: auto;
+    margin-bottom: 80px;
+    box-shadow: 2px 4px 15px rgba(0,0,0,0.06);
+  }
+
+  .scrapbook-note p {
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 36px;
+    color: #333;
+    line-height: 1.5;
+  }
+  .scrapbook-note .rose {
     color: #E91E8C;
   }
 
-  /* Scotch tape */
+  /* Scotch tape en haut de la note */
   .tape {
     position: absolute;
-    top: -14px;
+    top: -16px;
     left: 50%;
-    transform: translateX(-50%) rotate(2deg);
-    width: 120px;
-    height: 28px;
-    background: rgba(240, 230, 210, 0.7);
-    border: 1px solid rgba(200, 180, 160, 0.2);
+    transform: translateX(-50%) rotate(1deg);
+    width: 140px;
+    height: 32px;
+    background: rgba(235, 225, 200, 0.65);
+    border: 1px solid rgba(210, 195, 170, 0.3);
+    backdrop-filter: blur(2px);
   }
 
-  /* Doodles */
+  /* Trombone sur la note */
+  .paperclip {
+    position: absolute;
+    top: -25px;
+    right: 30px;
+    width: 40px;
+    height: 85px;
+    z-index: 3;
+  }
+  .paperclip-inner {
+    width: 32px;
+    height: 75px;
+    border: 3px solid #c4a882;
+    border-radius: 16px;
+    position: relative;
+  }
+  .paperclip-inner::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 5px;
+    width: 18px;
+    height: 50px;
+    border: 3px solid #c4a882;
+    border-radius: 10px;
+  }
+
+  /* Doodle etoiles manuscrites */
   .doodle-stars {
     position: absolute;
-    bottom: 180px;
-    right: 80px;
-    font-family: 'Caveat', cursive;
-    font-size: 60px;
+    top: 380px;
+    right: 55px;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 32px;
     color: #E91E8C;
     opacity: 0.5;
-    transform: rotate(10deg);
+    transform: rotate(12deg);
   }
 
+  /* Doodle fleche */
   .doodle-arrow {
     position: absolute;
-    bottom: 120px;
-    left: 80px;
-  }
-
-  .doodle-arrow svg {
-    width: 150px;
-    height: 80px;
-  }
-
-  /* Doodle coeurs */
-  .doodle-hearts {
-    position: absolute;
-    top: 620px;
-    left: 70px;
-    font-size: 36px;
+    bottom: 260px;
+    right: 70px;
+    transform: rotate(-10deg);
     opacity: 0.4;
-    transform: rotate(-15deg);
   }
 
-  /* Swipe up hint */
-  .swipe-hint {
+  /* Doodle petit coeur */
+  .doodle-heart {
     position: absolute;
-    bottom: 60px;
+    top: 520px;
+    left: 55px;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 28px;
+    color: #E91E8C;
+    opacity: 0.35;
+    transform: rotate(-20deg);
+  }
+
+  /* Doodle cercle */
+  .doodle-circle {
+    position: absolute;
+    bottom: 180px;
+    left: 60px;
+    width: 45px;
+    height: 45px;
+    border: 2.5px solid #E91E8C;
+    border-radius: 50%;
+    opacity: 0.2;
+  }
+
+  /* Doodle traits */
+  .doodle-lines {
+    position: absolute;
+    top: 300px;
+    left: 55px;
+    opacity: 0.2;
+  }
+
+  /* Epingle en haut a droite */
+  .pin {
+    position: absolute;
+    top: 85px;
+    right: 65px;
+    z-index: 3;
+  }
+  .pin-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #E91E8C;
+    box-shadow: 0 2px 6px rgba(233, 30, 140, 0.3);
+    position: relative;
+  }
+  .pin-circle::after {
+    content: '';
+    position: absolute;
+    top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  .swipe-hint span {
-    font-family: 'Caveat', cursive;
-    font-size: 32px;
-    color: #999;
-  }
-  .swipe-hint .chevron {
-    width: 30px;
-    height: 30px;
-    border-right: 3px solid #999;
-    border-bottom: 3px solid #999;
-    transform: rotate(45deg);
-    animation: bounce 2s ease-in-out infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: rotate(45deg) translateY(0); }
-    50% { transform: rotate(45deg) translateY(8px); }
+    width: 3px;
+    height: 18px;
+    background: linear-gradient(to bottom, #c4a882, #b09878);
   }
 </style>
 </head>
 <body>
 <div class="story">
+
+  <!-- Photo lifestyle plein ecran -->
+  <div class="bg-photo"></div>
+  <div class="bg-overlay"></div>
+
   <div class="content">
 
     <!-- Handle -->
     <div class="handle">@davia.aide.les.biz.en.pls</div>
 
-    <!-- Epingle deco -->
-    <div class="pin">
-      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="30" cy="16" r="14" stroke="#c4a882" stroke-width="3" fill="none"/>
-        <line x1="30" y1="30" x2="30" y2="58" stroke="#c4a882" stroke-width="3" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <!-- Epingle -->
+    <div class="pin"><div class="pin-circle"></div></div>
 
-    <!-- Zone deco minimaliste -->
-    <div class="deco-zone">
-      <div class="paperclip">&#128206;</div>
-      <div class="deco-items">
-        <div class="deco-item">
-          <div class="candle"></div>
-        </div>
-        <div class="deco-item">
-          <div class="vase">
-            <div class="pampa">
-              <div class="pampa-stem"></div>
-              <div class="pampa-stem"></div>
-              <div class="pampa-stem"></div>
-            </div>
-          </div>
-        </div>
-        <div class="deco-item">
-          <div class="book"></div>
-        </div>
-      </div>
-    </div>
+    <!-- Annotation manuscrite -->
+    <p class="handwritten-top">honnêtement...</p>
 
-    <!-- Texte principal -->
-    <div class="main-text">
-      <h1>T'as l'impression de <span class="highlight">parler dans le vide</span> sur Insta&nbsp;?</h1>
-    </div>
+    <!-- Titre principal -->
+    <h1 class="main-title">T'as l'impression de <span class="rose">parler dans le vide</span> sur Insta ?</h1>
 
-    <p class="subtitle">Genre tu postes, tu postes... et c'est le <strong>silence radio.</strong></p>
+    <!-- Sous-titre -->
+    <p class="subtitle">Genre tu postes, tu postes...<br>et c'est le <strong>silence radio.</strong></p>
 
-    <!-- Note manuscrite -->
-    <div class="handwritten-note">
-      <div class="tape"></div>
-      <p>Respire. C'est pas toi le probleme.<br>C'est ta <span class="rose">strategie</span> qu'on va revoir ensemble.</p>
-    </div>
-
-    <!-- Doodles -->
+    <!-- Doodles eparpilles -->
     <div class="doodle-stars">* * *</div>
-    <div class="doodle-hearts">&#9825; &#9825;</div>
+    <div class="doodle-heart">&hearts;</div>
+    <div class="doodle-circle"></div>
+    <svg class="doodle-lines" width="35" height="45" viewBox="0 0 35 45">
+      <line x1="5" y1="5" x2="30" y2="5" stroke="#c4a882" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="5" y1="20" x2="25" y2="20" stroke="#c4a882" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="5" y1="35" x2="20" y2="35" stroke="#c4a882" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
 
-    <!-- Swipe -->
-    <div class="swipe-hint">
-      <div class="chevron"></div>
+    <!-- Fleche vers la note -->
+    <svg class="doodle-arrow" width="60" height="80" viewBox="0 0 60 80">
+      <path d="M50 5 Q20 20 30 50 Q35 65 25 75" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M20 68 L25 75 L32 70" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Note scrapbook -->
+    <div class="scrapbook-note">
+      <div class="tape"></div>
+      <div class="paperclip">
+        <div class="paperclip-inner"></div>
+      </div>
+      <p>Respire. C'est pas toi le problème.<br>C'est ta <span class="rose">stratégie</span> qu'on va revoir ensemble.</p>
     </div>
 
   </div>
