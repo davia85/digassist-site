@@ -22,7 +22,7 @@
     overflow: hidden;
   }
 
-  /* Photo de fond */
+  /* Photo fond */
   .bg-photo {
     position: absolute;
     top: 0; left: 0;
@@ -32,7 +32,7 @@
     z-index: 0;
   }
 
-  /* Overlay avec degrade pour texte lisible */
+  /* Overlay */
   .bg-overlay {
     position: absolute;
     top: 0; left: 0;
@@ -40,36 +40,19 @@
     height: 100%;
     background: linear-gradient(
       to bottom,
-      rgba(245, 240, 235, 0.50) 0%,
-      rgba(245, 240, 235, 0.25) 25%,
-      rgba(245, 240, 235, 0.20) 40%,
-      rgba(245, 240, 235, 0.55) 65%,
-      rgba(245, 240, 235, 0.90) 85%,
+      rgba(245, 240, 235, 0.45) 0%,
+      rgba(245, 240, 235, 0.20) 25%,
+      rgba(245, 240, 235, 0.15) 40%,
+      rgba(245, 240, 235, 0.50) 65%,
+      rgba(245, 240, 235, 0.88) 85%,
       rgba(245, 240, 235, 0.95) 100%
     );
     z-index: 1;
   }
 
-  /* Motif vichy subtil en overlay */
-  .bg-pattern {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-      linear-gradient(45deg, rgba(233, 30, 140, 0.03) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(233, 30, 140, 0.03) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(233, 30, 140, 0.03) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(233, 30, 140, 0.03) 75%);
-    background-size: 60px 60px;
-    background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
-    z-index: 2;
-    opacity: 0.5;
-  }
-
   .content {
     position: relative;
-    z-index: 3;
+    z-index: 2;
     width: 100%;
     height: 100%;
     display: flex;
@@ -82,8 +65,9 @@
     font-family: 'Inter', sans-serif;
     font-size: 26px;
     font-weight: 500;
-    color: rgba(30, 30, 30, 0.6);
-    margin-bottom: 100px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 80px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
   /* Manuscrit intro */
@@ -109,14 +93,8 @@
     font-style: italic;
     color: #E91E8C;
   }
-  .main-title .underline-rose {
-    text-decoration: underline;
-    text-decoration-color: #E91E8C;
-    text-underline-offset: 8px;
-    text-decoration-thickness: 3px;
-  }
 
-  /* Bloc central */
+  /* Texte bloc */
   .text-block {
     font-family: 'Inter', sans-serif;
     font-size: 34px;
@@ -129,69 +107,91 @@
     font-weight: 700;
   }
 
-  /* Note scrapbook en bas */
-  .scrapbook-note {
-    background: rgba(255, 253, 245, 0.92);
-    border-left: 5px solid #E91E8C;
-    padding: 30px 35px;
+  /* ======= ETIQUETTE KRAFT REALISTE ======= */
+  .kraft-tag {
     position: relative;
-    transform: rotate(0.8deg);
     margin-top: auto;
     margin-bottom: 40px;
-    box-shadow: 2px 3px 12px rgba(0,0,0,0.05);
+    transform: rotate(1deg);
+    filter: drop-shadow(3px 5px 10px rgba(0,0,0,0.13));
   }
 
-  .scrapbook-note p {
+  .kraft-body {
+    background: linear-gradient(135deg, #d4b896 0%, #c8a87e 30%, #d0b48c 60%, #c4a478 100%);
+    background-image:
+      linear-gradient(135deg, #d4b896 0%, #c8a87e 30%, #d0b48c 60%, #c4a478 100%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 3px,
+        rgba(180, 155, 120, 0.08) 3px,
+        rgba(180, 155, 120, 0.08) 6px
+      );
+    border-radius: 4px;
+    padding: 35px 40px;
+    position: relative;
+    border: 1px solid rgba(160, 135, 100, 0.3);
+  }
+
+  .kraft-body p {
     font-family: 'Gloria Hallelujah', cursive;
     font-size: 34px;
-    color: #333;
+    color: #3a2e1e;
     line-height: 1.5;
   }
-  .scrapbook-note .rose {
-    color: #E91E8C;
+  .kraft-body .rose {
+    color: #c4155a;
+    font-weight: 700;
   }
 
-  /* Trombone */
-  .paperclip {
-    position: absolute;
-    top: -22px;
-    right: 35px;
-  }
-  .paperclip-shape {
-    width: 30px;
-    height: 70px;
-    border: 3px solid #c4a882;
-    border-radius: 15px;
-    position: relative;
-  }
-  .paperclip-shape::after {
+  /* Bord gauche rose */
+  .kraft-body::before {
     content: '';
     position: absolute;
-    top: 11px;
-    left: 5px;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: #E91E8C;
+    border-radius: 4px 0 0 4px;
+  }
+
+  /* Trou + ficelle etiquette */
+  .kraft-hole {
+    position: absolute;
+    top: 16px;
+    right: 24px;
     width: 16px;
-    height: 45px;
-    border: 3px solid #c4a882;
-    border-radius: 9px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,240,235,0.5), rgba(180,160,130,0.3));
+    border: 1.5px solid rgba(140, 120, 90, 0.4);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
   }
 
-  /* Doodles */
-  .doodle-sparkle-1 {
+  /* Washi tape sur l'etiquette kraft */
+  .washi-kraft {
     position: absolute;
-    top: 350px;
+    top: -14px;
+    left: 60px;
+    width: 110px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.35);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transform: rotate(-2deg);
+    clip-path: polygon(
+      2% 0%, 6% 10%, 10% 0%, 14% 6%, 18% 0%, 22% 4%, 26% 0%, 30% 8%, 34% 0%, 38% 5%, 42% 0%, 46% 7%, 50% 0%, 54% 4%, 58% 0%, 62% 6%, 66% 0%, 70% 5%, 74% 0%, 78% 8%, 82% 0%, 86% 4%, 90% 0%, 94% 6%, 98% 0%,
+      100% 100%, 96% 92%, 92% 100%, 88% 94%, 84% 100%, 80% 96%, 76% 100%, 72% 93%, 68% 100%, 64% 95%, 60% 100%, 56% 93%, 52% 100%, 48% 96%, 44% 100%, 40% 94%, 36% 100%, 32% 95%, 28% 100%, 24% 93%, 20% 100%, 16% 96%, 12% 100%, 8% 94%, 4% 100%
+    );
+  }
+
+  /* ======= DOODLES BLANCS ======= */
+  .doodle-sparkle {
+    position: absolute;
+    top: 320px;
     right: 60px;
-    font-family: 'Gloria Hallelujah', cursive;
-    font-size: 45px;
-    color: #E91E8C;
-    opacity: 0.35;
-    transform: rotate(15deg);
-  }
-
-  .doodle-underline {
-    position: absolute;
-    bottom: 310px;
-    left: 65px;
-    opacity: 0.25;
+    opacity: 0.6;
   }
 
   .doodle-dots {
@@ -200,45 +200,53 @@
     right: 55px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    opacity: 0.3;
+    gap: 12px;
+    opacity: 0.5;
   }
   .doodle-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #c4a882;
+    background: #ffffff;
   }
 
-  .doodle-swirl {
+  .doodle-wave {
     position: absolute;
-    bottom: 200px;
+    bottom: 220px;
     left: 60px;
-    opacity: 0.2;
+    opacity: 0.4;
   }
 
-  /* Epingle rose */
-  .pin {
+  .doodle-circle-sm {
     position: absolute;
-    top: 85px;
-    right: 65px;
-  }
-  .pin-head {
-    width: 20px;
-    height: 20px;
+    top: 480px;
+    left: 50px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ffffff;
     border-radius: 50%;
-    background: #E91E8C;
-    box-shadow: 0 2px 6px rgba(233, 30, 140, 0.3);
-    margin: 0 auto;
-  }
-  .pin-needle {
-    width: 3px;
-    height: 16px;
-    background: #b09878;
-    margin: 0 auto;
+    opacity: 0.4;
   }
 
-  /* Bandeau magenta bas */
+  .doodle-x {
+    position: absolute;
+    bottom: 170px;
+    right: 70px;
+    opacity: 0.35;
+  }
+
+  /* Manuscrit bas */
+  .handwritten-bottom {
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 30px;
+    color: #ffffff;
+    text-align: right;
+    padding: 15px 0;
+    opacity: 0.75;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Bandeau magenta */
   .bottom-bar {
     background: #E91E8C;
     padding: 26px 40px;
@@ -253,44 +261,17 @@
     letter-spacing: 3px;
     text-transform: uppercase;
   }
-
-  /* Annotation manuscrite pres du bandeau */
-  .handwritten-bottom {
-    font-family: 'Gloria Hallelujah', cursive;
-    font-size: 30px;
-    color: #E91E8C;
-    text-align: right;
-    padding: 12px 65px;
-    opacity: 0.7;
-  }
-
-  /* Fleche doodle vers le bas */
-  .doodle-arrow-down {
-    position: absolute;
-    bottom: 130px;
-    right: 80px;
-    opacity: 0.4;
-  }
 </style>
 </head>
 <body>
 <div class="story">
 
-  <!-- Photo lifestyle fond -->
   <div class="bg-photo"></div>
   <div class="bg-overlay"></div>
-  <div class="bg-pattern"></div>
 
   <div class="content">
 
-    <!-- Handle -->
     <div class="handle">@davia.aide.les.biz.en.pls</div>
-
-    <!-- Epingle -->
-    <div class="pin">
-      <div class="pin-head"></div>
-      <div class="pin-needle"></div>
-    </div>
 
     <!-- Manuscrit intro -->
     <p class="handwritten-intro">entre nous...</p>
@@ -301,33 +282,43 @@
     <!-- Texte -->
     <p class="text-block">Genre t'as fait la formation, t'as le feed "joli"... mais côté ventes ? <strong>Crickets.</strong></p>
 
-    <!-- Doodles -->
-    <div class="doodle-sparkle-1">&#10022;</div>
+    <!-- Doodles BLANCS -->
+    <svg class="doodle-sparkle" width="40" height="40" viewBox="0 0 40 40">
+      <path d="M20 2 L23 15 L36 15 L25 23 L29 36 L20 28 L11 36 L15 23 L4 15 L17 15 Z" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    </svg>
+
     <div class="doodle-dots">
       <div class="doodle-dot"></div>
       <div class="doodle-dot"></div>
       <div class="doodle-dot"></div>
     </div>
-    <svg class="doodle-swirl" width="50" height="50" viewBox="0 0 50 50">
-      <path d="M25 5 Q40 15 30 25 Q20 35 25 45" stroke="#c4a882" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    </svg>
-    <svg class="doodle-arrow-down" width="40" height="60" viewBox="0 0 40 60">
-      <path d="M20 5 L20 45" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <path d="M12 38 L20 48 L28 38" stroke="#E91E8C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+    <div class="doodle-circle-sm"></div>
+
+    <svg class="doodle-wave" width="60" height="30" viewBox="0 0 60 30">
+      <path d="M5 15 Q15 2 25 15 Q35 28 45 15 Q50 8 55 15" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
     </svg>
 
-    <!-- Note scrapbook -->
-    <div class="scrapbook-note">
-      <div class="paperclip"><div class="paperclip-shape"></div></div>
-      <p>Spoiler : le problème c'est pas toi.<br>C'est que ton feed <span class="rose">parle à tout le monde</span>...<br>donc à personne.</p>
+    <svg class="doodle-x" width="25" height="25" viewBox="0 0 25 25">
+      <line x1="5" y1="5" x2="20" y2="20" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+      <line x1="20" y1="5" x2="5" y2="20" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Etiquette kraft realiste -->
+    <div class="kraft-tag">
+      <div class="kraft-body">
+        <div class="kraft-hole"></div>
+        <div class="washi-kraft"></div>
+        <p>Spoiler : le problème c'est pas toi.<br>C'est que ton feed <span class="rose">parle à tout le monde</span>...<br>donc à personne.</p>
+      </div>
     </div>
 
     <!-- Manuscrit bas -->
-    <p class="handwritten-bottom">la suite va tout changer</p>
+    <p class="handwritten-bottom">la suite va tout changer ~</p>
 
   </div>
 
-  <!-- Bandeau magenta -->
+  <!-- Bandeau -->
   <div class="bottom-bar">
     <p>Swipe pour comprendre pourquoi</p>
   </div>
