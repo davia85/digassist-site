@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrousel Qualiopi Audit - Calyo+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bleu: #0033cc;
+      --bleu-nuit: #0e0e2c;
+      --violet: #a855f7;
+      --violet-clair: #c084fc;
+      --creme: #f5f3ee;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0;
+      gap: 30px;
+    }
+    .slide-label {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: -22px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .slide {
+      width: 100vw;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-br {
+      position: absolute;
+      bottom: 5%;
+      right: 6%;
+      font-size: 3vw;
+      font-weight: 900;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1px;
+      z-index: 10;
+    }
+    .logo-br span { color: var(--violet-clair); opacity: 0.5; }
+    .logo-br-dark {
+      position: absolute;
+      bottom: 5%;
+      right: 6%;
+      font-size: 3vw;
+      font-weight: 900;
+      color: rgba(0,0,0,0.12);
+      letter-spacing: 1px;
+      z-index: 10;
+    }
+    .logo-br-dark span { color: var(--violet); opacity: 0.3; }
+    .page-num {
+      position: absolute;
+      bottom: 5%;
+      left: 6%;
+      font-size: 2.5vw;
+      font-weight: 700;
+      opacity: 0.3;
+    }
+
+    /* ===== SLIDE 1 : ACCROCHE ===== */
+    .s1 {
+      background: var(--bleu);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10%;
+    }
+    .s1 .icon-lock {
+      width: 16vw;
+      height: 16vw;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8vw;
+      margin-bottom: 6%;
+    }
+    .s1 h1 {
+      font-size: 7vw;
+      font-weight: 900;
+      color: white;
+      line-height: 1.2;
+      margin-bottom: 5%;
+    }
+    .s1 h1 em {
+      font-style: normal;
+      color: var(--violet-clair);
+    }
+    .s1 .sub {
+      font-size: 3.2vw;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6%;
+    }
+    .s1 .swipe {
+      font-size: 2.5vw;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 1px;
+    }
+
+    /* ===== SLIDE 2 : CONSTAT ===== */
+    .s2 {
+      background: var(--creme);
+      padding: 10% 7% 0;
+    }
+    .s2 .tag {
+      display: inline-block;
+      width: fit-content;
+      background: var(--violet);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 2.5vw;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6%;
+    }
+    .s2 h2 {
+      font-size: 5.5vw;
+      font-weight: 900;
+      color: #1a1a3e;
+      line-height: 1.25;
+      margin-bottom: 6%;
+    }
+    .s2 h2 em { font-style: normal; color: var(--bleu); }
+    .s2 .text {
+      font-size: 3.5vw;
+      color: #444;
+      line-height: 1.6;
+    }
+    .s2 .highlight-box {
+      background: white;
+      border-left: 5px solid var(--violet);
+      border-radius: 10px;
+      padding: 4%;
+      margin-top: 5%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .s2 .highlight-box p {
+      font-size: 3.5vw;
+      font-weight: 700;
+      color: var(--bleu);
+      line-height: 1.4;
+    }
+
+    /* ===== SLIDE 3 : POURQUOI ===== */
+    .s3 {
+      background: var(--bleu-nuit);
+      padding: 10% 7% 0;
+    }
+    .s3 .tag {
+      display: inline-block;
+      width: fit-content;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 2.5vw;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6%;
+    }
+    .s3 h2 {
+      font-size: 5.5vw;
+      font-weight: 900;
+      color: white;
+      line-height: 1.25;
+      margin-bottom: 6%;
+    }
+    .s3 h2 em { font-style: normal; color: var(--violet-clair); }
+    .s3 .risk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3vw;
+    }
+    .s3 .risk-item {
+      display: flex;
+      align-items: center;
+      gap: 3vw;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 3vw 3.5vw;
+      border-left: 4px solid var(--violet);
+    }
+    .s3 .risk-icon {
+      font-size: 4vw;
+      flex-shrink: 0;
+    }
+    .s3 .risk-text {
+      font-size: 3.2vw;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    /* ===== SLIDE 4 : SOLUTION ===== */
+    .s4 {
+      background: var(--bleu);
+      padding: 10% 7% 0;
+    }
+    .s4 .tag {
+      display: inline-block;
+      width: fit-content;
+      background: var(--violet);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 2.5vw;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6%;
+    }
+    .s4 h2 {
+      font-size: 5.5vw;
+      font-weight: 900;
+      color: white;
+      line-height: 1.25;
+      margin-bottom: 6%;
+    }
+    .s4 h2 em { font-style: normal; color: var(--violet-clair); }
+    .s4 .check-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3vw;
+    }
+    .s4 .check-item {
+      display: flex;
+      align-items: center;
+      gap: 3vw;
+    }
+    .s4 .check-icon {
+      width: 6.5vw;
+      height: 6.5vw;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--violet-clair);
+      font-size: 3.2vw;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .s4 .check-text {
+      font-size: 3.2vw;
+      color: white;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    /* ===== SLIDE 5 : RÉSULTAT ===== */
+    .s5 {
+      background: var(--creme);
+      justify-content: center;
+      padding: 10%;
+    }
+    .s5 .quote-mark {
+      font-size: 12vw;
+      color: var(--violet);
+      opacity: 0.2;
+      line-height: 0.5;
+      margin-bottom: 4%;
+    }
+    .s5 h2 {
+      font-size: 5.5vw;
+      font-weight: 900;
+      color: #1a1a3e;
+      line-height: 1.3;
+      margin-bottom: 5%;
+    }
+    .s5 h2 em { font-style: normal; color: var(--bleu); }
+    .s5 .text {
+      font-size: 3.5vw;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* ===== SLIDE 6 : CTA ===== */
+    .s6 {
+      background: var(--bleu);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10%;
+    }
+    .s6 .logo-big {
+      font-size: 10vw;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 2%;
+    }
+    .s6 .logo-big span { color: var(--violet-clair); }
+    .s6 .logo-sub {
+      font-size: 3.5vw;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin-bottom: 8%;
+    }
+    .s6 .divider {
+      width: 15%;
+      height: 3px;
+      background: var(--violet-clair);
+      margin: 0 auto 8%;
+      border-radius: 2px;
+    }
+    .s6 h2 {
+      font-size: 5vw;
+      font-weight: 800;
+      color: white;
+      line-height: 1.35;
+      margin-bottom: 6%;
+    }
+    .s6 h2 em { font-style: normal; color: var(--violet-clair); }
+    .s6 .cta-btn {
+      display: inline-block;
+      background: white;
+      color: var(--bleu);
+      padding: 3% 10%;
+      border-radius: 50px;
+      font-size: 3.5vw;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .s6 .bottom-info {
+      position: absolute;
+      bottom: 5%;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 2.5vw;
+      color: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SLIDE 1 : ACCROCHE -->
+  <p class="slide-label">Slide 1 / 6</p>
+  <div class="slide s1">
+    <div class="icon-lock">&#128274;</div>
+    <h1>Vous avez obtenu<br><em>Qualiopi</em>.<br>Êtes-vous prêt à garder<br>votre certification ?</h1>
+    <p class="sub">Calyo+ Formation</p>
+    <p class="swipe">Glissez &rarr;</p>
+  </div>
+
+  <!-- SLIDE 2 : CONSTAT -->
+  <p class="slide-label">Slide 2 / 6</p>
+  <div class="slide s2">
+    <div class="tag">Le constat</div>
+    <h2>Entre le <em>14e et le 18e mois</em>, un audit de surveillance est obligatoire.</h2>
+    <p class="text">C'est une étape que beaucoup d'organismes de formation sous-estiment.<br><br>La certification obtenue lors de l'audit initial n'est pas acquise définitivement. Elle doit être confirmée.</p>
+    <div class="highlight-box">
+      <p>De nombreux organismes perdent leur certification Qualiopi lors de cet audit, faute de préparation.</p>
+    </div>
+    <div class="page-num" style="color: var(--bleu);">2 / 6</div>
+    <div class="logo-br-dark">CALYO<span>+</span></div>
+  </div>
+
+  <!-- SLIDE 3 : POURQUOI -->
+  <p class="slide-label">Slide 3 / 6</p>
+  <div class="slide s3">
+    <div class="tag">Pourquoi ça arrive</div>
+    <h2>Les causes les plus <em>fréquentes</em></h2>
+    <div class="risk-list">
+      <div class="risk-item">
+        <div class="risk-icon">&#9888;</div>
+        <div class="risk-text">Les critères du RNQ ont évolué depuis l'audit initial</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">&#128203;</div>
+        <div class="risk-text">La documentation n'est plus à jour</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">&#128200;</div>
+        <div class="risk-text">Les indicateurs de suivi ne sont pas alimentés</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">&#128193;</div>
+        <div class="risk-text">Les preuves ne sont pas organisées ni accessibles</div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-icon">&#128337;</div>
+        <div class="risk-text">La préparation commence trop tard</div>
+      </div>
+    </div>
+    <div class="page-num" style="color: white;">3 / 6</div>
+    <div class="logo-br">CALYO<span>+</span></div>
+  </div>
+
+  <!-- SLIDE 4 : SOLUTION -->
+  <p class="slide-label">Slide 4 / 6</p>
+  <div class="slide s4">
+    <div class="tag">Notre accompagnement</div>
+    <h2>Calyo+ prépare votre <em>audit de surveillance</em></h2>
+    <div class="check-list">
+      <div class="check-item">
+        <div class="check-icon">&#10003;</div>
+        <div class="check-text">Diagnostic de conformité sur les 7 critères et 32 indicateurs</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">&#10003;</div>
+        <div class="check-text">Mise à jour de la documentation pédagogique et administrative</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">&#10003;</div>
+        <div class="check-text">Organisation et classement des preuves</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">&#10003;</div>
+        <div class="check-text">Simulation d'audit en conditions réelles</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">&#10003;</div>
+        <div class="check-text">Suivi jusqu'au jour de l'audit</div>
+      </div>
+    </div>
+    <div class="page-num" style="color: white;">4 / 6</div>
+    <div class="logo-br">CALYO<span>+</span></div>
+  </div>
+
+  <!-- SLIDE 5 : RÉSULTAT -->
+  <p class="slide-label">Slide 5 / 6</p>
+  <div class="slide s5">
+    <div class="quote-mark">&laquo;</div>
+    <h2>Un audit de surveillance préparé, c'est une <em>certification maintenue</em>.</h2>
+    <p class="text">Et une certification maintenue, c'est l'accès aux financements publics qui continue : France Travail, OPCO, CPF.<br><br>Ne laissez pas un défaut de préparation remettre en question ce que vous avez construit.</p>
+    <div class="page-num" style="color: var(--bleu);">5 / 6</div>
+    <div class="logo-br-dark">CALYO<span>+</span></div>
+  </div>
+
+  <!-- SLIDE 6 : CTA -->
+  <p class="slide-label">Slide 6 / 6</p>
+  <div class="slide s6">
+    <div class="logo-big">CALYO<span>+</span></div>
+    <div class="logo-sub">Formation</div>
+    <div class="divider"></div>
+    <h2>Votre audit de surveillance<br>approche ?<br>Parlons-en <em>maintenant</em>.</h2>
+    <div class="cta-btn">Contactez-nous</div>
+    <div class="bottom-info">calyoplus-formation.fr</div>
+  </div>
+
+</body>
+</html>
