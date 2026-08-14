@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dream Tasty — Recettes airfryer sans prise de tête</title>
+  <meta name="description" content="Dis ce que tu as, l'appli calcule la cuisson synchronisée pour ton Dreame Tasti : température, temps, coupe, épices. Une seule cuisson, zéro charge mentale." />
+  <meta name="theme-color" content="#e8622c" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="brand">
+        <span class="brand__logo">🍽️</span>
+        <div>
+          <h1 class="brand__title">Dream Tasty</h1>
+          <p class="brand__sub">Recettes airfryer · sans prise de tête</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab tab--active" data-tab="cuisson">🔥 Ma cuisson</button>
+    <button class="tab" data-tab="recettes">📖 Recettes</button>
+    <button class="tab" data-tab="placard">🧂 Mon placard</button>
+  </nav>
+
+  <main class="app-main">
+
+    <!-- ============ ONGLET : MA CUISSON ============ -->
+    <section class="view view--active" id="view-cuisson">
+      <p class="lead">
+        Choisis ce que tu as (ou ce dont tu as envie). L'appli calcule <strong>une seule cuisson</strong>
+        où tout finit en même temps, avec la coupe, les épices, la température et le déroulé minute par minute.
+      </p>
+
+      <div id="ingredient-groups"></div>
+
+      <div class="selection-bar" id="selection-bar" hidden>
+        <span id="selection-count">0 ingrédient</span>
+        <button class="btn btn--primary" id="btn-generate">Générer ma recette →</button>
+      </div>
+
+      <div id="plan-output" class="plan-output"></div>
+    </section>
+
+    <!-- ============ ONGLET : RECETTES ============ -->
+    <section class="view" id="view-recettes">
+      <p class="lead">Des recettes originales, faciles et <strong>halal</strong>, déjà réglées pour ton Tasti. Choisis, lance, régale-toi.</p>
+      <div id="recipe-list" class="recipe-list"></div>
+      <div id="recipe-detail" class="recipe-detail"></div>
+    </section>
+
+    <!-- ============ ONGLET : MON PLACARD ============ -->
+    <section class="view" id="view-placard">
+      <p class="lead">Coche ce que tu as dans tes placards. L'appli composera les mélanges d'épices uniquement avec ça.</p>
+      <div id="spice-grid" class="spice-grid"></div>
+      <p class="hint">✅ = tu l'as · Enregistré automatiquement sur ce téléphone.</p>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Réglé pour le <strong>Dreame Tasti</strong> (60–200 °C). Les temps sont des repères : vérifie toujours la cuisson des viandes. 💛</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
