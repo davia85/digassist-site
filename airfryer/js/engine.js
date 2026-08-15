@@ -76,7 +76,7 @@ const Engine = (() => {
   /* Construit le plan complet.
      sizes  = { id: 'petit'|'moyen'|'gros' } (optionnel)
      states = { id: 'frais'|'surgele' } (optionnel) */
-  function buildPlan(selectedIds, pantry, sizes, states) {
+  function buildPlan(selectedIds, pantry, sizes, states, formes) {
     const allItems = selectedIds.map(byId).filter(Boolean);
     if (allItems.length === 0) return null;
 
@@ -84,11 +84,16 @@ const Engine = (() => {
     const items = allItems.filter((i) => i.methode !== "casserole");
     const sides = allItems
       .filter((i) => i.methode === "casserole")
-      .map((i) => ({
-        nom: i.nom, emoji: i.emoji, qty: i.qtyHint,
-        temps: i.casserole.temps, liquide: i.casserole.liquide,
-        bouillon: i.casserole.bouillon, etapes: i.casserole.etapes,
-      }));
+      .map((i) => {
+        const forme = i.formes ? ((formes && formes[i.id]) || FORME_DEFAULT) : null;
+        const data = i.formes ? i.formes[forme] : i.casserole;
+        return {
+          nom: i.nom, emoji: i.emoji, forme,
+          qty: data.qty || i.qtyHint,
+          temps: data.temps, liquide: data.liquide,
+          bouillon: data.bouillon, etapes: data.etapes,
+        };
+      });
 
     // Seulement des accompagnements casserole (pas de cuisson airfryer)
     if (items.length === 0) {

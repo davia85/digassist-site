@@ -17,6 +17,7 @@
   const selected = new Set(store.get("selection", []));
   const sizes = store.get("sizes", {}); // { ingredientId: 'petit'|'moyen'|'gros' }
   const states = store.get("states", {}); // { ingredientId: 'frais'|'surgele' }
+  const formes = store.get("formes", {}); // { ingredientId: 'sec'|'conserve' }
   let pantry = store.get("pantry", null);
   if (pantry === null) {
     // Premier lancement : on coche les épices "de base"
@@ -81,11 +82,15 @@
     { key: "frais", label: "Frais" },
     { key: "surgele", label: "Surgelé" },
   ];
+  const FORME_OPTS = [
+    { key: "conserve", label: "En conserve" },
+    { key: "sec", label: "Sec" },
+  ];
 
   function renderSizePanel() {
     const host = $("#size-panel");
     const list = [...selected].map((id) => INGREDIENTS.find((i) => i.id === id))
-      .filter((i) => i && (SIZE_SENSITIVE.includes(i.id) || STATE_SENSITIVE.includes(i.id)));
+      .filter((i) => i && (SIZE_SENSITIVE.includes(i.id) || STATE_SENSITIVE.includes(i.id) || FORME_SENSITIVE.includes(i.id)));
     if (list.length === 0) { host.hidden = true; host.innerHTML = ""; return; }
     host.hidden = false;
     host.innerHTML = `
@@ -103,9 +108,15 @@
             <div class="size-seg" data-kind="state" data-id="${i.id}">
               ${STATE_OPTS.map((o) => `<button class="size-btn ${curState === o.key ? "size-btn--on" : ""}" data-val="${o.key}">${o.label}</button>`).join("")}
             </div></div>` : "";
+        const curForme = formes[i.id] || "conserve";
+        const formeSeg = FORME_SENSITIVE.includes(i.id) ? `
+          <div class="seg-block"><span class="seg-lbl">🥫 Forme</span>
+            <div class="size-seg" data-kind="forme" data-id="${i.id}">
+              ${FORME_OPTS.map((o) => `<button class="size-btn ${curForme === o.key ? "size-btn--on" : ""}" data-val="${o.key}">${o.label}</button>`).join("")}
+            </div></div>` : "";
         return `<div class="size-row">
           <div class="size-row__name">${i.emoji} ${esc(i.nom)}</div>
-          <div class="seg-wrap">${sizeSeg}${stateSeg}</div>
+          <div class="seg-wrap">${sizeSeg}${stateSeg}${formeSeg}</div>
         </div>`;
       }).join("")}`;
     $$(".size-btn", host).forEach((btn) => {
@@ -114,7 +125,8 @@
         const id = seg.dataset.id;
         const val = btn.dataset.val;
         if (seg.dataset.kind === "size") { sizes[id] = val; store.set("sizes", sizes); }
-        else { states[id] = val; store.set("states", states); }
+        else if (seg.dataset.kind === "state") { states[id] = val; store.set("states", states); }
+        else { formes[id] = val; store.set("formes", formes); }
         $$(".size-btn", seg).forEach((b) => b.classList.remove("size-btn--on"));
         btn.classList.add("size-btn--on");
       });
@@ -130,7 +142,7 @@
   }
 
   $("#btn-generate").addEventListener("click", () => {
-    const plan = Engine.buildPlan([...selected], pantrySet(), sizes, states);
+    const plan = Engine.buildPlan([...selected], pantrySet(), sizes, states, formes);
     renderPlan(plan);
     $("#plan-output").scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -139,14 +151,14 @@
     if (!plan.sides || !plan.sides.length) return "";
     const items = plan.sides.map((s) => `
       <div class="prep-item">
-        <div class="prep-item__head">${s.emoji} ${esc(s.nom)} <span class="prep-item__qty">· ${esc(s.qty)}</span></div>
+        <div class="prep-item__head">${s.emoji} ${esc(s.nom)}${s.forme ? ` <span class="forme-tag">${s.forme === "sec" ? "sec" : "en conserve"}</span>` : ""} <span class="prep-item__qty">· ${esc(s.qty)}</span></div>
         <div class="prep-line">🕒 <b>Temps :</b> ${esc(s.temps)} · <b>Liquide :</b> ${esc(s.liquide)}</div>
         ${s.etapes.map((e, i) => `<div class="prep-line">${i + 1}. ${esc(e)}</div>`).join("")}
         ${s.bouillon ? `<div class="prep-line prep-gourmand">🍲 <b>Version pot-au-feu :</b> ${esc(s.bouillon)}</div>` : ""}
       </div>`).join("");
     return `<div class="plan-card">
-      <div class="section-title">🍲 À côté, à la casserole</div>
-      <p class="prep-note" style="margin-bottom:8px">Ces accompagnements se cuisent à l'eau (pas à l'airfryer). Lance-les en même temps que le bac pour tout servir ensemble.</p>
+      <div class="section-title">🍲 Riz / pâtes / légumes secs</div>
+      <p class="prep-note" style="margin-bottom:8px">2 façons : <b>à la casserole</b> (comme ci-dessous, en même temps que le bac) — ou <b>en one-pot dans la cuve en verre</b> (tout cuit ensemble avec le liquide, mode Roast + papier alu). Voir l'onglet Recettes → « plat en sauce ».</p>
       ${items}
     </div>`;
   }

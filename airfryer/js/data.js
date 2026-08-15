@@ -36,6 +36,10 @@ const STATE_SENSITIVE = [
   "escalope_poulet", "aiguillettes", "cuisse_poulet", "boeuf_hache",
   "merguez", "saucisse_volaille", "saumon", "cabillaud", "crevettes",
 ];
+
+/* Légumes secs proposés en SEC ou EN CONSERVE (cuisson très différente). */
+const FORME_SENSITIVE = ["lentilles", "pois_chiches", "haricots_rouges"];
+const FORME_DEFAULT = "conserve";
 /* Repères de taille lisibles par ingrédient (affichés dans la prep). */
 const SIZE_LABELS = {
   feculent: { petit: "petits dés / fines frites (~1 cm)", moyen: "morceaux moyens (~2-3 cm)", gros: "gros morceaux / coupés en 2 seulement (4 cm+)" },
@@ -66,6 +70,7 @@ const SPICES = [
   { id:"gingembre",      nom:"Gingembre",           emoji:"🫚", base:false, dose:"1/2 c. à c." },
   { id:"piment",         nom:"Piment / chili",      emoji:"🌶️", base:false, dose:"1 pincée" },
   { id:"ras_el_hanout",  nom:"Ras el hanout",       emoji:"🧡", base:false, dose:"1 c. à c." },
+  { id:"tagine",         nom:"Épices tagine",       emoji:"🍲", base:false, dose:"1 c. à c." },
   { id:"colombo",        nom:"Colombo",             emoji:"🟠", base:false, dose:"1 c. à c." },
   { id:"citron",         nom:"Citron",              emoji:"🍋", base:true,  dose:"un filet" },
   { id:"sauce_soja",     nom:"Sauce soja",          emoji:"🍶", base:false, dose:"1 c. à s." },
@@ -73,6 +78,9 @@ const SPICES = [
   { id:"moutarde",       nom:"Moutarde",            emoji:"🟨", base:false, dose:"1 c. à c." },
   { id:"sesame",         nom:"Graines de sésame",   emoji:"⚪", base:false, dose:"1 c. à c." },
   { id:"maizena",        nom:"Maïzena",             emoji:"🌽", base:false, dose:"1 c. à s." },
+  { id:"bouillon_volaille", nom:"Bouillon de volaille", emoji:"🍗", base:true,  dose:"1 cube" },
+  { id:"bouillon_boeuf",    nom:"Bouillon de bœuf",     emoji:"🐄", base:false, dose:"1 cube" },
+  { id:"bouillon_legumes",  nom:"Bouillon de légumes",  emoji:"🥕", base:false, dose:"1 cube" },
 ];
 
 /* ------------------------------------------------------------
@@ -383,29 +391,65 @@ const INGREDIENTS = [
       ],
     } },
 
-  { id:"lentilles", nom:"Lentilles / légumes secs", emoji:"🫘", tag:"accompagnement", methode:"casserole",
-    temp:0, time:25, shake:0, program:"Casserole", qtyHint:"60-80 g crues / pers.",
-    coupe:null, sechage:null, humide:false, croustille:false, epices:[],
-    casserole:{
-      temps:"~20-25 min",
-      liquide:"3 fois leur volume d'eau ou de bouillon",
-      bouillon:"Cuis-les dans du bouillon + thym + une carotte en dés = façon petit salé / pot-au-feu, plein de goût.",
-      etapes:[
-        "Rince les lentilles (pas besoin de trempage pour les lentilles).",
-        "Casserole : 3 fois leur volume d'eau ou de bouillon. Ne sale qu'en FIN de cuisson (sinon elles durcissent).",
-        "Ébullition puis feu doux ~20-25 min jusqu'à tendreté. Égoutte le surplus.",
-      ],
+  { id:"lentilles", nom:"Lentilles", emoji:"🫘", tag:"accompagnement", methode:"casserole",
+    formes:{
+      conserve:{ qty:"1/2 boîte / pers.", temps:"~5 min (déjà cuites)",
+        liquide:"un peu d'eau ou de bouillon",
+        bouillon:"Réchauffe-les dans du bouillon + thym = façon petit salé, plein de goût.",
+        etapes:[
+          "Égoutte et rince les lentilles en conserve.",
+          "Réchauffe 5 min à feu doux avec un peu de bouillon (ou d'eau) + thym.",
+          "Sale/poivre en fin, filet d'huile d'olive à la sortie.",
+        ] },
+      sec:{ qty:"60-80 g crues / pers.", temps:"~20-25 min",
+        liquide:"3 fois leur volume d'eau ou de bouillon",
+        bouillon:"Cuis-les dans du bouillon + thym + une carotte en dés = façon pot-au-feu.",
+        etapes:[
+          "Rince les lentilles (pas de trempage nécessaire).",
+          "Casserole : 3x leur volume d'eau/bouillon. Ne sale qu'en FIN (sinon elles durcissent).",
+          "Ébullition puis feu doux ~20-25 min jusqu'à tendreté. Égoutte le surplus.",
+        ] },
     } },
 
-  { id:"pois_chiches", nom:"Pois chiches rôtis (en conserve)", emoji:"🟡", tag:"accompagnement", methode:"airfryer",
-    temp:190, time:15, shake:6, program:"AirFry", qtyHint:"1/2 boîte / pers.",
-    coupe:"Égouttés et TRÈS bien séchés au torchon (= croustillant garanti).",
-    sechage:"Bien sécher, sinon ils éclatent au lieu de croustiller.",
-    humide:false, croustille:true,
-    marinade:"Huile + paprika fumé + cumin + ail : enrobe avant cuisson.",
-    finition:"Croustillants dehors, fondants dedans. Top en salade ou à grignoter.",
-    astuce:"Secoue à mi-cuisson. Ils durcissent encore en refroidissant.",
-    epices:["paprika_fume","cumin","ail","curry","paprika"] },
+  { id:"pois_chiches", nom:"Pois chiches", emoji:"🟡", tag:"accompagnement", methode:"casserole",
+    formes:{
+      conserve:{ qty:"1/2 boîte / pers.", temps:"~5 min (déjà cuits)",
+        liquide:"un peu d'eau ou de bouillon",
+        bouillon:"Réchauffe dans du bouillon + cumin = parfumés.",
+        etapes:[
+          "Égoutte et rince les pois chiches en conserve.",
+          "Réchauffe 5 min à feu doux avec un peu de bouillon + cumin + paprika.",
+          "🔥 Envie de croustillant ? Égoutte, sèche-les bien, huile + paprika fumé, et rôtis-les 15 min à 190° DANS l'airfryer.",
+        ] },
+      sec:{ qty:"60 g secs / pers.", temps:"trempage 12h + ~1h-1h30",
+        liquide:"grand volume d'eau",
+        bouillon:null,
+        etapes:[
+          "La veille : trempage 12h dans beaucoup d'eau froide.",
+          "Le jour même : égoutte, couvre d'eau fraîche, ébullition puis feu doux 1h à 1h30 jusqu'à tendreté.",
+          "Ne sale qu'en fin. (Plus long : préfère la conserve si tu es pressée.)",
+        ] },
+    } },
+
+  { id:"haricots_rouges", nom:"Haricots rouges", emoji:"🔴", tag:"accompagnement", methode:"casserole",
+    formes:{
+      conserve:{ qty:"1/2 boîte / pers.", temps:"~5 min (déjà cuits)",
+        liquide:"un peu d'eau ou de bouillon",
+        bouillon:"Réchauffe avec bouillon + cumin + paprika (façon chili).",
+        etapes:[
+          "Égoutte et rince bien les haricots rouges en conserve.",
+          "Réchauffe 5 min à feu doux avec un peu de bouillon + cumin + paprika.",
+          "Parfait avec du riz et de la viande hachée épicée.",
+        ] },
+      sec:{ qty:"60 g secs / pers.", temps:"trempage 12h + ~1h",
+        liquide:"grand volume d'eau",
+        bouillon:null,
+        etapes:[
+          "La veille : trempage 12h dans beaucoup d'eau froide.",
+          "⚠️ Important : égoutte, couvre d'eau fraîche et fais BOUILLIR FORT au moins 10 min (crus, ils sont indigestes), puis feu doux ~1h.",
+          "Ne sale qu'en fin. (Plus simple en conserve si tu es pressée.)",
+        ] },
+    } },
 ];
 
 /* ------------------------------------------------------------
@@ -555,6 +599,81 @@ const RECIPES = [
       {t:10, txt:"Retourne les pilons, secoue les grenailles."},
       {t:18, txt:"Badigeonne les pilons de laque miel-moutarde."},
       {t:25, txt:"✅ Prêt : pilons laqués brillants + grenailles dorées."},
+    ],
+  },
+
+  // ===== PLATS EN SAUCE & GRATINS (one-pot dans la cuve en verre) =====
+  {
+    id:"onepot_pates_poulet",
+    nom:"One-pot pâtes & poulet (sauce tomate)",
+    emoji:"🍝🍗",
+    duree:28, temp:180, portions:"2 pers.", tags:["one-pot","plat en sauce"],
+    ingredients:[
+      "150 g de pâtes crues (penne, coquillettes…)",
+      "1 escalope de poulet en dés",
+      "~400 ml d'eau chaude ou de bouillon de volaille",
+      "3-4 c. à s. de sauce/coulis de tomate",
+      "Huile d'olive, ail, paprika, origan, sel",
+      "Fromage râpé (optionnel, pour gratiner)",
+    ],
+    prep:[
+      "🍗 Poulet : coupe l'escalope en dés de 2 cm, assaisonne (huile + ail + paprika).",
+      "🍝 Dans la cuve en verre : pâtes crues + poulet + sauce tomate + eau chaude ou bouillon. Le liquide doit juste couvrir les pâtes.",
+      "⚠️ Couvre la cuve de papier alu : c'est ce qui garde la vapeur pour cuire les pâtes. Mode Roast (ou cuisson), PAS AirFry soufflé.",
+    ],
+    timeline:[
+      {t:0, txt:"Tout dans la cuve, couvre de papier alu. Lance en mode Roast/cuisson 180 °C."},
+      {t:12, txt:"Ouvre, remue bien (décolle les pâtes du fond). Trop sec ? Ajoute un peu d'eau chaude. Recouvre d'alu."},
+      {t:22, txt:"Goûte les pâtes : encore fermes ? +3-5 min. Vérifie le poulet (blanc à cœur)."},
+      {t:25, txt:"Gratin (option) : retire l'alu, parsème de fromage râpé."},
+      {t:28, txt:"✅ Prêt : one-pot pâtes-poulet, tout cuit ensemble dans la cuve."},
+    ],
+  },
+  {
+    id:"onepot_riz_poulet",
+    nom:"One-pot riz & poulet façon tajine",
+    emoji:"🍚🍗",
+    duree:32, temp:180, portions:"2 pers.", tags:["one-pot","plat en sauce"],
+    ingredients:[
+      "150 g de riz cru",
+      "1 escalope de poulet en dés",
+      "~300 ml de bouillon de volaille (1 volume de riz pour 2 de bouillon)",
+      "1 carotte en petits dés",
+      "Épices tagine (ou curcuma + cumin + paprika), ail, sel",
+    ],
+    prep:[
+      "🍗 Poulet : en dés de 2 cm, assaisonne (huile + épices tagine + ail).",
+      "🍚 Dans la cuve : riz rincé + poulet + carotte + bouillon chaud + épices. Le bouillon doit couvrir le riz de ~1 cm.",
+      "⚠️ Couvre de papier alu. Mode Roast/cuisson, pas AirFry soufflé.",
+    ],
+    timeline:[
+      {t:0, txt:"Tout dans la cuve, couvre de papier alu. Roast/cuisson 180 °C."},
+      {t:15, txt:"Ouvre, remue le riz. Recouvre d'alu (ajoute un filet de bouillon si sec)."},
+      {t:26, txt:"Goûte le riz : encore ferme ? +4-5 min. Vérifie le poulet."},
+      {t:32, txt:"✅ Prêt : riz parfumé + poulet fondant, façon tajine."},
+    ],
+  },
+  {
+    id:"gratin_pdt",
+    nom:"Gratin de pommes de terre express",
+    emoji:"🥔🧀",
+    duree:32, temp:180, portions:"2 pers.", tags:["gratin","plat en sauce"],
+    ingredients:[
+      "3-4 pommes de terre en fines rondelles (2-3 mm)",
+      "~200 ml de crème liquide (+ un peu de lait)",
+      "1 gousse d'ail, sel, poivre, muscade",
+      "Fromage râpé",
+    ],
+    prep:[
+      "🥔 Rondelles fines (2-3 mm) : plus c'est fin, mieux ça cuit.",
+      "🧀 Dans la cuve : rondelles + crème (+ lait) jusqu'à presque couvrir + ail + sel + muscade. Fromage râpé dessus.",
+      "⚠️ Couvre de papier alu au départ. Mode Roast/cuisson.",
+    ],
+    timeline:[
+      {t:0, txt:"Cuve remplie, couverte de papier alu. Roast/cuisson 180 °C."},
+      {t:20, txt:"Retire l'alu (les pommes de terre doivent être presque tendres au couteau)."},
+      {t:28, txt:"Laisse gratiner à découvert pour dorer le fromage."},
+      {t:32, txt:"✅ Prêt : gratin doré et fondant. Pique au couteau pour vérifier."},
     ],
   },
 ];
