@@ -14,6 +14,27 @@ const APPLIANCE = {
   programs: ["AirFry", "Roast", "Broil", "Keep Warm", "Reheat"],
 };
 
+/* Facteurs de TAILLE des morceaux — LE réglage qui change tout.
+   Le temps de cuisson dépend surtout de la grosseur des morceaux.
+   Les féculents (denses) sont les plus sensibles. */
+const SIZE_FACTORS = {
+  feculent: { petit: 0.78, moyen: 1.0, gros: 1.5 },
+  proteine: { petit: 0.82, moyen: 1.0, gros: 1.35 },
+  legume:   { petit: 0.85, moyen: 1.0, gros: 1.28 },
+};
+/* Ingrédients dont la taille change vraiment le temps (on propose le réglage). */
+const SIZE_SENSITIVE = [
+  "pdt_amandine", "pdt_frites", "pdt_quartiers", "patate_douce",
+  "carotte", "panais", "aubergine", "courgette", "chou_fleur", "brocoli",
+  "escalope_poulet", "cuisse_poulet", "tofu", "boeuf_hache", "kefta", "halloumi",
+];
+/* Repères de taille lisibles par ingrédient (affichés dans la prep). */
+const SIZE_LABELS = {
+  feculent: { petit: "petits dés / fines frites (~1 cm)", moyen: "morceaux moyens (~2-3 cm)", gros: "gros morceaux / coupés en 2 seulement (4 cm+)" },
+  proteine: { petit: "fines lanières / petits morceaux", moyen: "portion normale (~2 cm d'épaisseur)", gros: "pièce épaisse / entière" },
+  legume:   { petit: "petits morceaux fins", moyen: "morceaux moyens (~2 cm)", gros: "gros morceaux épais" },
+};
+
 /* ------------------------------------------------------------
    ÉPICES & CONDIMENTS (ton placard)
    L'utilisateur coche ce qu'il possède ; le moteur compose les
@@ -66,8 +87,8 @@ const INGREDIENTS = [
   // ---------- FÉCULENTS ----------
   { id:"pdt_amandine", nom:"Pommes de terre amandines / grenailles", emoji:"🥔", tag:"feculent",
     temp:190, time:24, shake:8, program:"AirFry", qtyHint:"~250 g (1 grosse poignée) / pers.",
-    coupe:"Coupées en 2 dans la longueur (face coupée = croustillant). Si vraiment mini (<3 cm), laisse entières.",
-    coupeAlt:"En 4 pour des plus grosses.",
+    coupe:"Coupées en 2 si petites (~3 cm). Dès qu'elles sont un peu grosses, coupe-les en 4 (ou en cubes de 2-3 cm) : sinon le cœur reste cru. Régularité = cuisson régulière.",
+    coupeAlt:"Astuce : mieux vaut des morceaux réguliers de 2-3 cm que des demi-pommes de terre grosses.",
     sechage:"Lave, puis sèche bien au torchon. Astuce top : 10 min dans l'eau froide puis re-sécher (enlève l'amidon = plus croustillant).",
     humide:false, croustille:true,
     astuce:"Une seule couche dans le bac, pas empilées, sinon elles cuisent à la vapeur.",

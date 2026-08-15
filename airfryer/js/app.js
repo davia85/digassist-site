@@ -15,6 +15,7 @@
 
   // État
   const selected = new Set(store.get("selection", []));
+  const sizes = store.get("sizes", {}); // { ingredientId: 'petit'|'moyen'|'gros' }
   let pantry = store.get("pantry", null);
   if (pantry === null) {
     // Premier lancement : on coche les épices "de base"
@@ -64,6 +65,41 @@
         chip.classList.toggle("chip--on");
         store.set("selection", [...selected]);
         updateSelectionBar();
+        renderSizePanel();
+      });
+    });
+  }
+
+  const SIZE_OPTS = [
+    { key: "petit", label: "Petit" },
+    { key: "moyen", label: "Moyen" },
+    { key: "gros", label: "Gros" },
+  ];
+
+  function renderSizePanel() {
+    const host = $("#size-panel");
+    const list = [...selected].map((id) => INGREDIENTS.find((i) => i.id === id))
+      .filter((i) => i && SIZE_SENSITIVE.includes(i.id));
+    if (list.length === 0) { host.hidden = true; host.innerHTML = ""; return; }
+    host.hidden = false;
+    host.innerHTML = `
+      <div class="size-panel__title">📏 Taille des morceaux <span>(le plus important pour bien cuire !)</span></div>
+      ${list.map((i) => {
+        const cur = sizes[i.id] || "moyen";
+        return `<div class="size-row">
+          <div class="size-row__name">${i.emoji} ${esc(i.nom)}</div>
+          <div class="size-seg" data-id="${i.id}">
+            ${SIZE_OPTS.map((o) => `<button class="size-btn ${cur === o.key ? "size-btn--on" : ""}" data-size="${o.key}">${o.label}</button>`).join("")}
+          </div>
+        </div>`;
+      }).join("")}`;
+    $$(".size-btn", host).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.closest(".size-seg").dataset.id;
+        sizes[id] = btn.dataset.size;
+        store.set("sizes", sizes);
+        $$(`.size-seg[data-id="${id}"] .size-btn`, host).forEach((b) => b.classList.remove("size-btn--on"));
+        btn.classList.add("size-btn--on");
       });
     });
   }
@@ -77,7 +113,7 @@
   }
 
   $("#btn-generate").addEventListener("click", () => {
-    const plan = Engine.buildPlan([...selected], pantrySet());
+    const plan = Engine.buildPlan([...selected], pantrySet(), sizes);
     renderPlan(plan);
     $("#plan-output").scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -101,6 +137,7 @@
       <div class="prep-item">
         <div class="prep-item__head">${p.emoji} ${esc(p.nom)} <span class="prep-item__qty">· ${esc(p.qty)}</span></div>
         <div class="prep-line">✂️ <b>Coupe :</b> ${esc(p.coupe)}${p.coupeAlt ? ` <span class="prep-note">(ou : ${esc(p.coupeAlt)})</span>` : ""}</div>
+        ${p.size ? `<div class="prep-line">📏 <b>Taille :</b> ${esc(p.size)} — vise ${esc(p.sizeLabel)}. <span class="prep-note">Le temps est calculé pour cette taille.</span></div>` : ""}
         ${p.sechage ? `<div class="prep-line">💧 <b>Séchage :</b> ${esc(p.sechage)}</div>` : ""}
         <div class="prep-line">🧂 <b>Assaisonnement :</b> ${esc(p.epices)}</div>
         ${p.astuce ? `<div class="prep-note">👉 ${esc(p.astuce)}</div>` : ""}
@@ -212,6 +249,7 @@
   /* ---------- Init ---------- */
   renderIngredients();
   updateSelectionBar();
+  renderSizePanel();
   renderRecipeList();
   renderSpices();
 })();

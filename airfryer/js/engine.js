@@ -58,8 +58,18 @@ const Engine = (() => {
     };
   }
 
-  /* Construit le plan complet. */
-  function buildPlan(selectedIds, pantry) {
+  /* Renvoie le temps de base d'un ingrédient corrigé selon la taille choisie. */
+  function sizedTime(ing, sizes) {
+    if (!SIZE_SENSITIVE.includes(ing.id)) return ing.time;
+    const size = (sizes && sizes[ing.id]) || "moyen";
+    const table = SIZE_FACTORS[ing.tag] || SIZE_FACTORS.legume;
+    const f = table[size] != null ? table[size] : 1;
+    return Math.round(ing.time * f);
+  }
+
+  /* Construit le plan complet.
+     sizes = { ingredientId: 'petit'|'moyen'|'gros' } (optionnel) */
+  function buildPlan(selectedIds, pantry, sizes) {
     const items = selectedIds.map(byId).filter(Boolean);
     if (items.length === 0) return null;
 
@@ -67,11 +77,12 @@ const Engine = (() => {
     const avg = items.reduce((a, i) => a + i.temp, 0) / items.length;
     const targetTemp = snapTemp(avg);
 
-    // 2) Temps ajusté à la température commune + décalage des départs
+    // 2) Temps ajusté (taille + température commune) + décalage des départs
     const enriched = items.map((ing) => {
-      const factor = ing.temp / targetTemp; // >1 si l'ingrédient aime + chaud
-      let adj = Math.round(ing.time * factor);
-      adj = clamp(adj, Math.max(3, Math.round(ing.time * 0.6)), Math.round(ing.time * 1.5));
+      const base = sizedTime(ing, sizes);            // <-- corrigé selon la taille
+      const factor = ing.temp / targetTemp;          // >1 si l'ingrédient aime + chaud
+      let adj = Math.round(base * factor);
+      adj = clamp(adj, Math.max(3, Math.round(base * 0.6)), Math.round(base * 1.6));
       return { ing, adj };
     });
 
@@ -83,9 +94,11 @@ const Engine = (() => {
     const humides = enriched.filter((e) => e.ing.humide);
     const conflitCroustillant = croustille.length > 0 && humides.length > 0;
 
-    // 4) Prep par ingrédient (coupe, séchage, épices)
+    // 4) Prep par ingrédient (coupe, taille, séchage, épices)
     const prep = enriched.map((e) => {
       const s = seasoning(e.ing, pantry);
+      const sizeSel = SIZE_SENSITIVE.includes(e.ing.id) ? ((sizes && sizes[e.ing.id]) || "moyen") : null;
+      const sizeLabel = sizeSel ? (SIZE_LABELS[e.ing.tag] || SIZE_LABELS.legume)[sizeSel] : null;
       return {
         nom: e.ing.nom,
         emoji: e.ing.emoji,
@@ -97,6 +110,8 @@ const Engine = (() => {
         manque: s.missing,
         epicesPauvres: s.poor,
         astuce: e.ing.astuce || null,
+        size: sizeSel,
+        sizeLabel,
       };
     });
 
@@ -138,11 +153,20 @@ const Engine = (() => {
         actions: evs.sort((a, b) => a.prio - b.prio).map((e) => e.txt),
       }));
 
-    // Étape finale
+    // Étape finale + TEST DE CUISSON (pour ne plus jamais avoir de cru)
+    const hasFeculent = items.some((i) => i.tag === "feculent");
+    const hasProteine = items.some((i) => i.tag === "proteine");
+    const finalActions = ["✅ Chaque ingrédient finit sa cuisson en même temps."];
+    if (hasFeculent) {
+      finalActions.push("🔪 Test féculents : la pointe d'un couteau doit s'enfoncer SANS résistance. Si ça résiste, referme et ajoute 5 min (sans risque).");
+    }
+    if (hasProteine) {
+      finalActions.push("🍗 Test viande/poisson : chair blanche/opaque et jus clair. Dans le doute, +3 min.");
+    }
     timeline.push({
       t: total,
       label: `${mmss(total)} — C'est prêt !`,
-      actions: ["✅ Sors tout : chaque ingrédient est cuit au même instant."],
+      actions: finalActions,
       final: true,
     });
 
@@ -161,8 +185,14 @@ const Engine = (() => {
           `${humides.map((h) => h.ing.nom.toLowerCase()).join(", ")} au centre, jamais par-dessus.`
       );
     }
+    const gros = prep.filter((p) => p.size === "gros");
+    if (gros.length) {
+      tips.push(
+        `Tu as choisi « gros » pour ${gros.map((p) => p.nom.toLowerCase()).join(", ")} : le temps a été rallongé en conséquence. Pour aller plus vite la prochaine fois, coupe des morceaux plus petits et réguliers.`
+      );
+    }
     if (items.length >= 4) {
-      tips.push("Beaucoup d'ingrédients : ne surcharge pas le bac, quitte à cuire en 2 fois.");
+      tips.push("Beaucoup d'ingrédients : ne surcharge pas le bac (une couche = cuisson régulière), quitte à cuire en 2 fois.");
     }
     const tempSpread = Math.max(...items.map((i) => i.temp)) - Math.min(...items.map((i) => i.temp));
     if (tempSpread >= 25) {
