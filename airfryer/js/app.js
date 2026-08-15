@@ -16,6 +16,7 @@
   // État
   const selected = new Set(store.get("selection", []));
   const sizes = store.get("sizes", {}); // { ingredientId: 'petit'|'moyen'|'gros' }
+  const states = store.get("states", {}); // { ingredientId: 'frais'|'surgele' }
   let pantry = store.get("pantry", null);
   if (pantry === null) {
     // Premier lancement : on coche les épices "de base"
@@ -40,6 +41,7 @@
     { tag: "proteine", label: "Protéines", emoji: "🍗" },
     { tag: "feculent", label: "Féculents", emoji: "🥔" },
     { tag: "legume", label: "Légumes", emoji: "🥦" },
+    { tag: "accompagnement", label: "Riz, pâtes & légumes secs", emoji: "🍚" },
   ];
 
   function renderIngredients() {
@@ -75,30 +77,45 @@
     { key: "moyen", label: "Moyen" },
     { key: "gros", label: "Gros" },
   ];
+  const STATE_OPTS = [
+    { key: "frais", label: "Frais" },
+    { key: "surgele", label: "Surgelé" },
+  ];
 
   function renderSizePanel() {
     const host = $("#size-panel");
     const list = [...selected].map((id) => INGREDIENTS.find((i) => i.id === id))
-      .filter((i) => i && SIZE_SENSITIVE.includes(i.id));
+      .filter((i) => i && (SIZE_SENSITIVE.includes(i.id) || STATE_SENSITIVE.includes(i.id)));
     if (list.length === 0) { host.hidden = true; host.innerHTML = ""; return; }
     host.hidden = false;
     host.innerHTML = `
-      <div class="size-panel__title">📏 Taille des morceaux <span>(le plus important pour bien cuire !)</span></div>
+      <div class="size-panel__title">🎛️ Réglages <span>(taille des morceaux + frais/surgelé = le plus important pour bien cuire !)</span></div>
       ${list.map((i) => {
-        const cur = sizes[i.id] || "moyen";
+        const curSize = sizes[i.id] || "moyen";
+        const curState = states[i.id] || "frais";
+        const sizeSeg = SIZE_SENSITIVE.includes(i.id) ? `
+          <div class="seg-block"><span class="seg-lbl">📏 Taille</span>
+            <div class="size-seg" data-kind="size" data-id="${i.id}">
+              ${SIZE_OPTS.map((o) => `<button class="size-btn ${curSize === o.key ? "size-btn--on" : ""}" data-val="${o.key}">${o.label}</button>`).join("")}
+            </div></div>` : "";
+        const stateSeg = STATE_SENSITIVE.includes(i.id) ? `
+          <div class="seg-block"><span class="seg-lbl">❄️ État</span>
+            <div class="size-seg" data-kind="state" data-id="${i.id}">
+              ${STATE_OPTS.map((o) => `<button class="size-btn ${curState === o.key ? "size-btn--on" : ""}" data-val="${o.key}">${o.label}</button>`).join("")}
+            </div></div>` : "";
         return `<div class="size-row">
           <div class="size-row__name">${i.emoji} ${esc(i.nom)}</div>
-          <div class="size-seg" data-id="${i.id}">
-            ${SIZE_OPTS.map((o) => `<button class="size-btn ${cur === o.key ? "size-btn--on" : ""}" data-size="${o.key}">${o.label}</button>`).join("")}
-          </div>
+          <div class="seg-wrap">${sizeSeg}${stateSeg}</div>
         </div>`;
       }).join("")}`;
     $$(".size-btn", host).forEach((btn) => {
       btn.addEventListener("click", () => {
-        const id = btn.closest(".size-seg").dataset.id;
-        sizes[id] = btn.dataset.size;
-        store.set("sizes", sizes);
-        $$(`.size-seg[data-id="${id}"] .size-btn`, host).forEach((b) => b.classList.remove("size-btn--on"));
+        const seg = btn.closest(".size-seg");
+        const id = seg.dataset.id;
+        const val = btn.dataset.val;
+        if (seg.dataset.kind === "size") { sizes[id] = val; store.set("sizes", sizes); }
+        else { states[id] = val; store.set("states", states); }
+        $$(".size-btn", seg).forEach((b) => b.classList.remove("size-btn--on"));
         btn.classList.add("size-btn--on");
       });
     });
@@ -113,14 +130,41 @@
   }
 
   $("#btn-generate").addEventListener("click", () => {
-    const plan = Engine.buildPlan([...selected], pantrySet(), sizes);
+    const plan = Engine.buildPlan([...selected], pantrySet(), sizes, states);
     renderPlan(plan);
     $("#plan-output").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
+  function sidesCard(plan) {
+    if (!plan.sides || !plan.sides.length) return "";
+    const items = plan.sides.map((s) => `
+      <div class="prep-item">
+        <div class="prep-item__head">${s.emoji} ${esc(s.nom)} <span class="prep-item__qty">· ${esc(s.qty)}</span></div>
+        <div class="prep-line">🕒 <b>Temps :</b> ${esc(s.temps)} · <b>Liquide :</b> ${esc(s.liquide)}</div>
+        ${s.etapes.map((e, i) => `<div class="prep-line">${i + 1}. ${esc(e)}</div>`).join("")}
+        ${s.bouillon ? `<div class="prep-line prep-gourmand">🍲 <b>Version pot-au-feu :</b> ${esc(s.bouillon)}</div>` : ""}
+      </div>`).join("");
+    return `<div class="plan-card">
+      <div class="section-title">🍲 À côté, à la casserole</div>
+      <p class="prep-note" style="margin-bottom:8px">Ces accompagnements se cuisent à l'eau (pas à l'airfryer). Lance-les en même temps que le bac pour tout servir ensemble.</p>
+      ${items}
+    </div>`;
+  }
+
   function renderPlan(plan) {
     const out = $("#plan-output");
     if (!plan) { out.innerHTML = ""; return; }
+
+    // Cas : uniquement des accompagnements casserole (riz/pâtes/lentilles seuls)
+    if (plan.onlySides) {
+      out.innerHTML = `
+        <div class="plan-head">
+          <div class="plan-head__title">🍲 Cuisson à la casserole</div>
+          <p class="prep-note" style="margin-top:6px">Le riz, les pâtes et les lentilles crus se cuisent à l'eau bouillante — pas à l'airfryer. Voici comment faire :</p>
+        </div>
+        ${sidesCard(plan)}`;
+      return;
+    }
 
     const badges = `
       <div class="plan-badges">
@@ -138,6 +182,7 @@
         <div class="prep-item__head">${p.emoji} ${esc(p.nom)} <span class="prep-item__qty">· ${esc(p.qty)}</span></div>
         <div class="prep-line">✂️ <b>Coupe :</b> ${esc(p.coupe)}${p.coupeAlt ? ` <span class="prep-note">(ou : ${esc(p.coupeAlt)})</span>` : ""}</div>
         ${p.size ? `<div class="prep-line">📏 <b>Taille :</b> ${esc(p.size)} — vise ${esc(p.sizeLabel)}. <span class="prep-note">Le temps est calculé pour cette taille.</span></div>` : ""}
+        ${p.state ? `<div class="prep-line">❄️ <b>État :</b> ${p.state === "surgele" ? "surgelé" : "frais"}${p.stateNote ? ` <span class="prep-note">${esc(p.stateNote)}</span>` : ""}</div>` : ""}
         ${p.sechage ? `<div class="prep-line">💧 <b>Séchage :</b> ${esc(p.sechage)}</div>` : ""}
         <div class="prep-line">🧂 <b>Assaisonnement :</b> ${esc(p.epices)}</div>
         ${p.marinade ? `<div class="prep-line">🥣 <b>Marinade :</b> ${esc(p.marinade)}</div>` : ""}
@@ -173,6 +218,7 @@
         <div class="section-title">⏱️ Déroulé — une seule cuisson</div>
         <div class="timeline">${timeline}</div>
       </div>
+      ${sidesCard(plan)}
       ${tips}`;
   }
 

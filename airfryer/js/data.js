@@ -28,6 +28,14 @@ const SIZE_SENSITIVE = [
   "carotte", "panais", "aubergine", "courgette", "chou_fleur", "brocoli",
   "escalope_poulet", "cuisse_poulet", "tofu", "boeuf_hache", "kefta", "halloumi",
 ];
+
+/* État FRAIS / SURGELÉ — surtout pour viandes et poissons.
+   Surgelé = cuisson depuis l'état congelé, plus longue. */
+const STATE_FACTORS = { frais: 1.0, surgele: 1.55 };
+const STATE_SENSITIVE = [
+  "escalope_poulet", "aiguillettes", "cuisse_poulet", "boeuf_hache",
+  "merguez", "saucisse_volaille", "saumon", "cabillaud", "crevettes",
+];
 /* Repères de taille lisibles par ingrédient (affichés dans la prep). */
 const SIZE_LABELS = {
   feculent: { petit: "petits dés / fines frites (~1 cm)", moyen: "morceaux moyens (~2-3 cm)", gros: "gros morceaux / coupés en 2 seulement (4 cm+)" },
@@ -48,7 +56,6 @@ const SPICES = [
   { id:"ail",            nom:"Ail (poudre ou frais)",emoji:"🧄", base:true,  dose:"1 c. à c." },
   { id:"paprika",        nom:"Paprika",             emoji:"🌶️", base:true,  dose:"1 c. à c." },
   { id:"paprika_fume",   nom:"Paprika fumé",        emoji:"🔥", base:false, dose:"1 c. à c." },
-  { id:"oignon_poudre",  nom:"Oignon en poudre",    emoji:"🧅", base:false, dose:"1 c. à c." },
   { id:"cumin",          nom:"Cumin",               emoji:"🟤", base:false, dose:"1/2 c. à c." },
   { id:"curcuma",        nom:"Curcuma",             emoji:"🟡", base:false, dose:"1/2 c. à c." },
   { id:"curry",          nom:"Curry",               emoji:"🍛", base:false, dose:"1 c. à c." },
@@ -56,7 +63,6 @@ const SPICES = [
   { id:"thym",           nom:"Thym",                emoji:"🌿", base:false, dose:"1 pincée" },
   { id:"romarin",        nom:"Romarin",             emoji:"🌿", base:false, dose:"1 pincée" },
   { id:"origan",         nom:"Origan",              emoji:"🌿", base:false, dose:"1 c. à c." },
-  { id:"coriandre",      nom:"Coriandre (moulue)",  emoji:"🌱", base:false, dose:"1/2 c. à c." },
   { id:"gingembre",      nom:"Gingembre",           emoji:"🫚", base:false, dose:"1/2 c. à c." },
   { id:"piment",         nom:"Piment / chili",      emoji:"🌶️", base:false, dose:"1 pincée" },
   { id:"ras_el_hanout",  nom:"Ras el hanout",       emoji:"🧡", base:false, dose:"1 c. à c." },
@@ -66,7 +72,6 @@ const SPICES = [
   { id:"miel",           nom:"Miel",                emoji:"🍯", base:false, dose:"1 c. à c." },
   { id:"moutarde",       nom:"Moutarde",            emoji:"🟨", base:false, dose:"1 c. à c." },
   { id:"sesame",         nom:"Graines de sésame",   emoji:"⚪", base:false, dose:"1 c. à c." },
-  { id:"persil",         nom:"Persil",              emoji:"🌿", base:false, dose:"qques brins" },
   { id:"maizena",        nom:"Maïzena",             emoji:"🌽", base:false, dose:"1 c. à s." },
 ];
 
@@ -135,7 +140,7 @@ const INGREDIENTS = [
     sechage:"Tamponne au papier absorbant AVANT d'huiler : poulet sec + huile = poulet doré (l'eau, elle, empêche de dorer).",
     humide:true, croustille:false,
     marinade:"Mélange les épices avec 1 bonne c. à s. d'huile d'olive et enrobe toute l'escalope (idéal : 10 min avant, mais direct ça marche aussi).",
-    finition:"3 dernières min à 200° pour dorer. À la sortie : noisette de beurre + persil + filet de citron = fondant et gourmand.",
+    finition:"3 dernières min à 200° pour dorer. À la sortie : noisette de beurre + filet de citron = fondant et gourmand.",
     astuce:"Ne surcuis pas (chair blanche, jus clair) sinon ça sèche. Un peu de miel dans la marinade = joli doré.",
     epices:["paprika","ail","cumin","paprika_fume","herbes_provence","miel","citron"] },
 
@@ -166,18 +171,18 @@ const INGREDIENTS = [
     humide:true, croustille:false,
     marinade:"Mélange épices + 1 filet d'huile DANS la viande avant de former les boulettes = goût partout.",
     finition:"2 dernières min à 200° pour une belle croûte dorée.",
-    astuce:"Un peu d'oignon râpé dans la viande = boulettes moelleuses.",
-    epices:["ail","oignon_poudre","cumin","paprika","paprika_fume","origan"] },
+    astuce:"1 c. à c. de moutarde dans la viande = boulettes moelleuses et goûteuses.",
+    epices:["ail","cumin","paprika","paprika_fume","origan"] },
 
   { id:"kefta", nom:"Kefta (haché épicé)", emoji:"🧆", tag:"proteine",
     temp:185, time:12, shake:6, program:"AirFry", qtyHint:"3-4 kefta / pers.",
     coupe:"Petits boudins allongés autour d'un pic (ou à la main).",
     sechage:null,
     humide:true, croustille:false,
-    marinade:"Épices + oignon râpé + persil + filet d'huile malaxés dans la viande.",
+    marinade:"Épices + filet d'huile bien malaxés dans la viande.",
     finition:"2 dernières min à 200°. Sers avec un filet de citron et de la sauce blanche/yaourt-ail.",
     astuce:"Malaxe bien 1 min : la viande devient collante = kefta qui se tiennent.",
-    epices:["cumin","coriandre","paprika","ail","ras_el_hanout","persil"] },
+    epices:["cumin","paprika","ail","ras_el_hanout"] },
 
   { id:"merguez", nom:"Merguez", emoji:"🌭", tag:"proteine",
     temp:180, time:13, shake:6, program:"AirFry", qtyHint:"2-3 merguez / pers.",
@@ -193,7 +198,7 @@ const INGREDIENTS = [
     sechage:"Tamponne la surface pour qu'il dore.",
     humide:true, croustille:false,
     marinade:"Huile d'olive + citron + ail + herbes badigeonnés sur le pavé.",
-    finition:"Un peu de miel + moutarde badigeonné à mi-cuisson = saumon laqué délicieux. Aneth ou persil à la sortie.",
+    finition:"Un peu de miel + moutarde badigeonné à mi-cuisson = saumon laqué délicieux. Un peu d'aneth à la sortie.",
     astuce:"Ne pas remuer, il s'effrite. Prêt quand il s'effeuille à la fourchette.",
     epices:["citron","ail","thym","miel","herbes_provence","paprika"] },
 
@@ -203,17 +208,17 @@ const INGREDIENTS = [
     sechage:"Tamponne bien.",
     humide:true, croustille:false,
     astuce:"Ne pas remuer. Chair opaque = c'est cuit.",
-    epices:["citron","ail","curcuma","coriandre"] },
+    epices:["citron","ail","curcuma","curry"] },
 
   { id:"crevettes", nom:"Crevettes décortiquées", emoji:"🍤", tag:"proteine",
     temp:180, time:8, shake:4, program:"AirFry", qtyHint:"1 poignée / pers.",
     coupe:"Décortiquées, crues. Bien égouttées si surgelées/décongelées.",
     sechage:"Sèche-les, sinon elles rendent de l'eau.",
     humide:true, croustille:false,
-    marinade:"Ail écrasé + huile d'olive + persil + piment, mélange bien (façon crevettes à l'ail).",
-    finition:"À la sortie : filet de citron + persil frais. Une noisette de beurre à l'ail = gourmand.",
+    marinade:"Ail écrasé + huile d'olive + piment + citron, mélange bien (façon crevettes à l'ail).",
+    finition:"À la sortie : filet de citron. Une noisette de beurre à l'ail = gourmand.",
     astuce:"Cuisson rapide ! Prêtes quand elles sont roses et recourbées. Ne les oublie pas.",
-    epices:["ail","persil","piment","citron","paprika"] },
+    epices:["ail","piment","citron","paprika"] },
 
   { id:"tofu", nom:"Tofu ferme", emoji:"🧈", tag:"proteine",
     temp:190, time:15, shake:7, program:"AirFry", qtyHint:"1/2 bloc / pers.",
@@ -281,7 +286,7 @@ const INGREDIENTS = [
     sechage:null,
     humide:false, croustille:false,
     astuce:"Un filet de miel en fin de cuisson = carottes glacées.",
-    epices:["miel","cumin","thym","coriandre"] },
+    epices:["miel","cumin","thym"] },
 
   { id:"champignon", nom:"Champignons", emoji:"🍄", tag:"legume",
     temp:180, time:11, shake:5, program:"AirFry", qtyHint:"1 poignée / pers.",
@@ -289,7 +294,7 @@ const INGREDIENTS = [
     sechage:"Ne PAS les laver à l'eau (ils la boivent) : brosse-les.",
     humide:true, croustille:false,
     astuce:"Ils réduisent beaucoup : mets-en plus que tu crois.",
-    epices:["ail","persil","thym","poivre"] },
+    epices:["ail","thym","poivre"] },
 
   { id:"tomate_cerise", nom:"Tomates cerises", emoji:"🍅", tag:"legume",
     temp:180, time:9, shake:0, program:"AirFry", qtyHint:"1 poignée / pers.",
@@ -313,7 +318,7 @@ const INGREDIENTS = [
     sechage:"Bien sécher.",
     humide:false, croustille:false,
     astuce:"Ail + un peu d'huile, ils restent croquants.",
-    epices:["ail","persil","citron"] },
+    epices:["ail","citron","thym"] },
 
   { id:"asperge", nom:"Asperges vertes", emoji:"🥬", tag:"legume",
     temp:180, time:10, shake:5, program:"AirFry", qtyHint:"1 botte fine / pers.",
@@ -346,6 +351,61 @@ const INGREDIENTS = [
     humide:false, croustille:true,
     astuce:"Plus sucré que la carotte, super avec du thym.",
     epices:["thym","miel","cumin"] },
+
+  // ---------- RIZ, PÂTES & LÉGUMES SECS ----------
+  // (le riz/pâtes/lentilles crus se cuisent à l'eau, pas à l'airfryer :
+  //  l'appli les prépare "à côté" pour un repas complet et synchronisé)
+  { id:"riz_blanc", nom:"Riz (cru)", emoji:"🍚", tag:"accompagnement", methode:"casserole",
+    temp:0, time:14, shake:0, program:"Casserole", qtyHint:"60-80 g cru / pers.",
+    coupe:null, sechage:null, humide:false, croustille:false, epices:[],
+    casserole:{
+      temps:"~12-15 min",
+      liquide:"1 volume de riz pour 2 volumes d'eau (ou de bouillon)",
+      bouillon:"Remplace l'eau par du bouillon (volaille/légumes) = riz parfumé, idéal façon pot-au-feu.",
+      etapes:[
+        "Rince le riz. Mets-le dans une casserole avec 2 fois son volume d'eau (ou bouillon) + une pincée de sel.",
+        "Porte à ébullition, baisse à feu doux et couvre.",
+        "Laisse ~12-15 min jusqu'à absorption complète, sans remuer. Coupe le feu, laisse gonfler 5 min.",
+      ],
+    } },
+
+  { id:"pates", nom:"Pâtes (crues)", emoji:"🍝", tag:"accompagnement", methode:"casserole",
+    temp:0, time:10, shake:0, program:"Casserole", qtyHint:"80-100 g crues / pers.",
+    coupe:null, sechage:null, humide:false, croustille:false, epices:[],
+    casserole:{
+      temps:"selon le paquet (~8-11 min)",
+      liquide:"grand volume d'eau bouillante salée",
+      bouillon:null,
+      etapes:[
+        "Porte une grande casserole d'eau salée à ébullition.",
+        "Plonge les pâtes, remue au début pour qu'elles ne collent pas.",
+        "Cuis le temps indiqué sur le paquet (goûte 1 min avant la fin), puis égoutte.",
+      ],
+    } },
+
+  { id:"lentilles", nom:"Lentilles / légumes secs", emoji:"🫘", tag:"accompagnement", methode:"casserole",
+    temp:0, time:25, shake:0, program:"Casserole", qtyHint:"60-80 g crues / pers.",
+    coupe:null, sechage:null, humide:false, croustille:false, epices:[],
+    casserole:{
+      temps:"~20-25 min",
+      liquide:"3 fois leur volume d'eau ou de bouillon",
+      bouillon:"Cuis-les dans du bouillon + thym + une carotte en dés = façon petit salé / pot-au-feu, plein de goût.",
+      etapes:[
+        "Rince les lentilles (pas besoin de trempage pour les lentilles).",
+        "Casserole : 3 fois leur volume d'eau ou de bouillon. Ne sale qu'en FIN de cuisson (sinon elles durcissent).",
+        "Ébullition puis feu doux ~20-25 min jusqu'à tendreté. Égoutte le surplus.",
+      ],
+    } },
+
+  { id:"pois_chiches", nom:"Pois chiches rôtis (en conserve)", emoji:"🟡", tag:"accompagnement", methode:"airfryer",
+    temp:190, time:15, shake:6, program:"AirFry", qtyHint:"1/2 boîte / pers.",
+    coupe:"Égouttés et TRÈS bien séchés au torchon (= croustillant garanti).",
+    sechage:"Bien sécher, sinon ils éclatent au lieu de croustiller.",
+    humide:false, croustille:true,
+    marinade:"Huile + paprika fumé + cumin + ail : enrobe avant cuisson.",
+    finition:"Croustillants dehors, fondants dedans. Top en salade ou à grignoter.",
+    astuce:"Secoue à mi-cuisson. Ils durcissent encore en refroidissant.",
+    epices:["paprika_fume","cumin","ail","curry","paprika"] },
 ];
 
 /* ------------------------------------------------------------
@@ -362,7 +422,7 @@ const RECIPES = [
       "~250 g de pommes de terre amandines",
       "Huile d'olive (généreusement)",
       "Paprika fumé, ail, thym, un peu de miel, sel, poivre",
-      "1/2 citron + une noisette de beurre + persil",
+      "1/2 citron + une noisette de beurre",
     ],
     prep:[
       "🥔 Amandines : coupe-les en 4 si elles sont grosses (2-3 cm max), bien séchées. Saladier : 1 c. à s. d'huile + paprika fumé + ail + thym + sel. Mélange.",
@@ -375,7 +435,7 @@ const RECIPES = [
       {t:17, txt:"Retourne l'escalope, re-secoue les amandines."},
       {t:21, txt:"🔥 Finition : monte à 200° pour dorer tout le monde."},
       {t:23, txt:"Vérifie l'escalope (jus clair). Amandines qui résistent au couteau ? +3-5 min."},
-      {t:24, txt:"✅ À la sortie : noisette de beurre + persil + citron sur le poulet. Gourmand !"},
+      {t:24, txt:"✅ À la sortie : noisette de beurre + citron sur le poulet. Gourmand !"},
     ],
   },
   {
@@ -400,13 +460,13 @@ const RECIPES = [
     nom:"Kefta & poivrons façon tajine express",
     emoji:"🧆🫑",
     duree:20, temp:185, portions:"2 pers.", tags:["familial","épicé"],
-    ingredients:["3-4 kefta (bœuf/agneau haché)","1 poivron en lanières","1 oignon en quartiers","Cumin, coriandre, paprika, ail"],
+    ingredients:["3-4 kefta (bœuf/agneau haché)","1 poivron en lanières","1 courgette en rondelles","Cumin, paprika, ail, ras el hanout"],
     prep:[
-      "🫑 Poivron + oignon : lanières/quartiers, huile + cumin + paprika.",
-      "🧆 Kefta : cumin + coriandre + ail mélangés DANS la viande + oignon râpé, formés en boudins.",
+      "🫑 Poivron + courgette : lanières/rondelles, huile + cumin + paprika.",
+      "🧆 Kefta : cumin + paprika + ail + ras el hanout mélangés DANS la viande, formés en boudins.",
     ],
     timeline:[
-      {t:0, txt:"Poivron + oignon huilés + épices. AirFry 185 °C."},
+      {t:0, txt:"Poivron + courgette huilés + épices. AirFry 185 °C."},
       {t:7, txt:"Secoue, ajoute les kefta au centre."},
       {t:14, txt:"Retourne les kefta, mélange les légumes."},
       {t:20, txt:"✅ Prêt : kefta juteuses + légumes fondants."},
@@ -451,10 +511,10 @@ const RECIPES = [
     nom:"Crevettes à l'ail & courgettes",
     emoji:"🍤🥒",
     duree:14, temp:180, portions:"1 pers.", tags:["sain","rapide"],
-    ingredients:["1 poignée de crevettes décortiquées","1/2 courgette","Ail, persil, huile d'olive","Citron"],
+    ingredients:["1 poignée de crevettes décortiquées","1/2 courgette","Ail, piment, huile d'olive","Citron"],
     prep:[
       "🥒 Courgette : rondelles de 1 cm, huile + ail.",
-      "🍤 Crevettes : bien séchées, huile + ail + persil.",
+      "🍤 Crevettes : bien séchées, huile + ail + un peu de piment.",
     ],
     timeline:[
       {t:0, txt:"Courgettes huilées dans le bac. AirFry 180 °C."},

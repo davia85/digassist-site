@@ -58,20 +58,46 @@ const Engine = (() => {
     };
   }
 
-  /* Renvoie le temps de base d'un ingrédient corrigé selon la taille choisie. */
-  function sizedTime(ing, sizes) {
-    if (!SIZE_SENSITIVE.includes(ing.id)) return ing.time;
-    const size = (sizes && sizes[ing.id]) || "moyen";
-    const table = SIZE_FACTORS[ing.tag] || SIZE_FACTORS.legume;
-    const f = table[size] != null ? table[size] : 1;
-    return Math.round(ing.time * f);
+  /* Temps de base corrigé selon la taille des morceaux ET l'état frais/surgelé. */
+  function computeTime(ing, sizes, states) {
+    let t = ing.time;
+    if (SIZE_SENSITIVE.includes(ing.id)) {
+      const size = (sizes && sizes[ing.id]) || "moyen";
+      const table = SIZE_FACTORS[ing.tag] || SIZE_FACTORS.legume;
+      t *= table[size] != null ? table[size] : 1;
+    }
+    if (STATE_SENSITIVE.includes(ing.id)) {
+      const st = (states && states[ing.id]) || "frais";
+      t *= STATE_FACTORS[st] != null ? STATE_FACTORS[st] : 1;
+    }
+    return Math.round(t);
   }
 
   /* Construit le plan complet.
-     sizes = { ingredientId: 'petit'|'moyen'|'gros' } (optionnel) */
-  function buildPlan(selectedIds, pantry, sizes) {
-    const items = selectedIds.map(byId).filter(Boolean);
-    if (items.length === 0) return null;
+     sizes  = { id: 'petit'|'moyen'|'gros' } (optionnel)
+     states = { id: 'frais'|'surgele' } (optionnel) */
+  function buildPlan(selectedIds, pantry, sizes, states) {
+    const allItems = selectedIds.map(byId).filter(Boolean);
+    if (allItems.length === 0) return null;
+
+    // Sépare la cuisson airfryer de ce qui se fait à la casserole (riz, pâtes, lentilles)
+    const items = allItems.filter((i) => i.methode !== "casserole");
+    const sides = allItems
+      .filter((i) => i.methode === "casserole")
+      .map((i) => ({
+        nom: i.nom, emoji: i.emoji, qty: i.qtyHint,
+        temps: i.casserole.temps, liquide: i.casserole.liquide,
+        bouillon: i.casserole.bouillon, etapes: i.casserole.etapes,
+      }));
+
+    // Seulement des accompagnements casserole (pas de cuisson airfryer)
+    if (items.length === 0) {
+      return {
+        program: null, temp: null, total: null,
+        prep: [], timeline: [], tips: [], conflitCroustillant: false,
+        sides, onlySides: true,
+      };
+    }
 
     // 1) Température commune
     const avg = items.reduce((a, i) => a + i.temp, 0) / items.length;
@@ -79,7 +105,7 @@ const Engine = (() => {
 
     // 2) Temps ajusté (taille + température commune) + décalage des départs
     const enriched = items.map((ing) => {
-      const base = sizedTime(ing, sizes);            // <-- corrigé selon la taille
+      const base = computeTime(ing, sizes, states);  // <-- taille + frais/surgelé
       const factor = ing.temp / targetTemp;          // >1 si l'ingrédient aime + chaud
       let adj = Math.round(base * factor);
       adj = clamp(adj, Math.max(3, Math.round(base * 0.6)), Math.round(base * 1.6));
@@ -99,6 +125,10 @@ const Engine = (() => {
       const s = seasoning(e.ing, pantry);
       const sizeSel = SIZE_SENSITIVE.includes(e.ing.id) ? ((sizes && sizes[e.ing.id]) || "moyen") : null;
       const sizeLabel = sizeSel ? (SIZE_LABELS[e.ing.tag] || SIZE_LABELS.legume)[sizeSel] : null;
+      const stateSel = STATE_SENSITIVE.includes(e.ing.id) ? ((states && states[e.ing.id]) || "frais") : null;
+      const stateNote = stateSel === "surgele"
+        ? "Cuisson depuis l'état congelé : temps rallongé. Assaisonne à mi-cuisson, quand la surface a dégelé."
+        : null;
       return {
         nom: e.ing.nom,
         emoji: e.ing.emoji,
@@ -114,6 +144,8 @@ const Engine = (() => {
         finition: e.ing.finition || null,
         size: sizeSel,
         sizeLabel,
+        state: stateSel,
+        stateNote,
       };
     });
 
@@ -218,6 +250,10 @@ const Engine = (() => {
       );
     }
 
+    if (sides.length) {
+      tips.push("Pendant la cuisson airfryer, lance tes accompagnements à la casserole (voir plus bas) : tout sera prêt en même temps.");
+    }
+
     return {
       program,
       temp: targetTemp,
@@ -226,6 +262,8 @@ const Engine = (() => {
       timeline,
       tips,
       conflitCroustillant,
+      sides,
+      onlySides: false,
     };
   }
 
