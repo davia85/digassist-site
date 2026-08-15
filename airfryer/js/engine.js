@@ -132,7 +132,7 @@ const Engine = (() => {
       actions: [
         others.some((i) => i.tag === "proteine") ? "Coupe la viande/le poisson en dés de ~2 cm." : "Prépare et coupe tes ingrédients.",
         `Mets TOUT dans la cuve : ${listeNoms} + le liquide (juste de quoi couvrir) + tes épices.`,
-        `Couvre la cuve de papier alu (il garde la vapeur = c'est ce qui cuit ${starches.map((s) => s.nom.toLowerCase()).join(" et ")}). Lance le mode Roast/cuisson à ${temp}°.`,
+        `Couvre de papier alu si tu veux (ça garde la vapeur) — sans alu ça marche aussi, il faudra juste surveiller le liquide. Lance le mode Roast/cuisson à ${temp}°.`,
       ],
     });
     timeline.push({
@@ -161,7 +161,7 @@ const Engine = (() => {
       tips.push(`Durée adaptée au temps que TU as saisi (al dente sur le paquet) : dans la cuve, la cuisson est plus douce qu'à l'eau bouillante, donc on ajoute quelques minutes. Total calculé : ~${total} min. Goûte et ajuste.`);
     }
     tips.push(
-      "Le papier alu est indispensable : sans lui, le liquide s'évapore trop vite et les pâtes/le riz ne cuisent pas.",
+      "Papier alu : utile (il garde la vapeur) mais PAS obligatoire — beaucoup de recettes n'en mettent pas. Sans alu, surveille le liquide et rajoute un peu de bouillon chaud si ça sèche avant que les pâtes/le riz soient cuits.",
       "Assez de liquide au départ = la clé. Il doit juste couvrir les pâtes / le riz.",
       "Skyr/yaourt : toujours EN FIN + un peu de maïzena (sinon il tranche à la chaleur). La crème, elle, supporte la cuisson.",
       "Mode Roast (ou cuisson), PAS le mode AirFry soufflé."

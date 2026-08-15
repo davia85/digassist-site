@@ -617,7 +617,7 @@ const RECIPES = [
     prep:[
       "🍗 Poulet : coupe l'escalope en dés de 2 cm, assaisonne (huile + ail + paprika).",
       "🍝 Dans la cuve en verre : pâtes crues + poulet + sauce tomate + eau chaude ou bouillon. Le liquide doit juste couvrir les pâtes.",
-      "⚠️ Couvre la cuve de papier alu : c'est ce qui garde la vapeur pour cuire les pâtes. Mode Roast (ou cuisson), PAS AirFry soufflé.",
+      "Couvre de papier alu si tu veux (ça garde la vapeur, mais ce n'est pas obligatoire — sinon surveille le liquide). Mode Roast (ou cuisson), PAS AirFry soufflé.",
     ],
     timeline:[
       {t:0, txt:"Tout dans la cuve, couvre de papier alu. Lance en mode Roast/cuisson 180 °C."},
@@ -642,7 +642,7 @@ const RECIPES = [
     prep:[
       "🍗 Poulet : en dés de 2 cm, assaisonne (huile + épices tagine + ail).",
       "🍚 Dans la cuve : riz rincé + poulet + carotte + bouillon chaud + épices. Le bouillon doit couvrir le riz de ~1 cm.",
-      "⚠️ Couvre de papier alu. Mode Roast/cuisson, pas AirFry soufflé.",
+      "Papier alu facultatif (garde la vapeur ; sinon surveille le liquide). Mode Roast/cuisson, pas AirFry soufflé.",
     ],
     timeline:[
       {t:0, txt:"Tout dans la cuve, couvre de papier alu. Roast/cuisson 180 °C."},
@@ -665,7 +665,7 @@ const RECIPES = [
     prep:[
       "🥔 Rondelles fines (2-3 mm) : plus c'est fin, mieux ça cuit.",
       "🧀 Dans la cuve : rondelles + crème (+ lait) jusqu'à presque couvrir + ail + sel + muscade. Fromage râpé dessus.",
-      "⚠️ Couvre de papier alu au départ. Mode Roast/cuisson.",
+      "Couvre de papier alu au départ si tu veux (facultatif). Mode Roast/cuisson.",
     ],
     timeline:[
       {t:0, txt:"Cuve remplie, couverte de papier alu. Roast/cuisson 180 °C."},
