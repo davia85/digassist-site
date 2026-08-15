@@ -114,57 +114,71 @@ const Engine = (() => {
       });
     });
 
-    // Liquide conseillé (avec la bonne méthode pour crème / skyr / bouillon)
+    // Liquide : MESURÉ (pas "couvrir"), car l'airfryer n'évapore pas.
     const liquideBase = starches.map((s) => s.onepot.liquide).join(" · ");
     const liquide = {
-      titre: "Le liquide (indispensable)",
-      texte: `${liquideBase} Le liquide de CUISSON (celui qui cuit ${starches.map((s) => s.nom.toLowerCase()).join("/")}) = bouillon ou eau. Pour une sauce crémeuse : la crème (liquide/fraîche) ou la crème de coco peuvent aller dès le début (la coco = version curry, elle ne tranche pas) ; le skyr/yaourt, lui, s'ajoute EN FIN (hors forte chaleur) mélangé à 1 c. à c. de maïzena, sinon il tranche (il graine).`,
+      titre: "Le liquide — à MESURER (pas à couvrir)",
+      texte: `${liquideBase} Important : l'airfryer n'évapore quasiment pas le liquide, donc trop = soupe. La crème et les légumes qui rendent de l'eau (épinards…) s'ajoutent EN FIN, pas au début. Le skyr/yaourt, en toute fin, mélangé à 1 c. à c. de maïzena (sinon il tranche).`,
     };
 
-    const listeNoms = [
-      ...others.map((i) => i.nom.toLowerCase()),
+    // Ingrédients "humides" (à ajouter en fin pour ne pas détremper)
+    const lateVeg = others.filter((i) => i.tag === "legume" && i.humide).map((i) => i.nom.toLowerCase());
+    const nowItems = [
+      ...others.filter((i) => !(i.tag === "legume" && i.humide)).map((i) => i.nom.toLowerCase()),
       ...starches.map((s) => s.nom.toLowerCase() + " cru(es)"),
     ].join(" + ");
 
+    const stir1 = Math.max(8, Math.round(total * 0.33));
+    const addLate = Math.max(stir1 + 2, total - 7);
+    const check = Math.max(addLate + 1, total - 3);
+
     const timeline = [];
     timeline.push({
-      t: 0, label: "0:00 — Tout dans la cuve",
+      t: 0, label: "0:00 — Dans la cuve",
       actions: [
-        others.some((i) => i.tag === "proteine") ? "Coupe la viande/le poisson en dés de ~2 cm." : "Prépare et coupe tes ingrédients.",
-        `Mets TOUT dans la cuve : ${listeNoms} + le liquide (juste de quoi couvrir) + tes épices.`,
-        `Couvre de papier alu si tu veux (ça garde la vapeur) — sans alu ça marche aussi, il faudra juste surveiller le liquide. Lance le mode Roast/cuisson à ${temp}°.`,
+        others.some((i) => i.tag === "proteine") ? "Coupe la viande/le poisson en dés de ~2 cm." : "Prépare tes ingrédients.",
+        `Mets dans la cuve : ${nowItems} + le liquide MESURÉ (pas plus) + tes épices. Pousse bien les pâtes/le riz SOUS le liquide (ce qui dépasse sèche et surcuit ; casse les pâtes longues si besoin).`,
+        `Couvre de papier alu (recommandé ici : ça garde tout humide et empêche les pâtes qui dépassent de sécher), puis lance le mode Roast — c'est LE bon mode : ~160°C, doux, non réglable sur le Tasti (et c'est justement ce qu'il faut). Sans alu, remue plus souvent pour garder les pâtes immergées.`,
       ],
     });
     timeline.push({
-      t: stir, label: `${mmss(stir)}`,
-      actions: ["Ouvre, remue bien (décolle du fond). Trop sec ? ajoute un peu de liquide chaud. Recouvre de papier alu."],
+      t: stir1, label: `${mmss(stir1)}`,
+      actions: ["Remue bien (décolle du fond, remets tout sous le liquide). Ça sèche trop vite ? ajoute un petit peu de bouillon chaud."],
     });
     timeline.push({
-      t: Math.max(stir + 2, total - 4), label: `${mmss(Math.max(stir + 2, total - 4))}`,
+      t: addLate, label: `${mmss(addLate)}`,
       actions: [
-        `Goûte ${starches.map((s) => s.nom.toLowerCase()).join(" / ")} : encore ferme(s) ? Referme et +3-5 min.`,
+        `Ajoute maintenant la crème (si tu en mets)${lateVeg.length ? " et " + lateVeg.join(", ") : ""} — les mettre plus tôt détrempe tout. Remue.`,
+      ],
+    });
+    timeline.push({
+      t: check, label: `${mmss(check)}`,
+      actions: [
+        `Goûte ${starches.map((s) => s.nom.toLowerCase()).join(" / ")} : encore ferme(s) ? +3-5 min.`,
+        "S'il reste trop de liquide : laisse à découvert 2-4 min (ça épaissit lentement) ou égoutte l'excédent.",
         others.some((i) => i.tag === "proteine") ? "Vérifie la viande : cuite à cœur (blanche, jus clair)." : "",
       ].filter(Boolean),
     });
     timeline.push({
       t: total, label: `${mmss(total)} — C'est prêt !`,
       actions: [
-        "🥛 Sauce crémeuse : à la sortie (hors forte chaleur), incorpore le skyr/yaourt mélangé à 1 c. à c. de maïzena — sinon il tranche. (La crème peut, elle, aller dès le début.)",
-        "Option gratin : parsème de fromage râpé et laisse 3 min à découvert pour dorer.",
-        "✅ Tout a cuit ensemble dans la cuve.",
+        "🥛 Sauce crémeuse au skyr/yaourt : hors du feu, mélange-le à 1 c. à c. de maïzena avant de l'incorporer (sinon il tranche).",
+        "Option gratin : fromage râpé + 3 min à découvert pour dorer.",
+        "✅ Prêt.",
       ],
       final: true,
     });
 
     const tips = [];
     if (tempsPerso) {
-      tips.push(`Durée adaptée au temps que TU as saisi (al dente sur le paquet) : dans la cuve, la cuisson est plus douce qu'à l'eau bouillante, donc on ajoute quelques minutes. Total calculé : ~${total} min. Goûte et ajuste.`);
+      tips.push(`Durée adaptée à TON temps al dente (paquet) : dans la cuve c'est plus doux qu'à l'eau bouillante, donc ~${total} min. Goûte et ajuste.`);
     }
     tips.push(
-      "Papier alu : utile (il garde la vapeur) mais PAS obligatoire — beaucoup de recettes n'en mettent pas. Sans alu, surveille le liquide et rajoute un peu de bouillon chaud si ça sèche avant que les pâtes/le riz soient cuits.",
-      "Assez de liquide au départ = la clé. Il doit juste couvrir les pâtes / le riz.",
-      "Skyr/yaourt : toujours EN FIN + un peu de maïzena (sinon il tranche à la chaleur). La crème, elle, supporte la cuisson.",
-      "Mode Roast (ou cuisson), PAS le mode AirFry soufflé."
+      "L'airfryer n'évapore presque pas le liquide : mets-en PEU (mesuré, pas 'couvrir'), sinon ça fait de la soupe. S'il en reste trop, prolonge à découvert ou égoutte.",
+      "Crème + légumes qui rendent de l'eau (épinards…) = à la FIN (dernières minutes), jamais au début.",
+      "Pousse les pâtes/le riz sous le liquide et remue : ce qui dépasse sèche et surcuit.",
+      "Le bon mode = Roast (~160°C, doux) : en AirFry (185°, plus chaud) le dessus sèche avant que les pâtes cuisent. Sur le Tasti tu ne règles que la durée.",
+      "Papier alu recommandé : il garde l'humidité et évite les pâtes sèches qui dépassent."
     );
 
     // Légumes secs éventuels : à préparer à part (ils ne cuisent pas dans ce temps)
@@ -216,9 +230,10 @@ const Engine = (() => {
       };
     }
 
-    // 1) Température commune
-    const avg = items.reduce((a, i) => a + i.temp, 0) / items.length;
-    const targetTemp = snapTemp(avg);
+    // 1) Mode de cuisson : le Tasti ne règle PAS la température.
+    // La cuisson "sèche/croustillante" se fait en mode AirFry (185°C fixe).
+    // On garde 185 comme repère pour ajuster les temps de chaque ingrédient.
+    const targetTemp = 185;
 
     // 2) Temps ajusté (taille + température commune) + décalage des départs
     const enriched = items.map((ing) => {
@@ -297,7 +312,7 @@ const Engine = (() => {
       events.push({
         t: tf,
         prio: 1.5,
-        txt: `🔥 Finition dorée : monte à 200° (ou programme Broil) pour les dernières minutes — c'est ce qui rend ${aFinition.map((e) => e.ing.nom.toLowerCase()).join(", ")} doré(e) et gourmand(e).`,
+        txt: `🔥 Finition dorée : passe en mode Broil (le grill du Tasti) pour les 2-3 dernières minutes — c'est ce qui rend ${aFinition.map((e) => e.ing.nom.toLowerCase()).join(", ")} doré(e) et gourmand(e).`,
       });
     }
 
@@ -360,12 +375,7 @@ const Engine = (() => {
     if (items.length >= 4) {
       tips.push("Beaucoup d'ingrédients : ne surcharge pas le bac (une couche = cuisson régulière), quitte à cuire en 2 fois.");
     }
-    const tempSpread = Math.max(...items.map((i) => i.temp)) - Math.min(...items.map((i) => i.temp));
-    if (tempSpread >= 25) {
-      tips.push(
-        `Tes ingrédients aiment des températures assez différentes. On a choisi ${targetTemp} °C comme compromis : surveille les plus délicats en fin de cuisson.`
-      );
-    }
+    tips.push("Sur le Tasti, la cuisson sèche se fait en mode AirFry (185°C, fixe). Tu ne règles que la DURÉE — surveille les ingrédients délicats en fin.");
 
     if (sides.length) {
       tips.push("Pendant la cuisson airfryer, lance tes accompagnements à la casserole (voir plus bas) : tout sera prêt en même temps.");

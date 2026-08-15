@@ -153,7 +153,7 @@ const INGREDIENTS = [
     sechage:"Tamponne au papier absorbant AVANT d'huiler : poulet sec + huile = poulet doré (l'eau, elle, empêche de dorer).",
     humide:true, croustille:false,
     marinade:"Mélange les épices avec 1 bonne c. à s. d'huile d'olive et enrobe toute l'escalope (idéal : 10 min avant, mais direct ça marche aussi).",
-    finition:"3 dernières min à 200° pour dorer. À la sortie : noisette de beurre + filet de citron = fondant et gourmand.",
+    finition:"3 dernières min en mode Broil (grill) pour dorer. À la sortie : noisette de beurre + filet de citron = fondant et gourmand.",
     astuce:"Ne surcuis pas (chair blanche, jus clair) sinon ça sèche. Un peu de miel dans la marinade = joli doré.",
     epices:["paprika","ail","cumin","paprika_fume","herbes_provence","miel","citron"] },
 
@@ -163,7 +163,7 @@ const INGREDIENTS = [
     sechage:"Tamponne avant d'huiler.",
     humide:true, croustille:false,
     marinade:"Épices + 1 c. à s. d'huile, enrobe bien. Version dorée express !",
-    finition:"2 dernières min à 200°. Un filet de miel + citron à la sortie.",
+    finition:"2 dernières min en mode Broil (grill). Un filet de miel + citron à la sortie.",
     astuce:"Espace-les, ne les colle pas, sinon elles se soudent (et ne dorent pas).",
     epices:["paprika","ail","curry","paprika_fume","miel","citron"] },
 
@@ -183,7 +183,7 @@ const INGREDIENTS = [
     sechage:null,
     humide:true, croustille:false,
     marinade:"Mélange épices + 1 filet d'huile DANS la viande avant de former les boulettes = goût partout.",
-    finition:"2 dernières min à 200° pour une belle croûte dorée.",
+    finition:"2 dernières min en mode Broil (grill) pour une belle croûte dorée.",
     astuce:"1 c. à c. de moutarde dans la viande = boulettes moelleuses et goûteuses.",
     epices:["ail","cumin","paprika","paprika_fume","origan"] },
 
@@ -193,7 +193,7 @@ const INGREDIENTS = [
     sechage:null,
     humide:true, croustille:false,
     marinade:"Épices + filet d'huile bien malaxés dans la viande.",
-    finition:"2 dernières min à 200°. Sers avec un filet de citron et de la sauce blanche/yaourt-ail.",
+    finition:"2 dernières min en mode Broil (grill). Sers avec un filet de citron et de la sauce blanche/yaourt-ail.",
     astuce:"Malaxe bien 1 min : la viande devient collante = kefta qui se tiennent.",
     epices:["cumin","paprika","ail","ras_el_hanout"] },
 
@@ -379,14 +379,14 @@ const INGREDIENTS = [
   // Riz & pâtes : cuisson EN ONE-POT dans la cuve (avec liquide), pas à la casserole.
   { id:"riz_blanc", nom:"Riz", emoji:"🍚", tag:"accompagnement",
     qtyHint:"60-80 g cru / pers.", epices:[],
-    onepot:{ temp:180, total:32, stir:15, buffer:18, alDenteDefaut:12,
-      liquide:"1 volume de riz pour 2 volumes de liquide (bouillon, eau, ou crème allongée d'eau).",
+    onepot:{ temp:160, total:34, stir:16, buffer:20, alDenteDefaut:12,
+      liquide:"1 volume de riz pour 2 volumes de bouillon/eau (le liquide doit affleurer ~1 cm au-dessus). Le riz l'absorbe. Couvre bien de papier alu.",
       absorbe:true } },
 
   { id:"pates", nom:"Pâtes", emoji:"🍝", tag:"accompagnement",
-    qtyHint:"80-100 g crues / pers.", epices:[],
-    onepot:{ temp:180, total:26, stir:12, buffer:14, alDenteDefaut:9,
-      liquide:"~250-300 ml de liquide pour 100 g de pâtes — juste de quoi les couvrir (crème, bouillon, ou moitié-moitié).",
+    qtyHint:"80-100 g crues / pers. (pâtes courtes : penne, fusilli)", epices:[],
+    onepot:{ temp:160, total:30, stir:14, buffer:20, alDenteDefaut:9,
+      liquide:"Le liquide doit arriver à ~1 cm AU-DESSUS des pâtes (pas plus), avec une base un peu ÉPAISSE : sauce tomate, ou crème fraîche épaisse allongée d'un peu de bouillon. Trop de liquide fin (eau/crème liquide) = soupe ; trop peu = cuisson inégale.",
       absorbe:true } },
 
   { id:"lentilles", nom:"Lentilles", emoji:"🫘", tag:"accompagnement", methode:"casserole",
@@ -472,10 +472,10 @@ const RECIPES = [
       "⚠️ Croustillant : les amandines partent SEULES 10 min d'avance, poulet au centre ensuite, jamais par-dessus. Ne jamais mettre d'eau (ça empêche de dorer).",
     ],
     timeline:[
-      {t:0, txt:"Amandines huilées en une seule couche. Lance AirFry 190 °C."},
+      {t:0, txt:"Amandines huilées en une seule couche. Lance AirFry (185°C)."},
       {t:10, txt:"Secoue les amandines, pousse-les sur les côtés. Ajoute l'escalope bien marinée au centre."},
       {t:17, txt:"Retourne l'escalope, re-secoue les amandines."},
-      {t:21, txt:"🔥 Finition : monte à 200° pour dorer tout le monde."},
+      {t:21, txt:"🔥 Finition : passe en mode Broil (grill) pour dorer tout le monde."},
       {t:23, txt:"Vérifie l'escalope (jus clair). Amandines qui résistent au couteau ? +3-5 min."},
       {t:24, txt:"✅ À la sortie : noisette de beurre + citron sur le poulet. Gourmand !"},
     ],
@@ -491,7 +491,7 @@ const RECIPES = [
       "🐟 Saumon : tamponné, huile + citron + sel, côté peau en bas.",
     ],
     timeline:[
-      {t:0, txt:"Brocoli huilé dans le bac. AirFry 185 °C."},
+      {t:0, txt:"Brocoli huilé dans le bac. AirFry (185°C)."},
       {t:4, txt:"Ajoute le saumon (côté peau en bas) et les tomates cerises."},
       {t:10, txt:"Vérifie : le saumon doit commencer à s'effeuiller."},
       {t:15, txt:"✅ Prêt : saumon fondant + légumes rôtis. Citron dessus."},
@@ -508,7 +508,7 @@ const RECIPES = [
       "🧆 Kefta : cumin + paprika + ail + ras el hanout mélangés DANS la viande, formés en boudins.",
     ],
     timeline:[
-      {t:0, txt:"Poivron + courgette huilés + épices. AirFry 185 °C."},
+      {t:0, txt:"Poivron + courgette huilés + épices. AirFry (185°C)."},
       {t:7, txt:"Secoue, ajoute les kefta au centre."},
       {t:14, txt:"Retourne les kefta, mélange les légumes."},
       {t:20, txt:"✅ Prêt : kefta juteuses + légumes fondants."},
@@ -525,7 +525,7 @@ const RECIPES = [
       "🧈 Tofu : pressé 10 min, cubes, enrobés de sauce soja + maïzena + huile (= croûte dorée).",
     ],
     timeline:[
-      {t:0, txt:"Patate douce huilée dans le bac. AirFry 190 °C."},
+      {t:0, txt:"Patate douce huilée dans le bac. AirFry (185°C)."},
       {t:9, txt:"Secoue, ajoute le tofu enrobé."},
       {t:15, txt:"Secoue l'ensemble."},
       {t:20, txt:"✅ Prêt : tofu croustillant + patate douce fondante. Sésame dessus."},
@@ -542,7 +542,7 @@ const RECIPES = [
       "🍗 Aiguillettes : tamponnées, passées dans l'œuf battu puis la chapelure.",
     ],
     timeline:[
-      {t:0, txt:"Potatoes surgelées dans le bac. AirFry 195 °C."},
+      {t:0, txt:"Potatoes surgelées dans le bac. AirFry (185°C)."},
       {t:8, txt:"Secoue les potatoes, pousse sur les côtés, ajoute les aiguillettes."},
       {t:14, txt:"Retourne les aiguillettes."},
       {t:18, txt:"✅ Prêt : aiguillettes dorées + potatoes croustillantes."},
@@ -559,7 +559,7 @@ const RECIPES = [
       "🍤 Crevettes : bien séchées, huile + ail + un peu de piment.",
     ],
     timeline:[
-      {t:0, txt:"Courgettes huilées dans le bac. AirFry 180 °C."},
+      {t:0, txt:"Courgettes huilées dans le bac. AirFry (185°C)."},
       {t:6, txt:"Secoue, ajoute les crevettes."},
       {t:10, txt:"Secoue légèrement."},
       {t:14, txt:"✅ Prêt : crevettes nacrées + courgettes dorées. Citron dessus."},
@@ -576,7 +576,7 @@ const RECIPES = [
       "🧀 Halloumi : tranches de 1 cm, un filet d'huile (ne pas saler).",
     ],
     timeline:[
-      {t:0, txt:"Poivron + courgette huilés. AirFry 190 °C."},
+      {t:0, txt:"Poivron + courgette huilés. AirFry (185°C)."},
       {t:6, txt:"Secoue, ajoute halloumi + tomates cerises."},
       {t:11, txt:"Retourne le halloumi."},
       {t:15, txt:"✅ Prêt : halloumi doré + légumes fondants."},
@@ -593,7 +593,7 @@ const RECIPES = [
       "🍗 Pilons : peau séchée, entaillés jusqu'à l'os, huile + paprika fumé + sel. Laque = miel + moutarde + sauce soja.",
     ],
     timeline:[
-      {t:0, txt:"Grenailles + pilons (côté peau en haut) dans le bac. AirFry 190 °C."},
+      {t:0, txt:"Grenailles + pilons (côté peau en haut) dans le bac. AirFry (185°C)."},
       {t:10, txt:"Retourne les pilons, secoue les grenailles."},
       {t:18, txt:"Badigeonne les pilons de laque miel-moutarde."},
       {t:25, txt:"✅ Prêt : pilons laqués brillants + grenailles dorées."},
@@ -605,7 +605,7 @@ const RECIPES = [
     id:"onepot_pates_poulet",
     nom:"One-pot pâtes & poulet (sauce tomate)",
     emoji:"🍝🍗",
-    duree:28, temp:180, portions:"2 pers.", tags:["one-pot","plat en sauce"],
+    duree:28, temp:160, portions:"2 pers.", tags:["one-pot","plat en sauce"],
     ingredients:[
       "150 g de pâtes crues (penne, coquillettes…)",
       "1 escalope de poulet en dés",
@@ -620,7 +620,7 @@ const RECIPES = [
       "Couvre de papier alu si tu veux (ça garde la vapeur, mais ce n'est pas obligatoire — sinon surveille le liquide). Mode Roast (ou cuisson), PAS AirFry soufflé.",
     ],
     timeline:[
-      {t:0, txt:"Tout dans la cuve, couvre de papier alu. Lance en mode Roast/cuisson 180 °C."},
+      {t:0, txt:"Tout dans la cuve, couvre de papier alu. Lance en mode mode Roast (~160°C)."},
       {t:12, txt:"Ouvre, remue bien (décolle les pâtes du fond). Trop sec ? Ajoute un peu d'eau chaude. Recouvre d'alu."},
       {t:22, txt:"Goûte les pâtes : encore fermes ? +3-5 min. Vérifie le poulet (blanc à cœur)."},
       {t:25, txt:"Gratin (option) : retire l'alu, parsème de fromage râpé."},
@@ -631,7 +631,7 @@ const RECIPES = [
     id:"onepot_riz_poulet",
     nom:"One-pot riz & poulet façon tajine",
     emoji:"🍚🍗",
-    duree:32, temp:180, portions:"2 pers.", tags:["one-pot","plat en sauce"],
+    duree:32, temp:160, portions:"2 pers.", tags:["one-pot","plat en sauce"],
     ingredients:[
       "150 g de riz cru",
       "1 escalope de poulet en dés",
@@ -645,7 +645,7 @@ const RECIPES = [
       "Papier alu facultatif (garde la vapeur ; sinon surveille le liquide). Mode Roast/cuisson, pas AirFry soufflé.",
     ],
     timeline:[
-      {t:0, txt:"Tout dans la cuve, couvre de papier alu. Roast/cuisson 180 °C."},
+      {t:0, txt:"Tout dans la cuve, couvre de papier alu. mode Roast (~160°C)."},
       {t:15, txt:"Ouvre, remue le riz. Recouvre d'alu (ajoute un filet de bouillon si sec)."},
       {t:26, txt:"Goûte le riz : encore ferme ? +4-5 min. Vérifie le poulet."},
       {t:32, txt:"✅ Prêt : riz parfumé + poulet fondant, façon tajine."},
@@ -655,7 +655,7 @@ const RECIPES = [
     id:"gratin_pdt",
     nom:"Gratin de pommes de terre express",
     emoji:"🥔🧀",
-    duree:32, temp:180, portions:"2 pers.", tags:["gratin","plat en sauce"],
+    duree:32, temp:160, portions:"2 pers.", tags:["gratin","plat en sauce"],
     ingredients:[
       "3-4 pommes de terre en fines rondelles (2-3 mm)",
       "~200 ml de crème liquide (+ un peu de lait)",
@@ -668,7 +668,7 @@ const RECIPES = [
       "Couvre de papier alu au départ si tu veux (facultatif). Mode Roast/cuisson.",
     ],
     timeline:[
-      {t:0, txt:"Cuve remplie, couverte de papier alu. Roast/cuisson 180 °C."},
+      {t:0, txt:"Cuve remplie, couverte de papier alu. mode Roast (~160°C)."},
       {t:20, txt:"Retire l'alu (les pommes de terre doivent être presque tendres au couteau)."},
       {t:28, txt:"Laisse gratiner à découvert pour dorer le fromage."},
       {t:32, txt:"✅ Prêt : gratin doré et fondant. Pique au couteau pour vérifier."},

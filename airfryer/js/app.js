@@ -194,10 +194,11 @@
 
     const badges = `
       <div class="plan-badges">
-        <div class="badge"><div class="badge__num">${plan.temp}°</div><div class="badge__lbl">Température</div></div>
-        <div class="badge"><div class="badge__num">${plan.total} min</div><div class="badge__lbl">Durée totale</div></div>
-        <div class="badge"><div class="badge__num">${esc(plan.program)}</div><div class="badge__lbl">Programme</div></div>
-      </div>`;
+        <div class="badge"><div class="badge__num">${esc(plan.program)}</div><div class="badge__lbl">Mode à choisir</div></div>
+        <div class="badge"><div class="badge__num">${plan.total} min</div><div class="badge__lbl">Durée à régler</div></div>
+        <div class="badge"><div class="badge__num">${plan.temp}°</div><div class="badge__lbl">Temp du mode (fixe)</div></div>
+      </div>
+      <p class="tasti-note">💡 Sur ton Tasti : tu choisis le <b>MODE</b> (sa température est fixe), et tu règles seulement la <b>DURÉE</b>.</p>`;
 
     const warn = plan.conflitCroustillant
       ? `<div class="warn">💡 Un ingrédient qui doit rester croustillant est cuit avec un ingrédient qui rejette de la vapeur. On a décalé les départs et on te dit où placer chaque chose pour garder le croustillant.</div>`
@@ -260,6 +261,11 @@
       ${tips}`;
   }
 
+  /* Mode du Tasti à partir d'une température de repère (pas de réglage sur l'appareil) */
+  function modeFromTemp(t) {
+    return t >= 175 ? { name: "AirFry", temp: 185 } : { name: "Roast", temp: 160 };
+  }
+
   /* ---------- Onglet : Recettes ---------- */
   function renderRecipeList() {
     $("#recipe-detail").innerHTML = "";
@@ -269,7 +275,7 @@
       <div class="recipe-card" data-id="${r.id}">
         <div class="recipe-card__emoji">${r.emoji}</div>
         <div class="recipe-card__name">${esc(r.nom)}</div>
-        <div class="recipe-card__meta">⏱️ ${r.duree} min · ${r.temp}° · ${esc(r.portions)}</div>
+        <div class="recipe-card__meta">⏱️ ${r.duree} min · ${modeFromTemp(r.temp).name} · ${esc(r.portions)}</div>
         <div class="recipe-tags">${r.tags.map((t) => `<span class="recipe-tag">${esc(t)}</span>`).join("")}</div>
       </div>`).join("");
     $$(".recipe-card", host).forEach((c) =>
@@ -292,10 +298,11 @@
       <div class="plan-head">
         <div class="plan-head__title">${r.emoji} ${esc(r.nom)}</div>
         <div class="plan-badges">
-          <div class="badge"><div class="badge__num">${r.temp}°</div><div class="badge__lbl">Température</div></div>
+          <div class="badge"><div class="badge__num">${modeFromTemp(r.temp).name}</div><div class="badge__lbl">Mode</div></div>
           <div class="badge"><div class="badge__num">${r.duree} min</div><div class="badge__lbl">Durée</div></div>
           <div class="badge"><div class="badge__num">${esc(r.portions)}</div><div class="badge__lbl">Portions</div></div>
         </div>
+        <p class="tasti-note">💡 Sur ton Tasti : choisis le mode <b>${modeFromTemp(r.temp).name}</b> (temp fixe ~${modeFromTemp(r.temp).temp}°), règle la durée sur <b>${r.duree} min</b>.</p>
       </div>
       <div class="plan-card">
         <div class="section-title">🛒 Ingrédients</div>
