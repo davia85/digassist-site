@@ -77,7 +77,9 @@ const SPICES = [
   { id:"miel",           nom:"Miel",                emoji:"🍯", base:false, dose:"1 c. à c." },
   { id:"moutarde",       nom:"Moutarde",            emoji:"🟨", base:false, dose:"1 c. à c." },
   { id:"sesame",         nom:"Graines de sésame",   emoji:"⚪", base:false, dose:"1 c. à c." },
-  { id:"maizena",        nom:"Maïzena",             emoji:"🌽", base:false, dose:"1 c. à s." },
+  { id:"maizena",        nom:"Maïzena",             emoji:"🌽", base:false, dose:"1 c. à c." },
+  { id:"skyr",           nom:"Skyr / yaourt",       emoji:"🥛", base:false, dose:"2-3 c. à s." },
+  { id:"creme",          nom:"Crème",               emoji:"🥛", base:false, dose:"~200 ml" },
   { id:"bouillon_volaille", nom:"Bouillon de volaille", emoji:"🍗", base:true,  dose:"1 cube" },
   { id:"bouillon_boeuf",    nom:"Bouillon de bœuf",     emoji:"🐄", base:false, dose:"1 cube" },
   { id:"bouillon_legumes",  nom:"Bouillon de légumes",  emoji:"🥕", base:false, dose:"1 cube" },
@@ -363,33 +365,18 @@ const INGREDIENTS = [
   // ---------- RIZ, PÂTES & LÉGUMES SECS ----------
   // (le riz/pâtes/lentilles crus se cuisent à l'eau, pas à l'airfryer :
   //  l'appli les prépare "à côté" pour un repas complet et synchronisé)
-  { id:"riz_blanc", nom:"Riz (cru)", emoji:"🍚", tag:"accompagnement", methode:"casserole",
-    temp:0, time:14, shake:0, program:"Casserole", qtyHint:"60-80 g cru / pers.",
-    coupe:null, sechage:null, humide:false, croustille:false, epices:[],
-    casserole:{
-      temps:"~12-15 min",
-      liquide:"1 volume de riz pour 2 volumes d'eau (ou de bouillon)",
-      bouillon:"Remplace l'eau par du bouillon (volaille/légumes) = riz parfumé, idéal façon pot-au-feu.",
-      etapes:[
-        "Rince le riz. Mets-le dans une casserole avec 2 fois son volume d'eau (ou bouillon) + une pincée de sel.",
-        "Porte à ébullition, baisse à feu doux et couvre.",
-        "Laisse ~12-15 min jusqu'à absorption complète, sans remuer. Coupe le feu, laisse gonfler 5 min.",
-      ],
-    } },
+  // Riz & pâtes : cuisson EN ONE-POT dans la cuve (avec liquide), pas à la casserole.
+  { id:"riz_blanc", nom:"Riz", emoji:"🍚", tag:"accompagnement",
+    qtyHint:"60-80 g cru / pers.", epices:[],
+    onepot:{ temp:180, total:32, stir:15,
+      liquide:"1 volume de riz pour 2 volumes de liquide (bouillon, eau, ou crème allongée d'eau).",
+      absorbe:true } },
 
-  { id:"pates", nom:"Pâtes (crues)", emoji:"🍝", tag:"accompagnement", methode:"casserole",
-    temp:0, time:10, shake:0, program:"Casserole", qtyHint:"80-100 g crues / pers.",
-    coupe:null, sechage:null, humide:false, croustille:false, epices:[],
-    casserole:{
-      temps:"selon le paquet (~8-11 min)",
-      liquide:"grand volume d'eau bouillante salée",
-      bouillon:null,
-      etapes:[
-        "Porte une grande casserole d'eau salée à ébullition.",
-        "Plonge les pâtes, remue au début pour qu'elles ne collent pas.",
-        "Cuis le temps indiqué sur le paquet (goûte 1 min avant la fin), puis égoutte.",
-      ],
-    } },
+  { id:"pates", nom:"Pâtes", emoji:"🍝", tag:"accompagnement",
+    qtyHint:"80-100 g crues / pers.", epices:[],
+    onepot:{ temp:180, total:26, stir:12,
+      liquide:"~250-300 ml de liquide pour 100 g de pâtes — juste de quoi les couvrir (crème, bouillon, ou moitié-moitié).",
+      absorbe:true } },
 
   { id:"lentilles", nom:"Lentilles", emoji:"🫘", tag:"accompagnement", methode:"casserole",
     formes:{

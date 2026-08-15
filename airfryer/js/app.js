@@ -196,11 +196,11 @@
         ${p.size ? `<div class="prep-line">📏 <b>Taille :</b> ${esc(p.size)} — vise ${esc(p.sizeLabel)}. <span class="prep-note">Le temps est calculé pour cette taille.</span></div>` : ""}
         ${p.state ? `<div class="prep-line">❄️ <b>État :</b> ${p.state === "surgele" ? "surgelé" : "frais"}${p.stateNote ? ` <span class="prep-note">${esc(p.stateNote)}</span>` : ""}</div>` : ""}
         ${p.sechage ? `<div class="prep-line">💧 <b>Séchage :</b> ${esc(p.sechage)}</div>` : ""}
-        <div class="prep-line">🧂 <b>Assaisonnement :</b> ${esc(p.epices)}</div>
+        ${p.epices ? `<div class="prep-line">🧂 <b>Assaisonnement :</b> ${esc(p.epices)}</div>` : ""}
         ${p.marinade ? `<div class="prep-line">🥣 <b>Marinade :</b> ${esc(p.marinade)}</div>` : ""}
         ${p.finition ? `<div class="prep-line prep-gourmand">✨ <b>Finition gourmande :</b> ${esc(p.finition)}</div>` : ""}
         ${p.astuce ? `<div class="prep-note">👉 ${esc(p.astuce)}</div>` : ""}
-        ${p.manque.length ? `<div class="missing">Astuce goût : avec ${p.manque.slice(0,3).map((s)=>esc(s.nom)).join(", ")} ce serait encore meilleur.</div>` : ""}
+        ${(p.manque && p.manque.length) ? `<div class="missing">Astuce goût : avec ${p.manque.slice(0,3).map((s)=>esc(s.nom)).join(", ")} ce serait encore meilleur.</div>` : ""}
       </div>`).join("");
 
     const timeline = plan.timeline.map((step) => `
@@ -216,18 +216,30 @@
       ? `<div class="tips"><div class="tips__title">💡 Astuces</div><ul>${plan.tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>`
       : "";
 
+    const liquideCard = plan.liquide
+      ? `<div class="plan-card liquide-card">
+           <div class="section-title">🥛 ${esc(plan.liquide.titre)}</div>
+           <div class="prep-line">${esc(plan.liquide.texte)}</div>
+         </div>`
+      : "";
+
+    const headTitle = plan.onepot ? "🍲 Ta recette one-pot" : "🔥 Ta cuisson synchronisée";
+    const dureeLabel = plan.onepot ? "une seule cuisson dans la cuve" : "une seule cuisson";
+
     out.innerHTML = `
       <div class="plan-head">
-        <div class="plan-head__title">🔥 Ta cuisson synchronisée</div>
+        <div class="plan-head__title">${headTitle}</div>
         ${badges}
+        ${plan.onepot ? `<p class="prep-note" style="margin-top:8px">Tout cuit ensemble dans la cuve, couvert de papier alu (mode Roast).</p>` : ""}
       </div>
       ${warn}
+      ${liquideCard}
       <div class="plan-card">
         <div class="section-title">🧑‍🍳 Préparation</div>
         ${prep}
       </div>
       <div class="plan-card">
-        <div class="section-title">⏱️ Déroulé — une seule cuisson</div>
+        <div class="section-title">⏱️ Déroulé — ${dureeLabel}</div>
         <div class="timeline">${timeline}</div>
       </div>
       ${sidesCard(plan)}

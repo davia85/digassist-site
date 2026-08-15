@@ -76,11 +76,112 @@ const Engine = (() => {
   /* Construit le plan complet.
      sizes  = { id: 'petit'|'moyen'|'gros' } (optionnel)
      states = { id: 'frais'|'surgele' } (optionnel) */
+  /* ONE-POT dans la cuve en verre : quand il y a des pâtes ou du riz,
+     tout cuit ensemble dans le bac avec du liquide (crème / bouillon). */
+  function buildOnePot(allItems, pantry, formes) {
+    const starches = allItems.filter((i) => i.onepot);
+    const others = allItems.filter((i) => !i.onepot && i.methode !== "casserole");
+    const dried = allItems.filter((i) => i.methode === "casserole"); // légumes secs éventuels
+
+    // Réglages de cuisson : on prend le plus exigeant des féculents
+    const temp = Math.max(...starches.map((s) => s.onepot.temp));
+    const total = Math.max(...starches.map((s) => s.onepot.total));
+    const stir = Math.min(...starches.map((s) => s.onepot.stir));
+
+    // Préparation par ingrédient
+    const prep = [];
+    starches.forEach((s) => {
+      prep.push({
+        nom: s.nom, emoji: s.emoji, qty: s.qtyHint,
+        coupe: "Cru, directement dans la cuve (il cuit dans le liquide).",
+        epices: null, oneP: true,
+      });
+    });
+    others.forEach((i) => {
+      const sea = seasoning(i, pantry);
+      prep.push({
+        nom: i.nom, emoji: i.emoji, qty: i.qtyHint,
+        coupe: i.tag === "proteine" ? "En dés / morceaux de ~2 cm (ils cuisent dans la sauce)."
+                                     : "En morceaux de ~2 cm.",
+        epices: sea.label, manque: sea.missing, oneP: true,
+      });
+    });
+
+    // Liquide conseillé (avec la bonne méthode pour crème / skyr / bouillon)
+    const liquideBase = starches.map((s) => s.onepot.liquide).join(" · ");
+    const liquide = {
+      titre: "Le liquide (indispensable)",
+      texte: `${liquideBase} Le liquide de CUISSON (celui qui cuit ${starches.map((s) => s.nom.toLowerCase()).join("/")}) = bouillon ou eau. Pour une sauce crémeuse : la crème peut aller dès le début ; le skyr/yaourt s'ajoute EN FIN (hors forte chaleur) mélangé à 1 c. à c. de maïzena, sinon il tranche (il graine).`,
+    };
+
+    const listeNoms = [
+      ...others.map((i) => i.nom.toLowerCase()),
+      ...starches.map((s) => s.nom.toLowerCase() + " cru(es)"),
+    ].join(" + ");
+
+    const timeline = [];
+    timeline.push({
+      t: 0, label: "0:00 — Tout dans la cuve",
+      actions: [
+        others.some((i) => i.tag === "proteine") ? "Coupe la viande/le poisson en dés de ~2 cm." : "Prépare et coupe tes ingrédients.",
+        `Mets TOUT dans la cuve : ${listeNoms} + le liquide (juste de quoi couvrir) + tes épices.`,
+        `Couvre la cuve de papier alu (il garde la vapeur = c'est ce qui cuit ${starches.map((s) => s.nom.toLowerCase()).join(" et ")}). Lance le mode Roast/cuisson à ${temp}°.`,
+      ],
+    });
+    timeline.push({
+      t: stir, label: `${mmss(stir)}`,
+      actions: ["Ouvre, remue bien (décolle du fond). Trop sec ? ajoute un peu de liquide chaud. Recouvre de papier alu."],
+    });
+    timeline.push({
+      t: Math.max(stir + 2, total - 4), label: `${mmss(Math.max(stir + 2, total - 4))}`,
+      actions: [
+        `Goûte ${starches.map((s) => s.nom.toLowerCase()).join(" / ")} : encore ferme(s) ? Referme et +3-5 min.`,
+        others.some((i) => i.tag === "proteine") ? "Vérifie la viande : cuite à cœur (blanche, jus clair)." : "",
+      ].filter(Boolean),
+    });
+    timeline.push({
+      t: total, label: `${mmss(total)} — C'est prêt !`,
+      actions: [
+        "🥛 Sauce crémeuse : à la sortie (hors forte chaleur), incorpore le skyr/yaourt mélangé à 1 c. à c. de maïzena — sinon il tranche. (La crème peut, elle, aller dès le début.)",
+        "Option gratin : parsème de fromage râpé et laisse 3 min à découvert pour dorer.",
+        "✅ Tout a cuit ensemble dans la cuve.",
+      ],
+      final: true,
+    });
+
+    const tips = [
+      "Le papier alu est indispensable : sans lui, le liquide s'évapore trop vite et les pâtes/le riz ne cuisent pas.",
+      "Assez de liquide au départ = la clé. Il doit juste couvrir les pâtes / le riz.",
+      "Skyr/yaourt : toujours EN FIN + un peu de maïzena (sinon il tranche à la chaleur). La crème, elle, supporte la cuisson.",
+      "Mode Roast (ou cuisson), PAS le mode AirFry soufflé.",
+    ];
+
+    // Légumes secs éventuels : à préparer à part (ils ne cuisent pas dans ce temps)
+    const sides = dried.map((i) => {
+      const forme = i.formes ? ((formes && formes[i.id]) || FORME_DEFAULT) : null;
+      const data = i.formes ? i.formes[forme] : i.casserole;
+      return { nom: i.nom, emoji: i.emoji, forme, qty: data.qty || i.qtyHint,
+               temps: data.temps, liquide: data.liquide, bouillon: data.bouillon, etapes: data.etapes };
+    });
+
+    return {
+      onepot: true,
+      program: "Roast",
+      temp, total, prep, timeline, tips, liquide, sides,
+      conflitCroustillant: false,
+    };
+  }
+
   function buildPlan(selectedIds, pantry, sizes, states, formes) {
     const allItems = selectedIds.map(byId).filter(Boolean);
     if (allItems.length === 0) return null;
 
-    // Sépare la cuisson airfryer de ce qui se fait à la casserole (riz, pâtes, lentilles)
+    // Si des pâtes ou du riz sont sélectionnés -> recette ONE-POT dans la cuve
+    if (allItems.some((i) => i.onepot)) {
+      return buildOnePot(allItems, pantry, formes);
+    }
+
+    // Sépare la cuisson airfryer de ce qui se fait à la casserole (légumes secs)
     const items = allItems.filter((i) => i.methode !== "casserole");
     const sides = allItems
       .filter((i) => i.methode === "casserole")
