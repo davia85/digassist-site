@@ -78,15 +78,22 @@ const Engine = (() => {
      states = { id: 'frais'|'surgele' } (optionnel) */
   /* ONE-POT dans la cuve en verre : quand il y a des pâtes ou du riz,
      tout cuit ensemble dans le bac avec du liquide (crème / bouillon). */
-  function buildOnePot(allItems, pantry, formes) {
+  function buildOnePot(allItems, pantry, formes, times) {
     const starches = allItems.filter((i) => i.onepot);
     const others = allItems.filter((i) => !i.onepot && i.methode !== "casserole");
     const dried = allItems.filter((i) => i.methode === "casserole"); // légumes secs éventuels
 
-    // Réglages de cuisson : on prend le plus exigeant des féculents
+    // Temps par féculent : si l'utilisateur a saisi son temps "al dente / paquet",
+    // on l'adapte à la cuisson (plus douce) en ajoutant un tampon ; sinon valeur par défaut.
+    let tempsPerso = false;
+    const starchTotals = starches.map((s) => {
+      const manual = times && Number(times[s.id]) > 0 ? Number(times[s.id]) : null;
+      if (manual) { tempsPerso = true; return manual + (s.onepot.buffer || 14); }
+      return s.onepot.total;
+    });
     const temp = Math.max(...starches.map((s) => s.onepot.temp));
-    const total = Math.max(...starches.map((s) => s.onepot.total));
-    const stir = Math.min(...starches.map((s) => s.onepot.stir));
+    const total = Math.max(...starchTotals);
+    const stir = Math.max(6, Math.round(total * 0.45));
 
     // Préparation par ingrédient
     const prep = [];
@@ -111,7 +118,7 @@ const Engine = (() => {
     const liquideBase = starches.map((s) => s.onepot.liquide).join(" · ");
     const liquide = {
       titre: "Le liquide (indispensable)",
-      texte: `${liquideBase} Le liquide de CUISSON (celui qui cuit ${starches.map((s) => s.nom.toLowerCase()).join("/")}) = bouillon ou eau. Pour une sauce crémeuse : la crème peut aller dès le début ; le skyr/yaourt s'ajoute EN FIN (hors forte chaleur) mélangé à 1 c. à c. de maïzena, sinon il tranche (il graine).`,
+      texte: `${liquideBase} Le liquide de CUISSON (celui qui cuit ${starches.map((s) => s.nom.toLowerCase()).join("/")}) = bouillon ou eau. Pour une sauce crémeuse : la crème (liquide/fraîche) ou la crème de coco peuvent aller dès le début (la coco = version curry, elle ne tranche pas) ; le skyr/yaourt, lui, s'ajoute EN FIN (hors forte chaleur) mélangé à 1 c. à c. de maïzena, sinon il tranche (il graine).`,
     };
 
     const listeNoms = [
@@ -149,12 +156,16 @@ const Engine = (() => {
       final: true,
     });
 
-    const tips = [
+    const tips = [];
+    if (tempsPerso) {
+      tips.push(`Durée adaptée au temps que TU as saisi (al dente sur le paquet) : dans la cuve, la cuisson est plus douce qu'à l'eau bouillante, donc on ajoute quelques minutes. Total calculé : ~${total} min. Goûte et ajuste.`);
+    }
+    tips.push(
       "Le papier alu est indispensable : sans lui, le liquide s'évapore trop vite et les pâtes/le riz ne cuisent pas.",
       "Assez de liquide au départ = la clé. Il doit juste couvrir les pâtes / le riz.",
       "Skyr/yaourt : toujours EN FIN + un peu de maïzena (sinon il tranche à la chaleur). La crème, elle, supporte la cuisson.",
-      "Mode Roast (ou cuisson), PAS le mode AirFry soufflé.",
-    ];
+      "Mode Roast (ou cuisson), PAS le mode AirFry soufflé."
+    );
 
     // Légumes secs éventuels : à préparer à part (ils ne cuisent pas dans ce temps)
     const sides = dried.map((i) => {
@@ -172,13 +183,13 @@ const Engine = (() => {
     };
   }
 
-  function buildPlan(selectedIds, pantry, sizes, states, formes) {
+  function buildPlan(selectedIds, pantry, sizes, states, formes, times) {
     const allItems = selectedIds.map(byId).filter(Boolean);
     if (allItems.length === 0) return null;
 
     // Si des pâtes ou du riz sont sélectionnés -> recette ONE-POT dans la cuve
     if (allItems.some((i) => i.onepot)) {
-      return buildOnePot(allItems, pantry, formes);
+      return buildOnePot(allItems, pantry, formes, times);
     }
 
     // Sépare la cuisson airfryer de ce qui se fait à la casserole (légumes secs)

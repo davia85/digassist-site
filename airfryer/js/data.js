@@ -79,7 +79,9 @@ const SPICES = [
   { id:"sesame",         nom:"Graines de sésame",   emoji:"⚪", base:false, dose:"1 c. à c." },
   { id:"maizena",        nom:"Maïzena",             emoji:"🌽", base:false, dose:"1 c. à c." },
   { id:"skyr",           nom:"Skyr / yaourt",       emoji:"🥛", base:false, dose:"2-3 c. à s." },
-  { id:"creme",          nom:"Crème",               emoji:"🥛", base:false, dose:"~200 ml" },
+  { id:"creme_fraiche",  nom:"Crème fraîche",       emoji:"🥛", base:false, dose:"2-3 c. à s." },
+  { id:"creme_liquide",  nom:"Crème liquide",       emoji:"🥛", base:false, dose:"~200 ml" },
+  { id:"creme_coco",     nom:"Crème de coco",       emoji:"🥥", base:false, dose:"~200 ml" },
   { id:"bouillon_volaille", nom:"Bouillon de volaille", emoji:"🍗", base:true,  dose:"1 cube" },
   { id:"bouillon_boeuf",    nom:"Bouillon de bœuf",     emoji:"🐄", base:false, dose:"1 cube" },
   { id:"bouillon_legumes",  nom:"Bouillon de légumes",  emoji:"🥕", base:false, dose:"1 cube" },
@@ -368,13 +370,13 @@ const INGREDIENTS = [
   // Riz & pâtes : cuisson EN ONE-POT dans la cuve (avec liquide), pas à la casserole.
   { id:"riz_blanc", nom:"Riz", emoji:"🍚", tag:"accompagnement",
     qtyHint:"60-80 g cru / pers.", epices:[],
-    onepot:{ temp:180, total:32, stir:15,
+    onepot:{ temp:180, total:32, stir:15, buffer:18, alDenteDefaut:12,
       liquide:"1 volume de riz pour 2 volumes de liquide (bouillon, eau, ou crème allongée d'eau).",
       absorbe:true } },
 
   { id:"pates", nom:"Pâtes", emoji:"🍝", tag:"accompagnement",
     qtyHint:"80-100 g crues / pers.", epices:[],
-    onepot:{ temp:180, total:26, stir:12,
+    onepot:{ temp:180, total:26, stir:12, buffer:14, alDenteDefaut:9,
       liquide:"~250-300 ml de liquide pour 100 g de pâtes — juste de quoi les couvrir (crème, bouillon, ou moitié-moitié).",
       absorbe:true } },
 

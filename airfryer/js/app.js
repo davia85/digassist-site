@@ -18,6 +18,7 @@
   const sizes = store.get("sizes", {}); // { ingredientId: 'petit'|'moyen'|'gros' }
   const states = store.get("states", {}); // { ingredientId: 'frais'|'surgele' }
   const formes = store.get("formes", {}); // { ingredientId: 'sec'|'conserve' }
+  const times = store.get("times", {}); // { ingredientId: minutes (al dente paquet) }
   let pantry = store.get("pantry", null);
   if (pantry === null) {
     // Premier lancement : on coche les épices "de base"
@@ -90,7 +91,7 @@
   function renderSizePanel() {
     const host = $("#size-panel");
     const list = [...selected].map((id) => INGREDIENTS.find((i) => i.id === id))
-      .filter((i) => i && (SIZE_SENSITIVE.includes(i.id) || STATE_SENSITIVE.includes(i.id) || FORME_SENSITIVE.includes(i.id)));
+      .filter((i) => i && (SIZE_SENSITIVE.includes(i.id) || STATE_SENSITIVE.includes(i.id) || FORME_SENSITIVE.includes(i.id) || i.onepot));
     if (list.length === 0) { host.hidden = true; host.innerHTML = ""; return; }
     host.hidden = false;
     host.innerHTML = `
@@ -114,9 +115,14 @@
             <div class="size-seg" data-kind="forme" data-id="${i.id}">
               ${FORME_OPTS.map((o) => `<button class="size-btn ${curForme === o.key ? "size-btn--on" : ""}" data-val="${o.key}">${o.label}</button>`).join("")}
             </div></div>` : "";
+        const timeSeg = i.onepot ? `
+          <div class="seg-block"><span class="seg-lbl">⏱️ Al dente (paquet)</span>
+            <input type="number" inputmode="numeric" class="time-input" data-id="${i.id}" min="3" max="45"
+              value="${times[i.id] != null ? times[i.id] : ""}" placeholder="ex. ${i.onepot.alDenteDefaut}">
+            <span class="seg-lbl">min</span></div>` : "";
         return `<div class="size-row">
           <div class="size-row__name">${i.emoji} ${esc(i.nom)}</div>
-          <div class="seg-wrap">${sizeSeg}${stateSeg}${formeSeg}</div>
+          <div class="seg-wrap">${sizeSeg}${stateSeg}${formeSeg}${timeSeg}</div>
         </div>`;
       }).join("")}`;
     $$(".size-btn", host).forEach((btn) => {
@@ -131,6 +137,14 @@
         btn.classList.add("size-btn--on");
       });
     });
+    $$(".time-input", host).forEach((inp) => {
+      inp.addEventListener("input", () => {
+        const id = inp.dataset.id;
+        const v = parseInt(inp.value, 10);
+        if (v > 0) times[id] = v; else delete times[id];
+        store.set("times", times);
+      });
+    });
   }
 
   function updateSelectionBar() {
@@ -142,7 +156,7 @@
   }
 
   $("#btn-generate").addEventListener("click", () => {
-    const plan = Engine.buildPlan([...selected], pantrySet(), sizes, states, formes);
+    const plan = Engine.buildPlan([...selected], pantrySet(), sizes, states, formes, times);
     renderPlan(plan);
     $("#plan-output").scrollIntoView({ behavior: "smooth", block: "start" });
   });
