@@ -71,6 +71,7 @@ const SPICES = [
   { id:"piment",         nom:"Piment / chili",      emoji:"🌶️", base:false, dose:"1 pincée" },
   { id:"ras_el_hanout",  nom:"Ras el hanout",       emoji:"🧡", base:false, dose:"1 c. à c." },
   { id:"tagine",         nom:"Épices tagine",       emoji:"🍲", base:false, dose:"1 c. à c." },
+  { id:"muscade",        nom:"Muscade",             emoji:"🌰", base:false, dose:"1 pincée" },
   { id:"colombo",        nom:"Colombo",             emoji:"🟠", base:false, dose:"1 c. à c." },
   { id:"citron",         nom:"Citron",              emoji:"🍋", base:true,  dose:"un filet" },
   { id:"sauce_soja",     nom:"Sauce soja",          emoji:"🍶", base:false, dose:"1 c. à s." },
@@ -339,6 +340,14 @@ const INGREDIENTS = [
     humide:false, croustille:false,
     astuce:"Cuisson rapide, surveille : elles doivent rester fermes.",
     epices:["ail","citron","poivre"] },
+
+  { id:"epinards_surgele", nom:"Épinards hachés surgelés", emoji:"🥬", tag:"legume",
+    temp:180, time:12, shake:5, program:"AirFry", qtyHint:"1 poignée / pers.",
+    coupe:"Direct du congélateur, sans décongeler.",
+    sechage:"Ils rendent de l'eau en décongelant. Dans un one-pot/plat en sauce c'est parfait ; seuls à l'airfryer, égoutte l'eau à mi-cuisson.",
+    humide:true, croustille:false,
+    astuce:"Parfaits en one-pot ou plat en sauce (déjà cuits, ils réchauffent vite). Mets un peu moins de liquide, ils en rendent.",
+    epices:["ail","muscade","citron","paprika"] },
 
   { id:"legumes_surgele", nom:"Légumes surgelés (mélange)", emoji:"🥗", tag:"legume",
     temp:190, time:15, shake:7, program:"AirFry", qtyHint:"1 poignée / pers.",
