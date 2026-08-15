@@ -110,6 +110,8 @@ const Engine = (() => {
         manque: s.missing,
         epicesPauvres: s.poor,
         astuce: e.ing.astuce || null,
+        marinade: e.ing.marinade || null,
+        finition: e.ing.finition || null,
         size: sizeSel,
         sizeLabel,
       };
@@ -137,6 +139,18 @@ const Engine = (() => {
         }
       }
     });
+
+    // Étape "finition dorée" : si un ingrédient a une finition à feu vif,
+    // on ajoute une montée à 200° sur les dernières minutes (le secret du doré).
+    const aFinition = enriched.filter((e) => e.ing.finition);
+    if (aFinition.length && total >= 8) {
+      const tf = Math.max(3, total - 3);
+      events.push({
+        t: tf,
+        prio: 1.5,
+        txt: `🔥 Finition dorée : monte à 200° (ou programme Broil) pour les dernières minutes — c'est ce qui rend ${aFinition.map((e) => e.ing.nom.toLowerCase()).join(", ")} doré(e) et gourmand(e).`,
+      });
+    }
 
     // Fusionne les évènements par minute
     const map = new Map();
@@ -177,6 +191,9 @@ const Engine = (() => {
 
     // Astuces globales
     const tips = [];
+    if (hasProteine) {
+      tips.push("Le secret du goût et du doré : de l'HUILE généreusement + les épices mélangées à l'huile (marinade). Jamais d'eau dans le bac — l'eau fait bouillir et empêche de dorer.");
+    }
     if (conflitCroustillant) {
       tips.push(
         `Pour garder le croustillant : ${croustille

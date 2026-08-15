@@ -140,6 +140,8 @@
         ${p.size ? `<div class="prep-line">📏 <b>Taille :</b> ${esc(p.size)} — vise ${esc(p.sizeLabel)}. <span class="prep-note">Le temps est calculé pour cette taille.</span></div>` : ""}
         ${p.sechage ? `<div class="prep-line">💧 <b>Séchage :</b> ${esc(p.sechage)}</div>` : ""}
         <div class="prep-line">🧂 <b>Assaisonnement :</b> ${esc(p.epices)}</div>
+        ${p.marinade ? `<div class="prep-line">🥣 <b>Marinade :</b> ${esc(p.marinade)}</div>` : ""}
+        ${p.finition ? `<div class="prep-line prep-gourmand">✨ <b>Finition gourmande :</b> ${esc(p.finition)}</div>` : ""}
         ${p.astuce ? `<div class="prep-note">👉 ${esc(p.astuce)}</div>` : ""}
         ${p.manque.length ? `<div class="missing">Astuce goût : avec ${p.manque.slice(0,3).map((s)=>esc(s.nom)).join(", ")} ce serait encore meilleur.</div>` : ""}
       </div>`).join("");
